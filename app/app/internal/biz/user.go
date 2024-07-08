@@ -1726,10 +1726,25 @@ func (uuc *UserUseCase) AdminVipUpdate(ctx context.Context, req *v1.AdminVipUpda
 		return nil, nil
 	}
 
-	err = uuc.uiRepo.UpdateUserNew(ctx, req.SendBody.UserId, total)
-	if nil != err {
+	// 推荐人
+	if err = uuc.tx.ExecTx(ctx, func(ctx context.Context) error { // 事务
+		err = uuc.uiRepo.UpdateUserNew(ctx, req.SendBody.UserId, total)
+		if nil != err {
+			return err
+		}
+
+		// 充值记录
+		err = uuc.ubRepo.InRecordNew(ctx, req.SendBody.UserId, int64(total))
+		if nil != err {
+			return err
+		}
+
+		return nil
+	}); nil != err {
+		fmt.Println(err, "错误投资3", req.SendBody.UserId, total)
 		return nil, err
 	}
+
 	return nil, nil
 }
 
@@ -2692,12 +2707,13 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 		threeTwo  float64
 		fiveThree float64
 		fourThree float64
+		today     float64
 		err       error
 	)
 
 	configs, err = uuc.configRepo.GetConfigByKeys(ctx,
 		"one", "two", "three", "four", "five",
-		"one_two", "two_two", "three_two", "four_two", "five_two", "four_three", "five_three",
+		"one_two", "two_two", "three_two", "four_two", "five_two", "four_three", "five_three", "today",
 	)
 	if nil != err {
 		fmt.Println("分红,配置", err)
@@ -2753,6 +2769,11 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 				}
 			} else if "five_three" == vConfig.KeyName {
 				fiveThree, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "today" == vConfig.KeyName {
+				today, err = strconv.ParseFloat(vConfig.Value, 10)
 				if nil != err {
 					return nil, err
 				}
@@ -2831,58 +2852,70 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 		perFive      float64
 		rewards      []*Reward
 	)
-	rewards, err = uuc.locationRepo.GetBuyYesterday(ctx, int(req.Day))
-	for _, reward := range rewards {
-		if 5000 <= reward.Amount {
-			amountSecond += threeTwo
-		} else if 3000 <= reward.Amount {
-			amountSecond += twoTwo
-		} else if 1000 <= reward.Amount {
-			amountSecond += oneTwo
-		} else {
-			continue
+
+	if 0 >= today {
+		rewards, err = uuc.locationRepo.GetBuyYesterday(ctx, int(req.Day))
+		for _, reward := range rewards {
+			if 5000 <= reward.Amount {
+				amountSecond += threeTwo
+			} else if 3000 <= reward.Amount {
+				amountSecond += twoTwo
+			} else if 1000 <= reward.Amount {
+				amountSecond += oneTwo
+			} else {
+				continue
+			}
 		}
+	} else {
+		amountSecond = today
 	}
 
 	if 0 >= amountSecond {
 		return nil, nil
 	}
 
-	perFour = amountSecond * fourThree / 100 / float64(len(fourUsers))
-	perFive = amountSecond * fiveThree / 100 / float64(len(fiveUsers))
+	if 0 < len(fourUsers) {
+		perFour = amountSecond * fourThree / 100 / float64(len(fourUsers))
+		fmt.Println(amountSecond, fourThree, perFour)
+		if 0 < perFour {
+			for _, vFourUser := range fourUsers {
+				// 发奖励
+				if err = uuc.tx.ExecTx(ctx, func(ctx context.Context) error { // 事务
 
-	fmt.Println(amountSecond, fourThree, perFour)
-	fmt.Println(amountSecond, fiveThree, perFive)
+					err = uuc.ubRepo.SecondRewardBiw(ctx, vFourUser.ID, perFour, "four")
+					if nil != err {
+						return err
+					}
 
-	for _, vFourUser := range fourUsers {
-		// 发奖励
-		if err = uuc.tx.ExecTx(ctx, func(ctx context.Context) error { // 事务
-
-			err = uuc.ubRepo.SecondRewardBiw(ctx, vFourUser.ID, perFour, "four")
-			if nil != err {
-				return err
+					return nil
+				}); nil != err {
+					fmt.Println(err, "错误发奖励2,4", vFourUser, perFour, "four")
+					continue
+				}
 			}
-
-			return nil
-		}); nil != err {
-			fmt.Println(err, "错误发奖励2,4", vFourUser, perFour, "four")
-			continue
 		}
 	}
 
-	for _, vFiveUser := range fiveUsers {
-		// 发奖励
-		if err = uuc.tx.ExecTx(ctx, func(ctx context.Context) error { // 事务
+	if 0 < len(fiveUsers) {
+		perFive = amountSecond * fiveThree / 100 / float64(len(fiveUsers))
+		fmt.Println(amountSecond, fiveThree, perFive)
 
-			err = uuc.ubRepo.SecondRewardBiw(ctx, vFiveUser.ID, perFive, "five")
-			if nil != err {
-				return err
+		if 0 < perFive {
+			for _, vFiveUser := range fiveUsers {
+				// 发奖励
+				if err = uuc.tx.ExecTx(ctx, func(ctx context.Context) error { // 事务
+
+					err = uuc.ubRepo.SecondRewardBiw(ctx, vFiveUser.ID, perFive, "five")
+					if nil != err {
+						return err
+					}
+
+					return nil
+				}); nil != err {
+					fmt.Println(err, "错误发奖励2,5", vFiveUser, perFive)
+					continue
+				}
 			}
-
-			return nil
-		}); nil != err {
-			fmt.Println(err, "错误发奖励2,5", vFiveUser, perFive)
-			continue
 		}
 	}
 
