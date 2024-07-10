@@ -541,7 +541,7 @@ message AdminRewardListReply {
 	repeated List rewards = 1;
 	message List {
 		string created_at = 1; // 时间
-		string amount = 2; // 数量
+		int64 amount = 2; // 数量
 		double amountB = 3; // 数量
 		string address = 5; // 地址
 		string reason = 6; // 原因 每一条替换文案 认购reason=buy，提现reason=withdraw，兑换reason=exchange，前四名reason=four，挖矿reason=location，矩阵reason=area，直推reason=recommend
