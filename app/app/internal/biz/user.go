@@ -2819,10 +2819,8 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 	}
 
 	if 0 >= today {
-		fmt.Println(day)
 		rewards, err = uuc.locationRepo.GetBuyYesterday(ctx, day)
 		for _, reward := range rewards {
-			fmt.Println(reward)
 			if 10000 <= reward.Amount {
 				continue
 			}

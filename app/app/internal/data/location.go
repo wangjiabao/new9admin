@@ -197,7 +197,7 @@ func (lr *LocationRepo) GetBuyYesterday(ctx context.Context, day int) ([]*biz.Re
 
 	// 16点之后执行
 	now := time.Now().UTC().AddDate(0, 0, day)
-	fmt.Println(now)
+	fmt.Println(now, day)
 	startDate := now
 	endDate := now.AddDate(0, 0, 1)
 	todayStart := time.Date(startDate.Year(), startDate.Month(), startDate.Day(), 16, 0, 0, 0, time.UTC)
