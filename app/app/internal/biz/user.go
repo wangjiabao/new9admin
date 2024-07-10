@@ -2804,11 +2804,16 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 		amountSecond float64
 		perFour      float64
 		perFive      float64
+		day          = -1
 		rewards      []*Reward
 	)
 
+	if 0 != req.Day {
+		day = int(req.Day)
+	}
+
 	if 0 >= today {
-		rewards, err = uuc.locationRepo.GetBuyYesterday(ctx, int(req.Day))
+		rewards, err = uuc.locationRepo.GetBuyYesterday(ctx, day)
 		for _, reward := range rewards {
 			if 5000 <= reward.Amount {
 				amountSecond += threeTwo
