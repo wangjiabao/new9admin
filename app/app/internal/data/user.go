@@ -2277,8 +2277,8 @@ func (ub *UserBalanceRepo) SecondRewardBiw(ctx context.Context, userId int64, am
 
 	var reward Reward
 	reward.UserId = userBalance.UserId
-	reward.Type = rewardType        // 本次分红的行为类型
-	reward.Reason = "reward_second" // 给我分红的理由
+	reward.Type = rewardType       // 本次分红的行为类型
+	reward.Reason = "reward_third" // 给我分红的理由
 	reward.AmountNew = amount
 	err = ub.data.DB(ctx).Table("reward").Create(&reward).Error
 	if err != nil {
