@@ -2814,8 +2814,8 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 		rewards      []*Reward
 	)
 
-	if 0 != req.Day {
-		day = int(req.Day)
+	if 1 == req.Day {
+		day = 0
 	}
 
 	if 0 >= today {
