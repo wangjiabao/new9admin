@@ -30,7 +30,7 @@ var (
 
 // BuySomethingMetaData contains all meta data concerning the BuySomething contract.
 var BuySomethingMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_usdt\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"AccessControlBadConfirmation\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"neededRole\",\"type\":\"bytes32\"}],\"name\":\"AccessControlUnauthorizedAccount\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"num\",\"type\":\"uint256\"}],\"name\":\"buy\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"grantRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"callerConfirmation\",\"type\":\"address\"}],\"name\":\"renounceRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"revokeRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"previousAdminRole\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"newAdminRole\",\"type\":\"bytes32\"}],\"name\":\"RoleAdminChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleGranted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleRevoked\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account_\",\"type\":\"address\"}],\"name\":\"setAccount\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"account\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"DEFAULT_ADMIN_ROLE\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"}],\"name\":\"getRoleAdmin\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getUserLength\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getUsers\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"startIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"endIndex\",\"type\":\"uint256\"}],\"name\":\"getUsersAmountByIndex\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"startIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"endIndex\",\"type\":\"uint256\"}],\"name\":\"getUsersByIndex\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"hasRole\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"usdt\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"users\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"usersAmount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"AccessControlBadConfirmation\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"neededRole\",\"type\":\"bytes32\"}],\"name\":\"AccessControlUnauthorizedAccount\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"num\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"strAddress\",\"type\":\"string\"}],\"name\":\"buyBak\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"grantRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"callerConfirmation\",\"type\":\"address\"}],\"name\":\"renounceRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"revokeRole\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"previousAdminRole\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"newAdminRole\",\"type\":\"bytes32\"}],\"name\":\"RoleAdminChanged\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleGranted\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"}],\"name\":\"RoleRevoked\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"address1_\",\"type\":\"address\"}],\"name\":\"setAddress1\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"address2_\",\"type\":\"address\"}],\"name\":\"setAddress2\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"DEFAULT_ADMIN_ROLE\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"}],\"name\":\"getRoleAdmin\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getUserLength\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getUsers\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"\",\"type\":\"string[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"startIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"endIndex\",\"type\":\"uint256\"}],\"name\":\"getUsersAmountByIndex\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"startIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"endIndex\",\"type\":\"uint256\"}],\"name\":\"getUsersByIndex\",\"outputs\":[{\"internalType\":\"string[]\",\"name\":\"\",\"type\":\"string[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"role\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"hasRole\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"usdt\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"users\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"usersAmount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
 }
 
 // BuySomethingABI is the input ABI used to generate the binding from.
@@ -210,37 +210,6 @@ func (_BuySomething *BuySomethingCallerSession) DEFAULTADMINROLE() ([32]byte, er
 	return _BuySomething.Contract.DEFAULTADMINROLE(&_BuySomething.CallOpts)
 }
 
-// Account is a free data retrieval call binding the contract method 0x5dab2420.
-//
-// Solidity: function account() view returns(address)
-func (_BuySomething *BuySomethingCaller) Account(opts *bind.CallOpts) (common.Address, error) {
-	var out []interface{}
-	err := _BuySomething.contract.Call(opts, &out, "account")
-
-	if err != nil {
-		return *new(common.Address), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(common.Address)).(*common.Address)
-
-	return out0, err
-
-}
-
-// Account is a free data retrieval call binding the contract method 0x5dab2420.
-//
-// Solidity: function account() view returns(address)
-func (_BuySomething *BuySomethingSession) Account() (common.Address, error) {
-	return _BuySomething.Contract.Account(&_BuySomething.CallOpts)
-}
-
-// Account is a free data retrieval call binding the contract method 0x5dab2420.
-//
-// Solidity: function account() view returns(address)
-func (_BuySomething *BuySomethingCallerSession) Account() (common.Address, error) {
-	return _BuySomething.Contract.Account(&_BuySomething.CallOpts)
-}
-
 // GetRoleAdmin is a free data retrieval call binding the contract method 0x248a9ca3.
 //
 // Solidity: function getRoleAdmin(bytes32 role) view returns(bytes32)
@@ -305,16 +274,16 @@ func (_BuySomething *BuySomethingCallerSession) GetUserLength() (*big.Int, error
 
 // GetUsers is a free data retrieval call binding the contract method 0x00ce8e3e.
 //
-// Solidity: function getUsers() view returns(address[])
-func (_BuySomething *BuySomethingCaller) GetUsers(opts *bind.CallOpts) ([]common.Address, error) {
+// Solidity: function getUsers() view returns(string[])
+func (_BuySomething *BuySomethingCaller) GetUsers(opts *bind.CallOpts) ([]string, error) {
 	var out []interface{}
 	err := _BuySomething.contract.Call(opts, &out, "getUsers")
 
 	if err != nil {
-		return *new([]common.Address), err
+		return *new([]string), err
 	}
 
-	out0 := *abi.ConvertType(out[0], new([]common.Address)).(*[]common.Address)
+	out0 := *abi.ConvertType(out[0], new([]string)).(*[]string)
 
 	return out0, err
 
@@ -322,15 +291,15 @@ func (_BuySomething *BuySomethingCaller) GetUsers(opts *bind.CallOpts) ([]common
 
 // GetUsers is a free data retrieval call binding the contract method 0x00ce8e3e.
 //
-// Solidity: function getUsers() view returns(address[])
-func (_BuySomething *BuySomethingSession) GetUsers() ([]common.Address, error) {
+// Solidity: function getUsers() view returns(string[])
+func (_BuySomething *BuySomethingSession) GetUsers() ([]string, error) {
 	return _BuySomething.Contract.GetUsers(&_BuySomething.CallOpts)
 }
 
 // GetUsers is a free data retrieval call binding the contract method 0x00ce8e3e.
 //
-// Solidity: function getUsers() view returns(address[])
-func (_BuySomething *BuySomethingCallerSession) GetUsers() ([]common.Address, error) {
+// Solidity: function getUsers() view returns(string[])
+func (_BuySomething *BuySomethingCallerSession) GetUsers() ([]string, error) {
 	return _BuySomething.Contract.GetUsers(&_BuySomething.CallOpts)
 }
 
@@ -367,16 +336,16 @@ func (_BuySomething *BuySomethingCallerSession) GetUsersAmountByIndex(startIndex
 
 // GetUsersByIndex is a free data retrieval call binding the contract method 0xfe36c56c.
 //
-// Solidity: function getUsersByIndex(uint256 startIndex, uint256 endIndex) view returns(address[])
-func (_BuySomething *BuySomethingCaller) GetUsersByIndex(opts *bind.CallOpts, startIndex *big.Int, endIndex *big.Int) ([]common.Address, error) {
+// Solidity: function getUsersByIndex(uint256 startIndex, uint256 endIndex) view returns(string[])
+func (_BuySomething *BuySomethingCaller) GetUsersByIndex(opts *bind.CallOpts, startIndex *big.Int, endIndex *big.Int) ([]string, error) {
 	var out []interface{}
 	err := _BuySomething.contract.Call(opts, &out, "getUsersByIndex", startIndex, endIndex)
 
 	if err != nil {
-		return *new([]common.Address), err
+		return *new([]string), err
 	}
 
-	out0 := *abi.ConvertType(out[0], new([]common.Address)).(*[]common.Address)
+	out0 := *abi.ConvertType(out[0], new([]string)).(*[]string)
 
 	return out0, err
 
@@ -384,15 +353,15 @@ func (_BuySomething *BuySomethingCaller) GetUsersByIndex(opts *bind.CallOpts, st
 
 // GetUsersByIndex is a free data retrieval call binding the contract method 0xfe36c56c.
 //
-// Solidity: function getUsersByIndex(uint256 startIndex, uint256 endIndex) view returns(address[])
-func (_BuySomething *BuySomethingSession) GetUsersByIndex(startIndex *big.Int, endIndex *big.Int) ([]common.Address, error) {
+// Solidity: function getUsersByIndex(uint256 startIndex, uint256 endIndex) view returns(string[])
+func (_BuySomething *BuySomethingSession) GetUsersByIndex(startIndex *big.Int, endIndex *big.Int) ([]string, error) {
 	return _BuySomething.Contract.GetUsersByIndex(&_BuySomething.CallOpts, startIndex, endIndex)
 }
 
 // GetUsersByIndex is a free data retrieval call binding the contract method 0xfe36c56c.
 //
-// Solidity: function getUsersByIndex(uint256 startIndex, uint256 endIndex) view returns(address[])
-func (_BuySomething *BuySomethingCallerSession) GetUsersByIndex(startIndex *big.Int, endIndex *big.Int) ([]common.Address, error) {
+// Solidity: function getUsersByIndex(uint256 startIndex, uint256 endIndex) view returns(string[])
+func (_BuySomething *BuySomethingCallerSession) GetUsersByIndex(startIndex *big.Int, endIndex *big.Int) ([]string, error) {
 	return _BuySomething.Contract.GetUsersByIndex(&_BuySomething.CallOpts, startIndex, endIndex)
 }
 
@@ -491,16 +460,16 @@ func (_BuySomething *BuySomethingCallerSession) Usdt() (common.Address, error) {
 
 // Users is a free data retrieval call binding the contract method 0x365b98b2.
 //
-// Solidity: function users(uint256 ) view returns(address)
-func (_BuySomething *BuySomethingCaller) Users(opts *bind.CallOpts, arg0 *big.Int) (common.Address, error) {
+// Solidity: function users(uint256 ) view returns(string)
+func (_BuySomething *BuySomethingCaller) Users(opts *bind.CallOpts, arg0 *big.Int) (string, error) {
 	var out []interface{}
 	err := _BuySomething.contract.Call(opts, &out, "users", arg0)
 
 	if err != nil {
-		return *new(common.Address), err
+		return *new(string), err
 	}
 
-	out0 := *abi.ConvertType(out[0], new(common.Address)).(*common.Address)
+	out0 := *abi.ConvertType(out[0], new(string)).(*string)
 
 	return out0, err
 
@@ -508,15 +477,15 @@ func (_BuySomething *BuySomethingCaller) Users(opts *bind.CallOpts, arg0 *big.In
 
 // Users is a free data retrieval call binding the contract method 0x365b98b2.
 //
-// Solidity: function users(uint256 ) view returns(address)
-func (_BuySomething *BuySomethingSession) Users(arg0 *big.Int) (common.Address, error) {
+// Solidity: function users(uint256 ) view returns(string)
+func (_BuySomething *BuySomethingSession) Users(arg0 *big.Int) (string, error) {
 	return _BuySomething.Contract.Users(&_BuySomething.CallOpts, arg0)
 }
 
 // Users is a free data retrieval call binding the contract method 0x365b98b2.
 //
-// Solidity: function users(uint256 ) view returns(address)
-func (_BuySomething *BuySomethingCallerSession) Users(arg0 *big.Int) (common.Address, error) {
+// Solidity: function users(uint256 ) view returns(string)
+func (_BuySomething *BuySomethingCallerSession) Users(arg0 *big.Int) (string, error) {
 	return _BuySomething.Contract.Users(&_BuySomething.CallOpts, arg0)
 }
 
@@ -551,25 +520,25 @@ func (_BuySomething *BuySomethingCallerSession) UsersAmount(arg0 *big.Int) (*big
 	return _BuySomething.Contract.UsersAmount(&_BuySomething.CallOpts, arg0)
 }
 
-// Buy is a paid mutator transaction binding the contract method 0xd96a094a.
+// BuyBak is a paid mutator transaction binding the contract method 0x89abaee4.
 //
-// Solidity: function buy(uint256 num) returns()
-func (_BuySomething *BuySomethingTransactor) Buy(opts *bind.TransactOpts, num *big.Int) (*types.Transaction, error) {
-	return _BuySomething.contract.Transact(opts, "buy", num)
+// Solidity: function buyBak(uint256 num, string strAddress) returns()
+func (_BuySomething *BuySomethingTransactor) BuyBak(opts *bind.TransactOpts, num *big.Int, strAddress string) (*types.Transaction, error) {
+	return _BuySomething.contract.Transact(opts, "buyBak", num, strAddress)
 }
 
-// Buy is a paid mutator transaction binding the contract method 0xd96a094a.
+// BuyBak is a paid mutator transaction binding the contract method 0x89abaee4.
 //
-// Solidity: function buy(uint256 num) returns()
-func (_BuySomething *BuySomethingSession) Buy(num *big.Int) (*types.Transaction, error) {
-	return _BuySomething.Contract.Buy(&_BuySomething.TransactOpts, num)
+// Solidity: function buyBak(uint256 num, string strAddress) returns()
+func (_BuySomething *BuySomethingSession) BuyBak(num *big.Int, strAddress string) (*types.Transaction, error) {
+	return _BuySomething.Contract.BuyBak(&_BuySomething.TransactOpts, num, strAddress)
 }
 
-// Buy is a paid mutator transaction binding the contract method 0xd96a094a.
+// BuyBak is a paid mutator transaction binding the contract method 0x89abaee4.
 //
-// Solidity: function buy(uint256 num) returns()
-func (_BuySomething *BuySomethingTransactorSession) Buy(num *big.Int) (*types.Transaction, error) {
-	return _BuySomething.Contract.Buy(&_BuySomething.TransactOpts, num)
+// Solidity: function buyBak(uint256 num, string strAddress) returns()
+func (_BuySomething *BuySomethingTransactorSession) BuyBak(num *big.Int, strAddress string) (*types.Transaction, error) {
+	return _BuySomething.Contract.BuyBak(&_BuySomething.TransactOpts, num, strAddress)
 }
 
 // GrantRole is a paid mutator transaction binding the contract method 0x2f2ff15d.
@@ -635,25 +604,46 @@ func (_BuySomething *BuySomethingTransactorSession) RevokeRole(role [32]byte, ac
 	return _BuySomething.Contract.RevokeRole(&_BuySomething.TransactOpts, role, account)
 }
 
-// SetAccount is a paid mutator transaction binding the contract method 0x29f6d57c.
+// SetAddress1 is a paid mutator transaction binding the contract method 0x58d01413.
 //
-// Solidity: function setAccount(address account_) returns()
-func (_BuySomething *BuySomethingTransactor) SetAccount(opts *bind.TransactOpts, account_ common.Address) (*types.Transaction, error) {
-	return _BuySomething.contract.Transact(opts, "setAccount", account_)
+// Solidity: function setAddress1(address address1_) returns()
+func (_BuySomething *BuySomethingTransactor) SetAddress1(opts *bind.TransactOpts, address1_ common.Address) (*types.Transaction, error) {
+	return _BuySomething.contract.Transact(opts, "setAddress1", address1_)
 }
 
-// SetAccount is a paid mutator transaction binding the contract method 0x29f6d57c.
+// SetAddress1 is a paid mutator transaction binding the contract method 0x58d01413.
 //
-// Solidity: function setAccount(address account_) returns()
-func (_BuySomething *BuySomethingSession) SetAccount(account_ common.Address) (*types.Transaction, error) {
-	return _BuySomething.Contract.SetAccount(&_BuySomething.TransactOpts, account_)
+// Solidity: function setAddress1(address address1_) returns()
+func (_BuySomething *BuySomethingSession) SetAddress1(address1_ common.Address) (*types.Transaction, error) {
+	return _BuySomething.Contract.SetAddress1(&_BuySomething.TransactOpts, address1_)
 }
 
-// SetAccount is a paid mutator transaction binding the contract method 0x29f6d57c.
+// SetAddress1 is a paid mutator transaction binding the contract method 0x58d01413.
 //
-// Solidity: function setAccount(address account_) returns()
-func (_BuySomething *BuySomethingTransactorSession) SetAccount(account_ common.Address) (*types.Transaction, error) {
-	return _BuySomething.Contract.SetAccount(&_BuySomething.TransactOpts, account_)
+// Solidity: function setAddress1(address address1_) returns()
+func (_BuySomething *BuySomethingTransactorSession) SetAddress1(address1_ common.Address) (*types.Transaction, error) {
+	return _BuySomething.Contract.SetAddress1(&_BuySomething.TransactOpts, address1_)
+}
+
+// SetAddress2 is a paid mutator transaction binding the contract method 0x13a5b50a.
+//
+// Solidity: function setAddress2(address address2_) returns()
+func (_BuySomething *BuySomethingTransactor) SetAddress2(opts *bind.TransactOpts, address2_ common.Address) (*types.Transaction, error) {
+	return _BuySomething.contract.Transact(opts, "setAddress2", address2_)
+}
+
+// SetAddress2 is a paid mutator transaction binding the contract method 0x13a5b50a.
+//
+// Solidity: function setAddress2(address address2_) returns()
+func (_BuySomething *BuySomethingSession) SetAddress2(address2_ common.Address) (*types.Transaction, error) {
+	return _BuySomething.Contract.SetAddress2(&_BuySomething.TransactOpts, address2_)
+}
+
+// SetAddress2 is a paid mutator transaction binding the contract method 0x13a5b50a.
+//
+// Solidity: function setAddress2(address address2_) returns()
+func (_BuySomething *BuySomethingTransactorSession) SetAddress2(address2_ common.Address) (*types.Transaction, error) {
+	return _BuySomething.Contract.SetAddress2(&_BuySomething.TransactOpts, address2_)
 }
 
 // BuySomethingRoleAdminChangedIterator is returned from FilterRoleAdminChanged and is used to iterate over the raw logs and unpacked data for RoleAdminChanged events raised by the BuySomething contract.

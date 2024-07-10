@@ -1605,6 +1605,9 @@ components:
                     type: string
                 amount:
                     type: string
+                amountB:
+                    type: number
+                    format: double
                 address:
                     type: string
                 reason:
@@ -1742,9 +1745,11 @@ components:
                 createdAt:
                     type: string
                 amount:
-                    type: string
+                    type: number
+                    format: double
                 relAmount:
-                    type: string
+                    type: number
+                    format: double
                 type:
                     type: string
                 status:

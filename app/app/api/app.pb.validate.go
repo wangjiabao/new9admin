@@ -13102,6 +13102,8 @@ func (m *AdminRewardListReply_List) validate(all bool) error {
 
 	// no validation rules for Amount
 
+	// no validation rules for AmountB
+
 	// no validation rules for Address
 
 	// no validation rules for Reason

@@ -57,6 +57,119 @@ func (a *AppService) EthAuthorize(ctx context.Context, req *v1.EthAuthorizeReque
 
 // Deposit deposit.
 func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.DepositReply, error) {
+	end := time.Now().UTC().Add(50 * time.Second)
+
+	// 配置
+	//configs, err = a.uuc.GetDhbConfig(ctx)
+	//if nil != configs {
+	//	for _, vConfig := range configs {
+	//		if "level1Dhb" == vConfig.KeyName {
+	//			level1Dhb = vConfig.Value + "00000000000"
+	//		} else if "level2Dhb" == vConfig.KeyName {
+	//			level2Dhb = vConfig.Value + "00000000000"
+	//		} else if "level3Dhb" == vConfig.KeyName {
+	//			level3Dhb = vConfig.Value + "00000000000"
+	//		}
+	//	}
+	//}
+
+	for i := 1; i <= 10; i++ {
+		var (
+			depositUsdtResult map[string]int64
+			depositUsers      map[string]*biz.User
+			fromAccount       []string
+			userLength        int64
+			last              int64
+			err               error
+		)
+
+		last, err = a.ruc.GetEthUserRecordLast(ctx)
+		if nil != err {
+			fmt.Println(err)
+			continue
+		}
+
+		if -1 == last {
+			fmt.Println(err)
+			continue
+		}
+
+		userLength, err = getUserLength("0x8A5F4F0685Be11E62e24Ca043534F996DfC9C119")
+		if nil != err {
+			fmt.Println(err)
+		}
+
+		if -1 == userLength {
+			continue
+		}
+
+		if 0 == userLength {
+			break
+		}
+
+		if last >= userLength {
+			break
+		}
+
+		depositUsdtResult, err = getUserInfo(last, userLength-1, "0x8A5F4F0685Be11E62e24Ca043534F996DfC9C119")
+		if nil != err {
+			break
+		}
+
+		now := time.Now().UTC()
+		//fmt.Println(now, end)
+		if end.Before(now) {
+			break
+		}
+
+		if 0 >= len(depositUsdtResult) {
+			break
+		}
+
+		for user, _ := range depositUsdtResult {
+			fromAccount = append(fromAccount, user)
+		}
+
+		depositUsers, err = a.uuc.GetUserByAddress(ctx, fromAccount...)
+		if nil != depositUsers {
+			// 统计开始
+			for user, v := range depositUsdtResult { // 主查usdt
+				if _, ok := depositUsers[user]; !ok { // 用户不存在
+					continue
+				}
+
+				var (
+					tmpValue int64
+					strValue string
+				)
+
+				tmpValue = v
+				strValue = strconv.FormatInt(v, 10) + "000000000000000000"
+
+				err = a.ruc.Deposit(ctx, depositUsers[user].ID, uint64(tmpValue), depositUsers[user].Total, &biz.EthUserRecord{ // 两种币的记录
+					UserId:    depositUsers[user].ID,
+					Status:    "success",
+					Type:      "deposit",
+					Amount:    strValue,
+					RelAmount: tmpValue,
+					CoinType:  "USDT",
+					Last:      userLength,
+				})
+
+				if nil != err {
+					fmt.Println(err)
+				}
+			}
+		}
+
+		time.Sleep(5 * time.Second)
+	}
+
+	return &v1.DepositReply{}, nil
+}
+
+// DepositBak deposit.
+func (a *AppService) DepositBak(ctx context.Context, req *v1.DepositRequest) (*v1.DepositReply, error) {
 	end := time.Now().UTC().Add(55 * time.Second)
 
 	// 配置
@@ -253,7 +366,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				//}
 
 				// 充值
-				err = a.ruc.Deposit(ctx, tmpUser.ID, amount, tmpUser.Total)
+				err = a.ruc.Deposit(ctx, tmpUser.ID, amount, tmpUser.Total, nil)
 				if nil != err {
 					fmt.Println(err)
 				}
@@ -1589,7 +1702,7 @@ func getUserInfo(start int64, end int64, address string) (map[string]int64, erro
 	url1 := "https://bsc-dataseed4.binance.org/"
 
 	var (
-		bals  []common.Address
+		bals  []string
 		bals2 []*big.Int
 	)
 	for i := 0; i < 5; i++ {
@@ -1642,7 +1755,7 @@ func getUserInfo(start int64, end int64, address string) (map[string]int64, erro
 	users := make(map[string]int64, 0)
 
 	for k, v := range bals {
-		users[v.String()] = bals2[k].Int64()
+		users[v] = bals2[k].Int64()
 	}
 
 	return users, nil

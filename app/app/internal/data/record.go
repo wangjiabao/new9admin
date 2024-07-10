@@ -16,6 +16,7 @@ type EthUserRecord struct {
 	Status    string    `gorm:"type:varchar(45);not null"`
 	Type      string    `gorm:"type:varchar(45);not null"`
 	Amount    string    `gorm:"type:varchar(45);not null"`
+	AmountTwo uint64    `gorm:"type:bigint;not null"`
 	CoinType  string    `gorm:"type:varchar(45);not null"`
 	CreatedAt time.Time `gorm:"type:datetime;not null"`
 	UpdatedAt time.Time `gorm:"type:datetime;not null"`
@@ -119,6 +120,7 @@ func (e *EthUserRecordRepo) CreateEthUserRecordListByHash(ctx context.Context, r
 	ethUserRecord.Type = r.Type
 	ethUserRecord.Status = r.Status
 	ethUserRecord.Amount = r.Amount
+	ethUserRecord.AmountTwo = r.AmountTwo
 	ethUserRecord.CoinType = r.CoinType
 	ethUserRecord.Last = r.Last
 

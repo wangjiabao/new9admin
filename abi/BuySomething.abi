@@ -1,12 +1,6 @@
 [
 	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_usdt",
-				"type": "address"
-			}
-		],
+		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
 	},
@@ -37,9 +31,14 @@
 				"internalType": "uint256",
 				"name": "num",
 				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "strAddress",
+				"type": "string"
 			}
 		],
-		"name": "buy",
+		"name": "buyBak",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -177,26 +176,26 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "account_",
+				"name": "address1_",
 				"type": "address"
 			}
 		],
-		"name": "setAccount",
+		"name": "setAddress1",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "account",
-		"outputs": [
+		"inputs": [
 			{
 				"internalType": "address",
-				"name": "",
+				"name": "address2_",
 				"type": "address"
 			}
 		],
-		"stateMutability": "view",
+		"name": "setAddress2",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -249,9 +248,9 @@
 		"name": "getUsers",
 		"outputs": [
 			{
-				"internalType": "address[]",
+				"internalType": "string[]",
 				"name": "",
-				"type": "address[]"
+				"type": "string[]"
 			}
 		],
 		"stateMutability": "view",
@@ -297,9 +296,9 @@
 		"name": "getUsersByIndex",
 		"outputs": [
 			{
-				"internalType": "address[]",
+				"internalType": "string[]",
 				"name": "",
-				"type": "address[]"
+				"type": "string[]"
 			}
 		],
 		"stateMutability": "view",
@@ -372,9 +371,9 @@
 		"name": "users",
 		"outputs": [
 			{
-				"internalType": "address",
+				"internalType": "string",
 				"name": "",
-				"type": "address"
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",

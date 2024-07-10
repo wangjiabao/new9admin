@@ -1365,19 +1365,13 @@ func (lr *LocationRepo) GetLocations2(ctx context.Context, b *biz.Pagination, us
 }
 
 // GetUserBalanceRecords .
-func (lr *LocationRepo) GetUserBalanceRecords(ctx context.Context, b *biz.Pagination, userId int64, coinType string) ([]*biz.UserBalanceRecord, error, int64) {
+func (lr *LocationRepo) GetUserBalanceRecords(ctx context.Context, b *biz.Pagination, userId int64, coinType string) ([]*biz.EthUserRecord, error, int64) {
 	var (
-		records []*UserBalanceRecord
+		records []*EthUserRecord
 		count   int64
 	)
 
-	instance := lr.data.db.Table("user_balance_record")
-	if "" != coinType {
-		instance = instance.Where("type = ? and coin_type=?", "deposit", coinType)
-	} else {
-		instance = instance.Where("type = ? and (coin_type=? or coin_type=? or coin_type = ?)", "deposit", "USDT", "HBS", "CSD")
-	}
-
+	instance := lr.data.db.Table("eth_user_record")
 	if 0 < userId {
 		instance = instance.Where("user_id=?", userId)
 	}
@@ -1391,13 +1385,12 @@ func (lr *LocationRepo) GetUserBalanceRecords(ctx context.Context, b *biz.Pagina
 		return nil, errors.New(500, "LOCATION ERROR", err.Error()), 0
 	}
 
-	res := make([]*biz.UserBalanceRecord, 0)
+	res := make([]*biz.EthUserRecord, 0)
 	for _, v := range records {
-		res = append(res, &biz.UserBalanceRecord{
+		res = append(res, &biz.EthUserRecord{
 			ID:        v.ID,
 			UserId:    v.UserId,
-			Amount:    v.Amount,
-			CoinType:  v.CoinType,
+			AmountTwo: v.AmountTwo,
 			CreatedAt: v.CreatedAt,
 		})
 	}

@@ -17,9 +17,11 @@ type EthUserRecord struct {
 	Status    string
 	Type      string
 	Amount    string
+	AmountTwo uint64
 	RelAmount int64
 	CoinType  string
 	Last      int64
+	CreatedAt time.Time
 }
 
 type Location struct {
@@ -108,7 +110,7 @@ type LocationRepo interface {
 	UpdateLocationLastLevel(ctx context.Context, id int64, lastLevel int64) error
 	GetLocations(ctx context.Context, b *Pagination, userId int64, status string) ([]*LocationNew, error, int64)
 	GetLocations2(ctx context.Context, b *Pagination, userId int64) ([]*LocationNew, error, int64)
-	GetUserBalanceRecords(ctx context.Context, b *Pagination, userId int64, coinType string) ([]*UserBalanceRecord, error, int64)
+	GetUserBalanceRecords(ctx context.Context, b *Pagination, userId int64, coinType string) ([]*EthUserRecord, error, int64)
 	GetLocationsAll(ctx context.Context, b *Pagination, userId int64) ([]*LocationNew, error, int64)
 	UpdateLocationRowAndCol(ctx context.Context, id int64) error
 	GetLocationsStopNotUpdate(ctx context.Context) ([]*Location, error)
@@ -189,7 +191,7 @@ func (ruc *RecordUseCase) GetGlobalLock(ctx context.Context) (*GlobalLock, error
 	return ruc.locationRepo.GetLockGlobalLocation(ctx)
 }
 
-func (ruc *RecordUseCase) Deposit(ctx context.Context, userId int64, amount uint64, originTotal uint64) error {
+func (ruc *RecordUseCase) Deposit(ctx context.Context, userId int64, amount uint64, originTotal uint64, eth *EthUserRecord) error {
 	// 更新user last,
 
 	// 推荐人
@@ -204,6 +206,21 @@ func (ruc *RecordUseCase) Deposit(ctx context.Context, userId int64, amount uint
 
 		// 充值记录
 		err = ruc.userBalanceRepo.InRecordNew(ctx, userId, int64(amount))
+		if nil != err {
+			return err
+		}
+
+		// 充值记录
+		_, err = ruc.ethUserRecordRepo.CreateEthUserRecordListByHash(ctx, &EthUserRecord{
+			Hash:      eth.Hash,
+			UserId:    eth.UserId,
+			Status:    eth.Status,
+			Type:      eth.Type,
+			Amount:    eth.Amount,
+			AmountTwo: amount,
+			CoinType:  eth.CoinType,
+			Last:      eth.Last,
+		})
 		if nil != err {
 			return err
 		}

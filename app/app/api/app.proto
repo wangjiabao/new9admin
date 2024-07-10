@@ -499,7 +499,7 @@ message WithdrawListRequest {
 message WithdrawListReply {
 	repeated List withdraw = 1;
 	message List {
-		string  created_at = 1;
+		string created_at = 1;
 		string amount = 2;
 		string type = 3;
 		string status=4;
@@ -542,6 +542,7 @@ message AdminRewardListReply {
 	message List {
 		string created_at = 1; // 时间
 		string amount = 2; // 数量
+		double amountB = 3; // 数量
 		string address = 5; // 地址
 		string reason = 6; // 原因 每一条替换文案 认购reason=buy，提现reason=withdraw，兑换reason=exchange，前四名reason=four，挖矿reason=location，矩阵reason=area，直推reason=recommend
 	}
@@ -599,7 +600,7 @@ message AdminUserListReply { // 用户信息
 		int64 user_id = 8;
 		string created_at = 1; // 创建时间
 		string address = 2; // 地址
-		string balanceUsdt = 3; // 可提usdt数量
+		int64 balanceUsdt = 3; // 可提usdt数量
 		string balanceDhb = 4; // isps数量
 		int64 out = 7; // 出局次数
 		int64 areaTotal = 9; // 总业绩
@@ -622,7 +623,7 @@ message RecordListReply { // 投资列表
 	message  LocationList {
 		string created_at = 1; // 时间
 		string address = 2; // 地址
-		string amount = 5;
+		uint64 amount = 5;
 	}
 
 	int64 count = 2;
@@ -678,8 +679,8 @@ message AdminWithdrawListReply {
 		string address = 5; // 地址
 		int64  id = 7;
 		string created_at = 1; // 时间
-		string amount = 2; // 到账金额
-		string relAmount = 6; // 提现金额
+		double amount = 2; // 到账金额
+		double relAmount = 6; // 提现金额
 		string type = 3; // 类型usdt是模块1提现，usdt_2是模块2提现
 		string status=4; // success成功，doing正在处理
 	}

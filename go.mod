@@ -1,6 +1,8 @@
 module dhb
 
-go 1.20
+go 1.22
+
+toolchain go1.22.3
 
 require (
 	github.com/BioforestChain/go-bfmeta-wallet-sdk v0.0.0-20240531100828-e0527ffab682
