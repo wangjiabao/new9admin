@@ -734,17 +734,17 @@ message AdminAllRequest {
 
 message AdminAllReply {
 	int64 totalUser = 2; // 激活人数
-	string todayLocation = 4; // 今日入金u数量
-	string allLocation = 5; // 总入金u数量
+	int64 todayLocation = 4; // 今日入金u数量
+	int64 allLocation = 5; // 总入金u数量
 	string todayLocationReward = 1; // 今日静态释放
 	string todayRecommendReward = 3; // 今日动态释放
 	string todayRecommendLocationReward = 8; // 今日直推秒结释放
 	string todayAreaReward = 16; // 今日矩阵释放
 	string todayFourReward = 15; // 今日前四名分红u数量
 	string totalIsps= 6; // 全网ISPS数量
-	string totalUsdt = 7; // 全网可提U数量
-	string todayWithdrawUsdt = 18; // 今日提U数量
-	string totalWithdrawUsdt = 19; // 总提U数量
+	double totalUsdt = 7; // 全网可提U数量
+	double todayWithdrawUsdt = 18; // 今日提U数量
+	double totalWithdrawUsdt = 19; // 总提U数量
 }
 
 message AdminUserRecommendRequest {

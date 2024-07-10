@@ -2089,17 +2089,17 @@ func (uuc *UserUseCase) AdminAll(ctx context.Context, req *v1.AdminAllRequest) (
 
 	return &v1.AdminAllReply{
 		TotalUser:     userLocationCount,
-		TodayLocation: fmt.Sprintf("%.2f", float64(userBalanceRecordUsdtTotalToday)/float64(100000)),
-		AllLocation:   fmt.Sprintf("%.2f", float64(userBalanceRecordUsdtTotal)/float64(100000)),
+		TodayLocation: userBalanceRecordUsdtTotalToday,
+		AllLocation:   userBalanceRecordUsdtTotal,
 		//TodayLocationReward:          fmt.Sprintf("%.2f", float64(userRewardLocationTotal)/float64(100000)),
 		//TodayRecommendReward:         fmt.Sprintf("%.2f", float64(userRewardRecommendTotal)/float64(100000)),
 		//TodayRecommendLocationReward: fmt.Sprintf("%.2f", float64(userRewardRecommendLocationTotal)/float64(100000)),
 		//TodayAreaReward:              fmt.Sprintf("%.2f", float64(userRewardAreaTotal)/float64(100000)),
 		//TodayFourReward:              fmt.Sprintf("%.2f", float64(userRewardFourTotal)/float64(100000)),
 		//TotalIsps:                    fmt.Sprintf("%.2f", float64(userBalanceDhbTotal)/float64(100000)),
-		TotalUsdt:         fmt.Sprintf("%.2f", float64(userBalanceUsdtTotal)/float64(100000)), // 可提biw
-		TodayWithdrawUsdt: fmt.Sprintf("%.2f", float64(userWithdrawUsdtTotalToday)/float64(100000)),
-		TotalWithdrawUsdt: fmt.Sprintf("%.2f", float64(userWithdrawUsdtTotal)/float64(100000)),
+		TotalUsdt:         userBalanceUsdtTotal, // 可提biw
+		TodayWithdrawUsdt: userWithdrawUsdtTotalToday,
+		TotalWithdrawUsdt: userWithdrawUsdtTotal,
 	}, nil
 	return nil, nil
 }

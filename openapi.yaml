@@ -1381,11 +1381,14 @@ components:
                 totalIsps:
                     type: string
                 totalUsdt:
-                    type: string
+                    type: number
+                    format: double
                 todayWithdrawUsdt:
-                    type: string
+                    type: number
+                    format: double
                 totalWithdrawUsdt:
-                    type: string
+                    type: number
+                    format: double
         AdminAreaLevelUpdateReply:
             type: object
             properties: {}
