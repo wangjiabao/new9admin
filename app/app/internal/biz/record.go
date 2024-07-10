@@ -191,7 +191,7 @@ func (ruc *RecordUseCase) GetGlobalLock(ctx context.Context) (*GlobalLock, error
 	return ruc.locationRepo.GetLockGlobalLocation(ctx)
 }
 
-func (ruc *RecordUseCase) Deposit(ctx context.Context, userId int64, amount uint64, originTotal uint64, eth *EthUserRecord) error {
+func (ruc *RecordUseCase) Deposit(ctx context.Context, userId int64, address string, amount uint64, originTotal uint64, eth *EthUserRecord) error {
 	// 更新user last,
 
 	// 推荐人
@@ -205,7 +205,7 @@ func (ruc *RecordUseCase) Deposit(ctx context.Context, userId int64, amount uint
 		}
 
 		// 充值记录
-		err = ruc.userBalanceRepo.InRecordNew(ctx, userId, int64(amount))
+		err = ruc.userBalanceRepo.InRecordNew(ctx, userId, address, int64(amount))
 		if nil != err {
 			return err
 		}

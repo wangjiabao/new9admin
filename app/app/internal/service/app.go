@@ -146,7 +146,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				tmpValue = v
 				strValue = strconv.FormatInt(v, 10) + "000000000000000000"
 
-				err = a.ruc.Deposit(ctx, depositUsers[user].ID, uint64(tmpValue), depositUsers[user].Total, &biz.EthUserRecord{ // 两种币的记录
+				err = a.ruc.Deposit(ctx, depositUsers[user].ID, depositUsers[user].Address, uint64(tmpValue), depositUsers[user].Total, &biz.EthUserRecord{ // 两种币的记录
 					UserId:    depositUsers[user].ID,
 					Status:    "success",
 					Type:      "deposit",
@@ -366,7 +366,7 @@ func (a *AppService) DepositBak(ctx context.Context, req *v1.DepositRequest) (*v
 				//}
 
 				// 充值
-				err = a.ruc.Deposit(ctx, tmpUser.ID, amount, tmpUser.Total, nil)
+				err = a.ruc.Deposit(ctx, tmpUser.ID, "", amount, tmpUser.Total, nil)
 				if nil != err {
 					fmt.Println(err)
 				}

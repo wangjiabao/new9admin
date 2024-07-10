@@ -148,6 +148,7 @@ type Reward struct {
 	Reason           string    `gorm:"type:varchar(45);not null"`
 	ReasonLocationId int64     `gorm:"type:int;not null"`
 	LocationType     string    `gorm:"type:varchar(45);not null"`
+	Address          string    `gorm:"type:varchar(100);not null"`
 	CreatedAt        time.Time `gorm:"type:datetime;not null"`
 	UpdatedAt        time.Time `gorm:"type:datetime;not null"`
 	AmountNew        float64   `gorm:"type:decimal(65,20);not null"`
@@ -2245,11 +2246,12 @@ func (ub *UserBalanceRepo) ExchangeBiw(ctx context.Context, userId int64, curren
 }
 
 // InRecordNew .
-func (ub *UserBalanceRepo) InRecordNew(ctx context.Context, userId int64, amount int64) error {
+func (ub *UserBalanceRepo) InRecordNew(ctx context.Context, userId int64, address string, amount int64) error {
 	var err error
 	var reward Reward
 	reward.UserId = userId
 	reward.Amount = amount
+	reward.Address = address
 	reward.Type = "buy"   // 本次分红的行为类型
 	reward.Reason = "buy" // 给我分红的理由
 	err = ub.data.DB(ctx).Table("reward").Create(&reward).Error

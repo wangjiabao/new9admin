@@ -206,7 +206,7 @@ type UserBalanceRepo interface {
 	LocationRewardBiw(ctx context.Context, userId int64, rewardAmount int64, stop string, currentMaxNew int64, feeRate int64) (int64, error)
 	RecommendLocationRewardBiw(ctx context.Context, userId int64, rewardAmount int64, recommendNum int64, stop string, tmpMaxNew int64, feeRate int64) (int64, error)
 	PriceChange(ctx context.Context, userId int64, rewardAmount int64, up string) error
-	InRecordNew(ctx context.Context, userId int64, amount int64) error
+	InRecordNew(ctx context.Context, userId int64, address string, amount int64) error
 	FirstRewardBiw(ctx context.Context, userId int64, amount float64) error
 	SecondRewardBiw(ctx context.Context, userId int64, amount float64, rewardType string) error
 	AreaRewardBiw(ctx context.Context, userId int64, rewardAmount int64, tmpCurrentReward int64, areaType int64, stop string, tmpMaxNew int64, feeRate int64) (int64, error)
@@ -1662,6 +1662,7 @@ func (uuc *UserUseCase) AdminPasswordUpdate(ctx context.Context, req *v1.AdminPa
 
 func (uuc *UserUseCase) AdminVipUpdate(ctx context.Context, req *v1.AdminVipUpdateRequest) (*v1.AdminVipUpdateReply, error) {
 	var (
+		user  *User
 		err   error
 		total uint64
 	)
@@ -1680,6 +1681,11 @@ func (uuc *UserUseCase) AdminVipUpdate(ctx context.Context, req *v1.AdminVipUpda
 		return nil, nil
 	}
 
+	user, err = uuc.repo.GetUserById(ctx, req.SendBody.UserId)
+	if nil != err {
+		return nil, err
+	}
+
 	// 推荐人
 	if err = uuc.tx.ExecTx(ctx, func(ctx context.Context) error { // 事务
 		err = uuc.uiRepo.UpdateUserNew(ctx, req.SendBody.UserId, total)
@@ -1688,7 +1694,7 @@ func (uuc *UserUseCase) AdminVipUpdate(ctx context.Context, req *v1.AdminVipUpda
 		}
 
 		// 充值记录
-		err = uuc.ubRepo.InRecordNew(ctx, req.SendBody.UserId, int64(total))
+		err = uuc.ubRepo.InRecordNew(ctx, req.SendBody.UserId, user.Address, int64(total))
 		if nil != err {
 			return err
 		}
