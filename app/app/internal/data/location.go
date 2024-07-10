@@ -202,7 +202,7 @@ func (lr *LocationRepo) GetBuyYesterday(ctx context.Context, day int) ([]*biz.Re
 	endDate := now.AddDate(0, 0, 1)
 	todayStart := time.Date(startDate.Year(), startDate.Month(), startDate.Day(), 16, 0, 0, 0, time.UTC)
 	todayEnd := time.Date(endDate.Year(), endDate.Month(), endDate.Day(), 16, 0, 0, 0, time.UTC)
-
+	fmt.Println(todayStart, todayEnd)
 	instance = instance.Where("created_at>=?", todayStart)
 	instance = instance.Where("created_at<?", todayEnd)
 	instance = instance.Where("reason=?", "buy")
