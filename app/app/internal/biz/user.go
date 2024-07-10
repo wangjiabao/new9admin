@@ -2597,6 +2597,10 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 
 	fourUsers := make([]*User, 0)
 	fiveUsers := make([]*User, 0)
+
+	var (
+		amountSecond float64
+	)
 	for _, vUsers := range users {
 		// 定义阈值数组
 		var (
@@ -2621,12 +2625,15 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 			} else if 5000 <= number {
 				number -= 5000
 				amount += three
+				amountSecond += threeTwo
 			} else if 3000 <= number {
 				number -= 3000
 				amount += two
+				amountSecond += twoTwo
 			} else if 1000 <= number {
 				number -= 1000
 				amount += one
+				amountSecond += oneTwo
 			} else {
 				break
 			}
@@ -2652,35 +2659,11 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 	// 查询昨日入金
 	// 全网
 	var (
-		amountSecond float64
-		perFour      float64
-		perFive      float64
-		day          = -1
-		rewards      []*Reward
+		perFour float64
+		perFive float64
 	)
 
-	if 1 == req.Day {
-		day = 0
-	}
-
-	if 0 >= today {
-		rewards, err = uuc.locationRepo.GetBuyYesterday(ctx, day)
-		for _, reward := range rewards {
-			if 10000 <= reward.Amount {
-				continue
-			}
-
-			if 5000 <= reward.Amount {
-				amountSecond += threeTwo
-			} else if 3000 <= reward.Amount {
-				amountSecond += twoTwo
-			} else if 1000 <= reward.Amount {
-				amountSecond += oneTwo
-			} else {
-				continue
-			}
-		}
-	} else {
+	if 0 < today {
 		amountSecond = today
 	}
 
