@@ -1451,176 +1451,21 @@ func (uuc *UserUseCase) AdminConfigUpdate(ctx context.Context, req *v1.AdminConf
 
 	res := &v1.AdminConfigUpdateReply{}
 
-	var (
-		configs []*Config
-		bPrice  int64
-		//bPriceBase   int64
-		originBprice int64
-		//feeRate      int64
-		//users        []*User
-	)
-	configs, _ = uuc.configRepo.GetConfigByKeys(ctx, "b_price", "b_price_base", "exchange_rate")
-	if nil != configs {
-		for _, vConfig := range configs {
-			if "b_price" == vConfig.KeyName {
-				originBprice, _ = strconv.ParseInt(vConfig.Value, 10, 64)
-			}
-			//else if "b_price_base" == vConfig.KeyName {
-			//	bPriceBase, _ = strconv.ParseInt(vConfig.Value, 10, 64)
-			//} else if "exchange_rate" == vConfig.KeyName {
-			//	feeRate, _ = strconv.ParseInt(vConfig.Value, 10, 64)
-			//}
-		}
-	}
-
-	bPrice, _ = strconv.ParseInt(req.SendBody.Value, 10, 64)
+	//configs, _ = uuc.configRepo.GetConfigByKeys(ctx, "b_price", "b_price_base", "exchange_rate")
+	//if nil != configs {
+	//	for _, vConfig := range configs {
+	//		if "b_price" == vConfig.KeyName {
+	//			originBprice, _ = strconv.ParseInt(vConfig.Value, 10, 64)
+	//		}
+	//		//else if "b_price_base" == vConfig.KeyName {
+	//		//	bPriceBase, _ = strconv.ParseInt(vConfig.Value, 10, 64)
+	//		//} else if "exchange_rate" == vConfig.KeyName {
+	//		//	feeRate, _ = strconv.ParseInt(vConfig.Value, 10, 64)
+	//		//}
+	//	}
+	//}
 
 	if err = uuc.tx.ExecTx(ctx, func(ctx context.Context) error { // 事务
-
-		if 1 == req.SendBody.Id {
-			//
-			//if 0 >= bPrice || 0 >= bPriceBase {
-			//	return nil, err
-			//}
-			//
-			//users, err = uuc.repo.GetAllUsers(ctx)
-			//if nil != err {
-			//	return nil, err
-			//}
-			//if nil == users {
-			//	return nil, nil
-			//}
-			//for _, v := range users {
-			//	var (
-			//		runningLocation *LocationNew
-			//		userBalance     *UserBalance
-			//	)
-			//	runningLocation, err = uuc.locationRepo.GetMyLocationLastRunning(ctx, v.ID)
-			//	if nil != err {
-			//		fmt.Println(err)
-			//		continue
-			//	}
-			//
-			//	if nil == runningLocation {
-			//		continue
-			//	}
-			//
-			//	userBalance, err = uuc.ubRepo.GetUserBalance(ctx, v.ID)
-			//	if nil != err {
-			//		fmt.Println(err)
-			//		continue
-			//	}
-			//
-			//	if bPrice > originBprice {
-			//		// 涨价
-			//		tmp := userBalance.BalanceDhb*100/bPriceBase*bPrice - userBalance.BalanceDhb*100/bPriceBase*originBprice
-			//		tmp = tmp / 100
-			//		if tmp > 0 {
-			//
-			//			if err = uuc.tx.ExecTx(ctx, func(ctx context.Context) error { // 事务
-			//				runningLocation.Status = "running"
-			//				if runningLocation.Current+tmp >= runningLocation.CurrentMax { // 占位分红人分满停止
-			//					runningLocation.Status = "stop"
-			//					runningLocation.StopDate = time.Now().UTC().Add(8 * time.Hour)
-			//
-			//					tmp = runningLocation.CurrentMax - runningLocation.Current
-			//				}
-			//
-			//				if 0 < tmp {
-			//					var tmpMaxNew int64
-			//					if runningLocation.CurrentMax >= runningLocation.CurrentMaxNew {
-			//						tmpMaxNew = runningLocation.CurrentMax - runningLocation.CurrentMaxNew
-			//					}
-			//					err = uuc.locationRepo.UpdateLocationNewNew(ctx, runningLocation.ID, runningLocation.Status, tmp, tmpMaxNew, 0, runningLocation.StopDate) // 分红占位数据修改
-			//					if nil != err {
-			//						return err
-			//					}
-			//
-			//					err = uuc.ubRepo.PriceChange(ctx, runningLocation.UserId, tmp, "up")
-			//					if nil != err {
-			//						return err
-			//					}
-			//				}
-			//
-			//				// 业绩减掉
-			//				if "stop" == runningLocation.Status {
-			//					if runningLocation.CurrentMax >= runningLocation.CurrentMaxNew {
-			//						_, err = uuc.ubRepo.ExchangeBiw(ctx, v.ID, runningLocation.CurrentMax-runningLocation.CurrentMaxNew, feeRate)
-			//						if nil != err {
-			//							return err
-			//						}
-			//					}
-			//
-			//					tmpTop := runningLocation.Top
-			//					tmpTopNum := runningLocation.TopNum
-			//					for j := 0; j < 10000 && 0 < tmpTop && 0 < tmpTopNum; j++ {
-			//						err = uuc.locationRepo.UpdateLocationNewTotalSub(ctx, tmpTop, tmpTopNum, runningLocation.Usdt/100000)
-			//						if nil != err {
-			//							return err
-			//						}
-			//
-			//						var (
-			//							currentLocation *LocationNew
-			//						)
-			//						currentLocation, err = uuc.locationRepo.GetLocationById(ctx, tmpTop)
-			//						if nil != err {
-			//							return err
-			//						}
-			//
-			//						if nil != currentLocation && 0 < currentLocation.Top {
-			//							tmpTop = currentLocation.Top
-			//							tmpTopNum = currentLocation.TopNum
-			//							continue
-			//						}
-			//
-			//						break
-			//					}
-			//				}
-			//
-			//				return nil
-			//			}); nil != err {
-			//				fmt.Println("err price change", err, runningLocation)
-			//				continue
-			//			}
-			//		}
-
-			//	} else if bPrice < originBprice {
-			//		// 降价
-			//		tmp := userBalance.BalanceDhb*100/bPriceBase*originBprice - userBalance.BalanceDhb*100/bPriceBase*bPrice
-			//		tmp = tmp / 100
-			//		if tmp > 0 {
-			//			if runningLocation.Current <= tmp { // 占位分红人分满停止
-			//				tmp = runningLocation.Current
-			//			}
-			//
-			//			if err = uuc.tx.ExecTx(ctx, func(ctx context.Context) error { // 事务
-			//				if 0 < tmp {
-			//					err = uuc.locationRepo.UpdateLocationNewNewNew(ctx, runningLocation.ID, tmp) // 分红占位数据修改
-			//					if nil != err {
-			//						return err
-			//					}
-			//
-			//					err = uuc.ubRepo.PriceChange(ctx, runningLocation.UserId, tmp, "down")
-			//					if nil != err {
-			//						return err
-			//					}
-			//				}
-			//
-			//				return nil
-			//			}); nil != err {
-			//				fmt.Println("err price change", err, runningLocation)
-			//				continue
-			//			}
-			//		}
-			//	}
-			//}
-
-			err = uuc.configRepo.CreatePriceChangeConfig(ctx, originBprice, bPrice)
-			if nil != err {
-				return err
-			}
-		}
-
 		_, err = uuc.configRepo.UpdateConfig(ctx, req.SendBody.Id, req.SendBody.Value)
 		if nil != err {
 			return err
