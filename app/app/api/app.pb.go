@@ -5756,17 +5756,17 @@ type AdminUserListReply_UserList struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	UserId           int64  `protobuf:"varint,8,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	CreatedAt        string `protobuf:"bytes,1,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"` // 创建时间
-	Address          string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`                      // 地址
-	BalanceUsdt      int64  `protobuf:"varint,3,opt,name=balanceUsdt,proto3" json:"balanceUsdt,omitempty"`             // 可提usdt数量
-	BalanceDhb       string `protobuf:"bytes,4,opt,name=balanceDhb,proto3" json:"balanceDhb,omitempty"`                // isps数量
-	Out              int64  `protobuf:"varint,7,opt,name=out,proto3" json:"out,omitempty"`                             // 出局次数
-	AreaTotal        int64  `protobuf:"varint,9,opt,name=areaTotal,proto3" json:"areaTotal,omitempty"`                 // 总业绩
-	AreaMin          int64  `protobuf:"varint,10,opt,name=areaMin,proto3" json:"areaMin,omitempty"`                    // 小区
-	AreaMax          int64  `protobuf:"varint,11,opt,name=areaMax,proto3" json:"areaMax,omitempty"`                    // 大区
-	Vip              int64  `protobuf:"varint,5,opt,name=vip,proto3" json:"vip,omitempty"`                             // 会员等级
-	HistoryRecommend int64  `protobuf:"varint,6,opt,name=historyRecommend,proto3" json:"historyRecommend,omitempty"`   // 历史推荐人数
+	UserId           int64   `protobuf:"varint,8,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	CreatedAt        string  `protobuf:"bytes,1,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"` // 创建时间
+	Address          string  `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`                      // 地址
+	BalanceUsdt      int64   `protobuf:"varint,3,opt,name=balanceUsdt,proto3" json:"balanceUsdt,omitempty"`             // 可提usdt数量
+	BalanceDhb       float64 `protobuf:"fixed64,4,opt,name=balanceDhb,proto3" json:"balanceDhb,omitempty"`              // isps数量
+	Out              int64   `protobuf:"varint,7,opt,name=out,proto3" json:"out,omitempty"`                             // 出局次数
+	AreaTotal        int64   `protobuf:"varint,9,opt,name=areaTotal,proto3" json:"areaTotal,omitempty"`                 // 总业绩
+	AreaMin          int64   `protobuf:"varint,10,opt,name=areaMin,proto3" json:"areaMin,omitempty"`                    // 小区
+	AreaMax          int64   `protobuf:"varint,11,opt,name=areaMax,proto3" json:"areaMax,omitempty"`                    // 大区
+	Vip              int64   `protobuf:"varint,5,opt,name=vip,proto3" json:"vip,omitempty"`                             // 会员等级
+	HistoryRecommend int64   `protobuf:"varint,6,opt,name=historyRecommend,proto3" json:"historyRecommend,omitempty"`   // 历史推荐人数
 }
 
 func (x *AdminUserListReply_UserList) Reset() {
@@ -5829,11 +5829,11 @@ func (x *AdminUserListReply_UserList) GetBalanceUsdt() int64 {
 	return 0
 }
 
-func (x *AdminUserListReply_UserList) GetBalanceDhb() string {
+func (x *AdminUserListReply_UserList) GetBalanceDhb() float64 {
 	if x != nil {
 		return x.BalanceDhb
 	}
-	return ""
+	return 0
 }
 
 func (x *AdminUserListReply_UserList) GetOut() int64 {
@@ -7673,7 +7673,7 @@ var file_app_app_api_app_proto_rawDesc = []byte{
 	0x0a, 0x0b, 0x62, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x55, 0x73, 0x64, 0x74, 0x18, 0x03, 0x20,
 	0x01, 0x28, 0x03, 0x52, 0x0b, 0x62, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x55, 0x73, 0x64, 0x74,
 	0x12, 0x1e, 0x0a, 0x0a, 0x62, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x44, 0x68, 0x62, 0x18, 0x04,
-	0x20, 0x01, 0x28, 0x09, 0x52, 0x0a, 0x62, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x44, 0x68, 0x62,
+	0x20, 0x01, 0x28, 0x01, 0x52, 0x0a, 0x62, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x44, 0x68, 0x62,
 	0x12, 0x10, 0x0a, 0x03, 0x6f, 0x75, 0x74, 0x18, 0x07, 0x20, 0x01, 0x28, 0x03, 0x52, 0x03, 0x6f,
 	0x75, 0x74, 0x12, 0x1c, 0x0a, 0x09, 0x61, 0x72, 0x65, 0x61, 0x54, 0x6f, 0x74, 0x61, 0x6c, 0x18,
 	0x09, 0x20, 0x01, 0x28, 0x03, 0x52, 0x09, 0x61, 0x72, 0x65, 0x61, 0x54, 0x6f, 0x74, 0x61, 0x6c,

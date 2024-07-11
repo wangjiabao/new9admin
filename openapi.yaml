@@ -1688,7 +1688,8 @@ components:
                 balanceUsdt:
                     type: string
                 balanceDhb:
-                    type: string
+                    type: number
+                    format: double
                 out:
                     type: string
                 areaTotal:

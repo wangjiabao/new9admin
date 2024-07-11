@@ -601,7 +601,7 @@ message AdminUserListReply { // 用户信息
 		string created_at = 1; // 创建时间
 		string address = 2; // 地址
 		int64 balanceUsdt = 3; // 可提usdt数量
-		string balanceDhb = 4; // isps数量
+		double balanceDhb = 4; // isps数量
 		int64 out = 7; // 出局次数
 		int64 areaTotal = 9; // 总业绩
 		int64 areaMin = 10; // 小区

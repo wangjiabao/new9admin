@@ -115,6 +115,13 @@ type UserBalance struct {
 	BalanceDhb  int64
 }
 
+type UserBalanceNew struct {
+	ID          int64
+	UserId      int64
+	BalanceUsdt int64
+	BalanceDhb  float64
+}
+
 type Withdraw struct {
 	ID              int64
 	UserId          int64
@@ -242,7 +249,7 @@ type UserBalanceRepo interface {
 	GetUserRewardByUserId(ctx context.Context, userId int64) ([]*Reward, error)
 	GetUserRewards(ctx context.Context, b *Pagination, userId int64, reason string) ([]*Reward, error, int64)
 	GetUserRewardsLastMonthFee(ctx context.Context) ([]*Reward, error)
-	GetUserBalanceByUserIds(ctx context.Context, userIds ...int64) (map[int64]*UserBalance, error)
+	GetUserBalanceByUserIds(ctx context.Context, userIds ...int64) (map[int64]*UserBalanceNew, error)
 	GetUserBalanceLockByUserIds(ctx context.Context, userIds ...int64) (map[int64]*UserBalance, error)
 	GetUserBalanceUsdtTotal(ctx context.Context) (float64, error)
 	GetUserBalanceLockUsdtTotal(ctx context.Context) (int64, error)
@@ -572,7 +579,7 @@ func (uuc *UserUseCase) AdminUserList(ctx context.Context, req *v1.AdminUserList
 	var (
 		users        []*User
 		userIds      []int64
-		userBalances map[int64]*UserBalance
+		userBalances map[int64]*UserBalanceNew
 		count        int64
 		err          error
 	)
@@ -724,7 +731,7 @@ func (uuc *UserUseCase) AdminUserList(ctx context.Context, req *v1.AdminUserList
 			CreatedAt:        vUsers.CreatedAt.Add(8 * time.Hour).Format("2006-01-02 15:04:05"),
 			Address:          vUsers.Address,
 			BalanceUsdt:      int64(vUsers.Total),
-			BalanceDhb:       fmt.Sprintf("%.2f", float64(userBalances[vUsers.ID].BalanceDhb)/float64(100000)),
+			BalanceDhb:       userBalances[vUsers.ID].BalanceDhb,
 			Vip:              0,
 			HistoryRecommend: int64(len(myRecommendUserIds)),
 		})

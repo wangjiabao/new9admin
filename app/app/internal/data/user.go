@@ -4125,9 +4125,9 @@ func (uc *UserCurrentMonthRecommendRepo) CreateUserCurrentMonthRecommend(ctx con
 }
 
 // GetUserBalanceByUserIds .
-func (ub UserBalanceRepo) GetUserBalanceByUserIds(ctx context.Context, userIds ...int64) (map[int64]*biz.UserBalance, error) {
+func (ub UserBalanceRepo) GetUserBalanceByUserIds(ctx context.Context, userIds ...int64) (map[int64]*biz.UserBalanceNew, error) {
 	var userBalances []*UserBalance
-	res := make(map[int64]*biz.UserBalance)
+	res := make(map[int64]*biz.UserBalanceNew)
 	if err := ub.data.db.Where("user_id IN (?)", userIds).Table("user_balance").Find(&userBalances).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return res, errors.NotFound("USER_BALANCE_NOT_FOUND", "user balance not found")
@@ -4137,10 +4137,11 @@ func (ub UserBalanceRepo) GetUserBalanceByUserIds(ctx context.Context, userIds .
 	}
 
 	for _, userBalance := range userBalances {
-		res[userBalance.UserId] = &biz.UserBalance{
+		res[userBalance.UserId] = &biz.UserBalanceNew{
 			ID:          userBalance.ID,
 			UserId:      userBalance.UserId,
 			BalanceUsdt: userBalance.BalanceUsdt,
+			BalanceDhb:  userBalance.BalanceDhb,
 		}
 	}
 
