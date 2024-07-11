@@ -708,14 +708,14 @@ func (uuc *UserUseCase) AdminUserList(ctx context.Context, req *v1.AdminUserList
 			for _, vMyRecommendUsers := range myRecommendUsers {
 
 				var (
-					tmpMyRecommendLocations []*Location
+					tmpMyRecommendLocations *User
 				)
-				tmpMyRecommendLocations, err = uuc.locationRepo.GetLocationsByUserId(ctx, vMyRecommendUsers.UserId)
+				tmpMyRecommendLocations, err = uuc.repo.GetUserById(ctx, vMyRecommendUsers.UserId)
 				if nil != err {
 					return nil, err
 				}
 
-				if 0 < len(tmpMyRecommendLocations) {
+				if 0 < tmpMyRecommendLocations.Total {
 					myRecommendUserIds = append(myRecommendUserIds, vMyRecommendUsers.UserId)
 				}
 
