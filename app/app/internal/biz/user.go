@@ -206,7 +206,7 @@ type UserBalanceRepo interface {
 	LocationRewardBiw(ctx context.Context, userId int64, rewardAmount int64, stop string, currentMaxNew int64, feeRate int64) (int64, error)
 	RecommendLocationRewardBiw(ctx context.Context, userId int64, rewardAmount int64, recommendNum int64, stop string, tmpMaxNew int64, feeRate int64) (int64, error)
 	PriceChange(ctx context.Context, userId int64, rewardAmount int64, up string) error
-	InRecordNew(ctx context.Context, userId int64, address string, amount int64) error
+	InRecordNew(ctx context.Context, userId int64, address string, amount int64, originTotal int64) error
 	FirstRewardBiw(ctx context.Context, userId int64, amount float64) error
 	SecondRewardBiw(ctx context.Context, userId int64, amount float64, rewardType string) error
 	AreaRewardBiw(ctx context.Context, userId int64, rewardAmount int64, tmpCurrentReward int64, areaType int64, stop string, tmpMaxNew int64, feeRate int64) (int64, error)
@@ -331,7 +331,7 @@ type UserInfoRepo interface {
 	CreateUserInfo(ctx context.Context, u *User) (*UserInfo, error)
 	GetUserInfoByUserId(ctx context.Context, userId int64) (*UserInfo, error)
 	UpdateUserPassword(ctx context.Context, userId int64, password string) (*User, error)
-	UpdateUser(ctx context.Context, userId int64, amount uint64, originTotal uint64) error
+	UpdateUser(ctx context.Context, userId int64, amount uint64, originTotal uint64, strUpdate string) error
 	UpdateUserNew(ctx context.Context, userId int64, total uint64) error
 	UpdateUserInfo(ctx context.Context, u *UserInfo) (*UserInfo, error)
 	UpdateUserInfo2(ctx context.Context, u *UserInfo) (*UserInfo, error)
@@ -1507,21 +1507,27 @@ func (uuc *UserUseCase) AdminPasswordUpdate(ctx context.Context, req *v1.AdminPa
 
 func (uuc *UserUseCase) AdminVipUpdate(ctx context.Context, req *v1.AdminVipUpdateRequest) (*v1.AdminVipUpdateReply, error) {
 	var (
-		user  *User
-		err   error
-		total uint64
+		user      *User
+		err       error
+		strUpdate string
+		total     uint64
 	)
 
 	if 1000 == req.SendBody.Vip {
 		total = 1000
+		strUpdate = "total_a"
 	} else if 3000 == req.SendBody.Vip {
 		total = 3000
+		strUpdate = "total_b"
 	} else if 5000 == req.SendBody.Vip {
 		total = 5000
+		strUpdate = "total_c"
 	} else if 15000 == req.SendBody.Vip {
 		total = 15000
+		strUpdate = "total_d"
 	} else if 30000 == req.SendBody.Vip {
 		total = 30000
+		strUpdate = "total_f"
 	} else {
 		return nil, nil
 	}
@@ -1533,20 +1539,20 @@ func (uuc *UserUseCase) AdminVipUpdate(ctx context.Context, req *v1.AdminVipUpda
 
 	// 推荐人
 	if err = uuc.tx.ExecTx(ctx, func(ctx context.Context) error { // 事务
-		err = uuc.uiRepo.UpdateUserNew(ctx, req.SendBody.UserId, total)
+		err = uuc.uiRepo.UpdateUser(ctx, req.SendBody.UserId, total, user.Total, strUpdate)
 		if nil != err {
 			return err
 		}
 
 		// 充值记录
-		err = uuc.ubRepo.InRecordNew(ctx, req.SendBody.UserId, user.Address, int64(total))
+		err = uuc.ubRepo.InRecordNew(ctx, req.SendBody.UserId, user.Address, int64(total), int64(user.Total))
 		if nil != err {
 			return err
 		}
 
 		return nil
 	}); nil != err {
-		fmt.Println(err, "错误投资3", req.SendBody.UserId, total)
+		fmt.Println(err, "错误投资3", req.SendBody.UserId, int64(total), int64(user.Total))
 		return nil, err
 	}
 

@@ -196,16 +196,32 @@ func (ruc *RecordUseCase) Deposit(ctx context.Context, userId int64, address str
 
 	// 推荐人
 	var (
-		err error
+		strUpdate string
+		err       error
 	)
+
+	if 30000 <= amount {
+		strUpdate = "total_f"
+	} else if 15000 <= amount {
+		strUpdate = "total_d"
+	} else if 5000 <= amount {
+		strUpdate = "total_c"
+	} else if 3000 <= amount {
+		strUpdate = "total_b"
+	} else if 1000 <= amount {
+		strUpdate = "total_a"
+	} else {
+		return nil
+	}
+
 	if err = ruc.tx.ExecTx(ctx, func(ctx context.Context) error { // 事务
-		err = ruc.userInfoRepo.UpdateUser(ctx, userId, amount, originTotal)
+		err = ruc.userInfoRepo.UpdateUser(ctx, userId, amount, originTotal, strUpdate)
 		if nil != err {
 			return err
 		}
 
 		// 充值记录
-		err = ruc.userBalanceRepo.InRecordNew(ctx, userId, address, int64(amount))
+		err = ruc.userBalanceRepo.InRecordNew(ctx, userId, address, int64(amount), int64(originTotal))
 		if nil != err {
 			return err
 		}

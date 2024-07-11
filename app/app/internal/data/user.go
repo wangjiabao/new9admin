@@ -349,6 +349,7 @@ func (u *UserRepo) GetUserById(ctx context.Context, Id int64) (*biz.User, error)
 	return &biz.User{
 		ID:      user.ID,
 		Address: user.Address,
+		Total:   user.Total,
 	}, nil
 }
 
@@ -780,9 +781,9 @@ func (ui *UserInfoRepo) UpdateUserPassword(ctx context.Context, userId int64, pa
 }
 
 // UpdateUser .
-func (ui *UserInfoRepo) UpdateUser(ctx context.Context, userId int64, amount uint64, originTotal uint64) error {
+func (ui *UserInfoRepo) UpdateUser(ctx context.Context, userId int64, amount uint64, originTotal uint64, strUpdate string) error {
 	res := ui.data.DB(ctx).Table("user").Where("id=? and total=?", userId, originTotal).
-		Updates(map[string]interface{}{"total": gorm.Expr("total + ?", amount)})
+		Updates(map[string]interface{}{"total": gorm.Expr("total + ?", amount), strUpdate: gorm.Expr(strUpdate+" + ?", 1)})
 	if res.Error != nil {
 		return errors.New(500, "UPDATE_USER_ERROR", "用户信息修改失败")
 	}
@@ -2246,11 +2247,12 @@ func (ub *UserBalanceRepo) ExchangeBiw(ctx context.Context, userId int64, curren
 }
 
 // InRecordNew .
-func (ub *UserBalanceRepo) InRecordNew(ctx context.Context, userId int64, address string, amount int64) error {
+func (ub *UserBalanceRepo) InRecordNew(ctx context.Context, userId int64, address string, amount int64, originTotal int64) error {
 	var err error
 	var reward Reward
 	reward.UserId = userId
 	reward.Amount = amount
+	reward.AmountB = amount + originTotal
 	reward.Address = address
 	reward.Type = "buy"   // 本次分红的行为类型
 	reward.Reason = "buy" // 给我分红的理由
