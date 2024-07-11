@@ -6076,6 +6076,12 @@ func (m *AdminAllReply) validate(all bool) error {
 
 	// no validation rules for TotalWithdrawUsdt
 
+	// no validation rules for TotalFour
+
+	// no validation rules for TotalFive
+
+	// no validation rules for Total
+
 	if len(errors) > 0 {
 		return AdminAllReplyMultiError(errors)
 	}

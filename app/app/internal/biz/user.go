@@ -23,6 +23,11 @@ type User struct {
 	PrivateKey string
 	Last       uint64
 	Total      uint64
+	TotalA     int64
+	TotalB     int64
+	TotalC     int64
+	TotalD     int64
+	TotalF     int64
 	CreatedAt  time.Time
 }
 
@@ -2045,6 +2050,156 @@ func (uuc *UserUseCase) AdminAll(ctx context.Context, req *v1.AdminAllRequest) (
 		//userRewardFourTotal              int64
 		//userRewardRecommendLocationTotal int64
 	)
+
+	var (
+		configs   []*Config
+		one       float64
+		two       float64
+		three     float64
+		four      float64
+		five      float64
+		oneTwo    float64
+		twoTwo    float64
+		threeTwo  float64
+		fiveThree float64
+		fourThree float64
+		err       error
+	)
+
+	configs, err = uuc.configRepo.GetConfigByKeys(ctx,
+		"one", "two", "three", "four", "five",
+		"one_two", "two_two", "three_two", "four_two", "five_two", "four_three", "five_three", "today",
+	)
+	if nil != err {
+		fmt.Println("分红,配置", err)
+		return nil, err
+	}
+
+	if nil != configs {
+		for _, vConfig := range configs {
+			if "one" == vConfig.KeyName {
+				one, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "two" == vConfig.KeyName {
+				two, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "three" == vConfig.KeyName {
+				three, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "four" == vConfig.KeyName {
+				four, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "five" == vConfig.KeyName {
+				five, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "one_two" == vConfig.KeyName {
+				oneTwo, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "two_two" == vConfig.KeyName {
+				twoTwo, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "three_two" == vConfig.KeyName {
+				threeTwo, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "four_three" == vConfig.KeyName {
+				fourThree, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "five_three" == vConfig.KeyName {
+				fiveThree, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			}
+		}
+	}
+
+	var (
+		users []*User
+	)
+	users, err = uuc.repo.GetUsersNew(ctx)
+	if nil != err {
+		fmt.Println("分红", err)
+		return nil, nil
+	}
+
+	fourUsers := make([]*User, 0)
+	fiveUsers := make([]*User, 0)
+
+	var (
+		amountSecond float64 // 节点超级节点奖励额度
+		amounts      float64
+	)
+	for _, vUsers := range users {
+		// 超级节点，节点
+		number := vUsers.Total
+		if 15000 <= number {
+			if 30000 <= number {
+				fiveUsers = append(fiveUsers, vUsers)
+			} else {
+				fourUsers = append(fourUsers, vUsers)
+			}
+
+			for number > 0 {
+				if 30000 <= number {
+					number -= 30000
+					amounts += five
+				} else if 15000 <= number {
+					number -= 15000
+					amounts += four
+				} else if 5000 <= number {
+					number -= 5000
+					amounts += three
+					amountSecond += threeTwo
+				} else if 3000 <= number {
+					number -= 3000
+					amounts += two
+					amountSecond += twoTwo
+				} else if 1000 <= number {
+					number -= 1000
+					amounts += one
+					amountSecond += oneTwo
+				} else {
+					break
+				}
+			}
+		} else {
+			// 普通
+			for i := 0; i < int(vUsers.TotalA); i++ {
+				amounts += one
+				amountSecond += oneTwo
+			}
+			for i := 0; i < int(vUsers.TotalB); i++ {
+				amounts += two
+				amountSecond += twoTwo
+			}
+			for i := 0; i < int(vUsers.TotalC); i++ {
+				amounts += three
+				amountSecond += threeTwo
+			}
+		}
+	}
+
+	fourAmounts := amountSecond * fourThree / 100
+	fiveAmounts := amountSecond * fiveThree / 100
+
 	userLocationCount, _ = uuc.repo.GetUserCount(ctx)
 	////userTodayCount, _ = uuc.repo.GetUserCountToday(ctx)
 	userBalanceUsdtTotal, _ = uuc.ubRepo.GetUserBalanceUsdtTotal(ctx)
@@ -2106,6 +2261,9 @@ func (uuc *UserUseCase) AdminAll(ctx context.Context, req *v1.AdminAllRequest) (
 		TotalUsdt:         userBalanceUsdtTotal, // 可提biw
 		TodayWithdrawUsdt: userWithdrawUsdtTotalToday,
 		TotalWithdrawUsdt: userWithdrawUsdtTotal,
+		Total:             amounts,
+		TotalFive:         fiveAmounts,
+		TotalFour:         fourAmounts,
 	}, nil
 	return nil, nil
 }
@@ -2605,61 +2763,76 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 	fiveUsers := make([]*User, 0)
 
 	var (
-		amountSecond float64
+		amountSecond float64 // 节点超级节点奖励额度
 	)
 	for _, vUsers := range users {
 		// 定义阈值数组
-		var (
-			amount float64
-		)
 
-		// 按顺序遍历阈值数组
+		amounts := make([]float64, 0)
+		// 超级节点，节点
 		number := vUsers.Total
-		if 30000 <= number {
-			fiveUsers = append(fiveUsers, vUsers)
-		} else if 15000 <= number {
-			fourUsers = append(fourUsers, vUsers)
-		}
-
-		for number > 0 {
+		if 15000 <= number {
 			if 30000 <= number {
-				number -= 30000
-				amount += five
-			} else if 15000 <= number {
-				number -= 15000
-				amount += four
-			} else if 5000 <= number {
-				number -= 5000
-				amount += three
-				amountSecond += threeTwo
-			} else if 3000 <= number {
-				number -= 3000
-				amount += two
-				amountSecond += twoTwo
-			} else if 1000 <= number {
-				number -= 1000
-				amount += one
-				amountSecond += oneTwo
+				fiveUsers = append(fiveUsers, vUsers)
 			} else {
-				break
+				fourUsers = append(fourUsers, vUsers)
+			}
+
+			for number > 0 {
+				if 30000 <= number {
+					number -= 30000
+					amounts = append(amounts, five)
+				} else if 15000 <= number {
+					number -= 15000
+					amounts = append(amounts, four)
+				} else if 5000 <= number {
+					number -= 5000
+					amounts = append(amounts, three)
+					amountSecond += threeTwo
+				} else if 3000 <= number {
+					number -= 3000
+					amounts = append(amounts, two)
+					amountSecond += twoTwo
+				} else if 1000 <= number {
+					number -= 1000
+					amounts = append(amounts, one)
+					amountSecond += oneTwo
+				} else {
+					break
+				}
+			}
+		} else {
+			// 普通
+			for i := 0; i < int(vUsers.TotalA); i++ {
+				amounts = append(amounts, one)
+				amountSecond += oneTwo
+			}
+			for i := 0; i < int(vUsers.TotalB); i++ {
+				amounts = append(amounts, two)
+				amountSecond += twoTwo
+			}
+			for i := 0; i < int(vUsers.TotalC); i++ {
+				amounts = append(amounts, three)
+				amountSecond += threeTwo
 			}
 		}
 
-		// 发奖励
-		if err = uuc.tx.ExecTx(ctx, func(ctx context.Context) error { // 事务
+		for _, amount := range amounts {
+			// 发奖励
+			if err = uuc.tx.ExecTx(ctx, func(ctx context.Context) error { // 事务
 
-			// 充值记录
-			err = uuc.ubRepo.FirstRewardBiw(ctx, vUsers.ID, amount)
-			if nil != err {
-				return err
+				// 充值记录
+				err = uuc.ubRepo.FirstRewardBiw(ctx, vUsers.ID, amount)
+				if nil != err {
+					return err
+				}
+
+				return nil
+			}); nil != err {
+				fmt.Println(err, "错误发奖励1", vUsers, amount)
+				continue
 			}
-
-			return nil
-		}); nil != err {
-			fmt.Println(err, "错误发奖励1", vUsers, amount)
-			continue
 		}
-
 	}
 
 	// 查询昨日入金

@@ -745,6 +745,9 @@ message AdminAllReply {
 	double totalUsdt = 7; // 全网可提U数量
 	double todayWithdrawUsdt = 18; // 今日提U数量
 	double totalWithdrawUsdt = 19; // 总提U数量
+	double totalFour = 20; // 今日节点总奖励
+	double totalFive = 21; // 今日超级节点总奖励
+	double total = 22; // 今日挖矿奖励
 }
 
 message AdminUserRecommendRequest {

@@ -95,7 +95,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 			continue
 		}
 
-		userLength, err = getUserLength("0x8A5F4F0685Be11E62e24Ca043534F996DfC9C119")
+		userLength, err = getUserLength("0x008EC6D29A4Eb429eDD90dC394CC185E33F4e534")
 		if nil != err {
 			fmt.Println(err)
 		}
@@ -112,7 +112,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 			break
 		}
 
-		depositUsdtResult, depositUsdtResultTwo, err = getUserInfo(last, userLength-1, "0x8A5F4F0685Be11E62e24Ca043534F996DfC9C119")
+		depositUsdtResult, depositUsdtResultTwo, err = getUserInfo(last, userLength-1, "0x008EC6D29A4Eb429eDD90dC394CC185E33F4e534")
 		if nil != err {
 			break
 		}
@@ -1774,7 +1774,7 @@ func getUserInfo(start int64, end int64, address string) (map[string]int64, map[
 		break
 	}
 
-	if len(bals) != len(bals2) {
+	if len(bals) != len(bals2) || len(bals) != len(bals3) {
 		fmt.Println("数量不一致，错误")
 		return nil, nil, nil
 	}
@@ -1784,9 +1784,6 @@ func getUserInfo(start int64, end int64, address string) (map[string]int64, map[
 
 	for k, v := range bals {
 		users[v] = bals2[k].Int64()
-	}
-
-	for k, v := range bals {
 		usersAddress[v] = bals3[k].String()
 	}
 

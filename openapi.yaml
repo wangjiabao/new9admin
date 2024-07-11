@@ -1389,6 +1389,15 @@ components:
                 totalWithdrawUsdt:
                     type: number
                     format: double
+                totalFour:
+                    type: number
+                    format: double
+                totalFive:
+                    type: number
+                    format: double
+                total:
+                    type: number
+                    format: double
         AdminAreaLevelUpdateReply:
             type: object
             properties: {}

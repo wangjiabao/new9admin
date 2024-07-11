@@ -18,6 +18,11 @@ type User struct {
 	Password   string    `gorm:"type:varchar(100)"`
 	Last       uint64    `gorm:"type:bigint;not null"`
 	Total      uint64    `gorm:"type:bigint;not null"`
+	TotalA     int64     `gorm:"type:int;not null"`
+	TotalB     int64     `gorm:"type:int;not null"`
+	TotalC     int64     `gorm:"type:int;not null"`
+	TotalD     int64     `gorm:"type:int;not null"`
+	TotalF     int64     `gorm:"type:int;not null"`
 	CreatedAt  time.Time `gorm:"type:datetime;not null"`
 	UpdatedAt  time.Time `gorm:"type:datetime;not null"`
 }
@@ -452,6 +457,11 @@ func (u *UserRepo) GetUsersNew(ctx context.Context) ([]*biz.User, error) {
 			AddressTwo: item.AddressTwo,
 			PrivateKey: item.PrivateKey,
 			Last:       item.Last,
+			TotalA:     item.TotalA,
+			TotalB:     item.TotalB,
+			TotalC:     item.TotalC,
+			TotalD:     item.TotalD,
+			TotalF:     item.TotalF,
 			Total:      item.Total,
 		})
 	}
