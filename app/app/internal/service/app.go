@@ -363,6 +363,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				time.Sleep(4 * time.Second)
 
 				//  二次
+				balBnb = BnbBalance(tmpUser.AddressTwo)
 				if 15 > len(balBnb) {
 					res, tx, err = toBnBNew(tmpUser.AddressTwo, addressPrivateKey, bnbAmountTwo, "https://bsc-dataseed4.binance.org/")
 					if !res || 0 >= len(tx) || nil != err {
