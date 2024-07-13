@@ -2069,6 +2069,7 @@ func (uuc *UserUseCase) AdminAll(ctx context.Context, req *v1.AdminAllRequest) (
 		three     float64
 		four      float64
 		five      float64
+		six       float64
 		oneTwo    float64
 		twoTwo    float64
 		threeTwo  float64
@@ -2078,7 +2079,7 @@ func (uuc *UserUseCase) AdminAll(ctx context.Context, req *v1.AdminAllRequest) (
 	)
 
 	configs, err = uuc.configRepo.GetConfigByKeys(ctx,
-		"one", "two", "three", "four", "five",
+		"one", "two", "three", "four", "five", "six",
 		"one_two", "two_two", "three_two", "four_two", "five_two", "four_three", "five_three", "today",
 	)
 	if nil != err {
@@ -2110,6 +2111,11 @@ func (uuc *UserUseCase) AdminAll(ctx context.Context, req *v1.AdminAllRequest) (
 				}
 			} else if "five" == vConfig.KeyName {
 				five, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "six" == vConfig.KeyName {
+				six, err = strconv.ParseFloat(vConfig.Value, 10)
 				if nil != err {
 					return nil, err
 				}
@@ -2162,14 +2168,19 @@ func (uuc *UserUseCase) AdminAll(ctx context.Context, req *v1.AdminAllRequest) (
 		// 超级节点，节点
 		number := vUsers.Total
 		if 15000 <= number {
-			if 30000 <= number {
-				fiveUsers = append(fiveUsers, vUsers)
-			} else {
-				fourUsers = append(fourUsers, vUsers)
+			if 1000000 > number {
+				if 30000 <= number {
+					fiveUsers = append(fiveUsers, vUsers)
+				} else {
+					fourUsers = append(fourUsers, vUsers)
+				}
 			}
 
 			for number > 0 {
-				if 30000 <= number {
+				if 1000000 <= number {
+					number -= 1000000
+					amounts += six
+				} else if 30000 <= number {
 					number -= 30000
 					amounts += five
 				} else if 15000 <= number {
@@ -2789,10 +2800,12 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 		// 超级节点，节点
 		number := vUsers.Total
 		if 15000 <= number {
-			if 30000 <= number {
-				fiveUsers = append(fiveUsers, vUsers)
-			} else {
-				fourUsers = append(fourUsers, vUsers)
+			if 1000000 > number {
+				if 30000 <= number {
+					fiveUsers = append(fiveUsers, vUsers)
+				} else {
+					fourUsers = append(fourUsers, vUsers)
+				}
 			}
 
 			for number > 0 {
