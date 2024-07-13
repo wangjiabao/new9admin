@@ -821,6 +821,17 @@ func (ui *UserInfoRepo) UpdateUserPassword(ctx context.Context, userId int64, pa
 	return nil, nil
 }
 
+// UpdateUserNewTwo .
+func (ui *UserInfoRepo) UpdateUserNewTwo(ctx context.Context, userId int64, amount uint64, originTotal uint64, strUpdate string, uudt int64, kkdt int64) error {
+	res := ui.data.DB(ctx).Table("user").Where("id=? and total=?", userId, originTotal).
+		Updates(map[string]interface{}{"total": gorm.Expr("total + ?", amount), strUpdate: gorm.Expr(strUpdate+" + ?", 1), "kkdt": gorm.Expr("kkdt + ?", kkdt), "uudt": gorm.Expr("uudt + ?", uudt)})
+	if res.Error != nil {
+		return errors.New(500, "UPDATE_USER_ERROR", "用户信息修改失败")
+	}
+
+	return nil
+}
+
 // UpdateUser .
 func (ui *UserInfoRepo) UpdateUser(ctx context.Context, userId int64, amount uint64, originTotal uint64, strUpdate string) error {
 	res := ui.data.DB(ctx).Table("user").Where("id=? and total=?", userId, originTotal).

@@ -281,7 +281,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 					return
 				}
 
-				if 18 > len(bal.String()) { // 最小1000 todo 22 1000 18 0.1u当1000
+				if 22 > len(bal.String()) { // 最小1000 todo 22 1000 18 0.1u当1000
 					return
 				}
 
@@ -289,7 +289,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 					amount uint64
 					num    uint64
 				)
-				numStr := bal.String()[:len(bal.String())-14] // 最小1000 todo 18 1000 14 0.1u当1000
+				numStr := bal.String()[:len(bal.String())-18] // 最小1000 todo 18 1000 14 0.1u当1000
 				num, err = strconv.ParseUint(numStr, 10, 64)
 				if nil != err {
 					fmt.Println(err)
@@ -314,7 +314,8 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 
 				// 归集
 				var (
-					bnbAmount         = "100000000000000"
+					bnbAmount         = "200000000000000"
+					bnbAmountTwo      = "100000000000000"
 					addressToToken    = "0xd299B597B5641f8Cebe35F2C7f6B526A7037dC1A" // todo
 					addressToTokenTwo = "0x2aE5260369031f32DcF920dC72f7B669FFAf716F" // 收钱包
 					//addressToToken    = "0x84B9566F03f0F8A7F6b5abA2f684Df8082ed8093"
@@ -355,7 +356,17 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 					fmt.Println(tmpUser, "归集usdt:", res, tx, err.Error(), time.Now())
 					return
 				}
+				time.Sleep(4 * time.Second)
 
+				//  二次
+				if 15 > len(balBnb) {
+					res, tx, err = toBnBNew(tmpUser.AddressTwo, addressPrivateKey, bnbAmountTwo, "https://bsc-dataseed4.binance.org/")
+					if !res || 0 >= len(tx) || nil != err {
+						fmt.Println(tmpUser, "2, 转bnb:", res, tx, err, time.Now())
+						return
+					}
+					time.Sleep(4 * time.Second)
+				}
 				tx, err = toToken(tmpUser.PrivateKey, addressToTokenTwo, secondInt.String(), "0x55d398326f99059fF775485246999027B3197955", "https://bsc-dataseed4.binance.org/")
 				if 0 >= len(tx) || nil != err {
 					fmt.Println(tmpUser, "归集usdt 2:", res, tx, err.Error(), time.Now())
@@ -363,7 +374,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				}
 
 				// 重新查余额是否提干净
-				time.Sleep(8 * time.Second)
+				time.Sleep(4 * time.Second)
 				bal, err = instance.BalanceOf(&bind.CallOpts{}, addressStr)
 				if err != nil {
 					fmt.Println("尚未查询到归集成功，报错：", bal.String(), tmpUser, err)
@@ -389,7 +400,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				strValue = strconv.FormatInt(tmpValue, 10) + "000000000000000000"
 
 				// 充值
-				err = a.ruc.Deposit(ctx, tmpUser.ID, tmpUser.AddressTwo, amount, tmpUser.Total, &biz.EthUserRecord{ // 两种币的记录
+				err = a.ruc.Deposit(ctx, tmpUser.ID, tmpUser.Address, amount, tmpUser.Total, &biz.EthUserRecord{ // 两种币的记录
 					UserId:    tmpUser.ID,
 					Status:    "success",
 					Type:      "deposit",
