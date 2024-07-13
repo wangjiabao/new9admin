@@ -75,7 +75,7 @@ func NewDB(c *conf.Data) *gorm.DB {
 			SlowThreshold: time.Second, // 慢查询 SQL 阈值
 			Colorful:      true,        // 禁用彩色打印
 			//IgnoreRecordNotFoundError: false,
-			LogLevel: logger.Info, // Log lever
+			LogLevel: logger.Error, // Log lever
 		},
 	)
 

@@ -359,6 +359,7 @@ type UserRepo interface {
 	GetAdminById(ctx context.Context, id int64) (*Admin, error)
 	GetUserByAddresses(ctx context.Context, Addresses ...string) (map[string]*User, error)
 	GetUsersNew(ctx context.Context) ([]*User, error)
+	GetUsersNewTwo(ctx context.Context) ([]*User, error)
 	GetUserByAddress(ctx context.Context, address string) (*User, error)
 	CreateUser(ctx context.Context, user *User) (*User, error)
 	CreateAdmin(ctx context.Context, a *Admin) (*Admin, error)
@@ -395,8 +396,8 @@ func (uuc *UserUseCase) GetUserByAddress(ctx context.Context, Addresses ...strin
 	return uuc.repo.GetUserByAddresses(ctx, Addresses...)
 }
 
-func (uuc *UserUseCase) GetUsersNew(ctx context.Context) ([]*User, error) {
-	return uuc.repo.GetUsersNew(ctx)
+func (uuc *UserUseCase) GetUsersNewTwo(ctx context.Context) ([]*User, error) {
+	return uuc.repo.GetUsersNewTwo(ctx)
 }
 
 func (uuc *UserUseCase) GetDhbConfig(ctx context.Context) ([]*Config, error) {
@@ -1540,6 +1541,9 @@ func (uuc *UserUseCase) AdminVipUpdate(ctx context.Context, req *v1.AdminVipUpda
 	} else if 30000 == req.SendBody.Vip {
 		total = 30000
 		strUpdate = "total_f"
+	} else if 1000000 == req.SendBody.Vip {
+		total = 1000000
+		strUpdate = "total_g"
 	} else {
 		return nil, nil
 	}
@@ -2678,6 +2682,7 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 		three     float64
 		four      float64
 		five      float64
+		six       float64
 		oneTwo    float64
 		twoTwo    float64
 		threeTwo  float64
@@ -2688,7 +2693,7 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 	)
 
 	configs, err = uuc.configRepo.GetConfigByKeys(ctx,
-		"one", "two", "three", "four", "five",
+		"one", "two", "three", "four", "five", "six",
 		"one_two", "two_two", "three_two", "four_two", "five_two", "four_three", "five_three", "today",
 	)
 	if nil != err {
@@ -2720,6 +2725,11 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 				}
 			} else if "five" == vConfig.KeyName {
 				five, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "six" == vConfig.KeyName {
+				six, err = strconv.ParseFloat(vConfig.Value, 10)
 				if nil != err {
 					return nil, err
 				}
@@ -2786,7 +2796,10 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 			}
 
 			for number > 0 {
-				if 30000 <= number {
+				if 1000000 <= number {
+					number -= 1000000
+					amounts = append(amounts, six)
+				} else if 30000 <= number {
 					number -= 30000
 					amounts = append(amounts, five)
 				} else if 15000 <= number {

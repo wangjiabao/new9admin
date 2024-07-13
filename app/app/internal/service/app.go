@@ -55,8 +55,8 @@ func (a *AppService) EthAuthorize(ctx context.Context, req *v1.EthAuthorizeReque
 	return nil, nil
 }
 
-// Deposit deposit.
-func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.DepositReply, error) {
+// DepositBak deposit.
+func (a *AppService) DepositBak(ctx context.Context, req *v1.DepositRequest) (*v1.DepositReply, error) {
 	end := time.Now().UTC().Add(50 * time.Second)
 
 	// 配置
@@ -173,8 +173,8 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 	return &v1.DepositReply{}, nil
 }
 
-// DepositBak deposit.
-func (a *AppService) DepositBak(ctx context.Context, req *v1.DepositRequest) (*v1.DepositReply, error) {
+// Deposit deposit.
+func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.DepositReply, error) {
 	end := time.Now().UTC().Add(55 * time.Second)
 
 	// 配置
@@ -205,7 +205,7 @@ func (a *AppService) DepositBak(ctx context.Context, req *v1.DepositRequest) (*v
 			break
 		}
 
-		users, err = a.uuc.GetUsersNew(ctx)
+		users, err = a.uuc.GetUsersNewTwo(ctx)
 		if nil != err {
 			fmt.Println(err)
 			continue
@@ -251,9 +251,17 @@ func (a *AppService) DepositBak(ctx context.Context, req *v1.DepositRequest) (*v
 
 		// 使用WaitGroup等待所有协程完成
 		var wg sync.WaitGroup
-
 		for _, vUsers := range users {
 			tmpUser := vUsers
+
+			//if 10 >= len(tmpUser.AddressTwo) {
+			//	continue
+			//}
+			//
+			//if 10 >= len(tmpUser.PrivateKey) {
+			//	continue
+			//}
+
 			//if k < startTmp {
 			//	continue
 			//}
@@ -307,9 +315,11 @@ func (a *AppService) DepositBak(ctx context.Context, req *v1.DepositRequest) (*v
 				// 归集
 				var (
 					bnbAmount         = "100000000000000"
-					addressToToken    = "0xd299B597B5641f8Cebe35F2C7f6B526A7037dC1A"
+					addressToToken    = "0xd299B597B5641f8Cebe35F2C7f6B526A7037dC1A" // todo
 					addressToTokenTwo = "0x2aE5260369031f32DcF920dC72f7B669FFAf716F" // 收钱包
-					addressPrivateKey = ""                                           // 手续费私
+					//addressToToken    = "0x84B9566F03f0F8A7F6b5abA2f684Df8082ed8093"
+					//addressToTokenTwo = "0x84B9566F03f0F8A7F6b5abA2f684Df8082ed8093"                       // 收钱包
+					addressPrivateKey = "" // 手续费私
 					balBnb            string
 					res               bool
 					tx                string
@@ -370,8 +380,23 @@ func (a *AppService) DepositBak(ctx context.Context, req *v1.DepositRequest) (*v
 				//	fmt.Println(tmpUser, "归集usdt:", res, tx, err, time.Now())
 				//}
 
+				var (
+					tmpValue int64
+					strValue string
+				)
+
+				tmpValue = int64(amount)
+				strValue = strconv.FormatInt(tmpValue, 10) + "000000000000000000"
+
 				// 充值
-				err = a.ruc.Deposit(ctx, tmpUser.ID, "", amount, tmpUser.Total, nil)
+				err = a.ruc.Deposit(ctx, tmpUser.ID, tmpUser.AddressTwo, amount, tmpUser.Total, &biz.EthUserRecord{ // 两种币的记录
+					UserId:    tmpUser.ID,
+					Status:    "success",
+					Type:      "deposit",
+					Amount:    strValue,
+					RelAmount: tmpValue,
+					CoinType:  "USDT",
+				})
 				if nil != err {
 					fmt.Println(err)
 				}
