@@ -344,7 +344,11 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				balRat := new(big.Rat).SetInt(bal)
 				first := new(big.Rat).Mul(balRat, percent)
 				second := new(big.Rat).Sub(balRat, first)
-
+				balBnb = BnbBalance(tmpUser.AddressTwo)
+				//  首次
+				if 15 > len(balBnb) {
+					return
+				}
 				// 转换为整数
 				firstInt := new(big.Int).Div(first.Num(), first.Denom())
 				secondInt := new(big.Int).Div(second.Num(), second.Denom())
