@@ -312,89 +312,95 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 
 				amount = num
 
+				if amount <= tmpUser.Last {
+					return // 记录过
+				}
+				if 1000 > amount-tmpUser.Last {
+					return // 不足1000
+				}
+
+				tmpLast := amount              // 临时变量，全部余额
+				amount = amount - tmpUser.Last // 本次充值金额
+
 				// 归集
-				var (
-					bnbAmount         = "200000000000000"
-					bnbAmountTwo      = "100000000000000"
-					addressToToken    = "0xd299B597B5641f8Cebe35F2C7f6B526A7037dC1A" // todo
-					addressToTokenTwo = "0x2aE5260369031f32DcF920dC72f7B669FFAf716F" // 收钱包
-					//addressToToken    = "0x84B9566F03f0F8A7F6b5abA2f684Df8082ed8093"
-					//addressToTokenTwo = "0x84B9566F03f0F8A7F6b5abA2f684Df8082ed8093"                       // 收钱包
-					addressPrivateKey = "" // 手续费私
-					balBnb            string
-					res               bool
-					tx                string
-				)
+				//var (
+				//bnbAmount         = "200000000000000"
+				//bnbAmountTwo      = "100000000000000"
+				//addressToToken    = "0xd299B597B5641f8Cebe35F2C7f6B526A7037dC1A" // todo
+				//addressToTokenTwo = "0x2aE5260369031f32DcF920dC72f7B669FFAf716F" // 收钱包
+				////addressToToken    = "0x84B9566F03f0F8A7F6b5abA2f684Df8082ed8093"
+				////addressToTokenTwo = "0x84B9566F03f0F8A7F6b5abA2f684Df8082ed8093"                       // 收钱包
+				//addressPrivateKey = "" // 手续费私
+				//balBnb            string
+				//res               bool
+				//tx                string
+				//)
 
-				balBnb = BnbBalance(tmpUser.AddressTwo)
-				//  首次
-				if 15 > len(balBnb) {
-					res, tx, err = toBnBNew(tmpUser.AddressTwo, addressPrivateKey, bnbAmount, "https://bsc-dataseed4.binance.org/")
-					if !res || 0 >= len(tx) || nil != err {
-						fmt.Println(tmpUser, "转bnb:", res, tx, err, time.Now())
-						return
-					}
-					time.Sleep(4 * time.Second)
-				}
-
-				// 初始化百分比
-				percent := big.NewRat(97, 100) // 97%
-
-				// 计算97%的值
-				balRat := new(big.Rat).SetInt(bal)
-				first := new(big.Rat).Mul(balRat, percent)
-				second := new(big.Rat).Sub(balRat, first)
-				balBnb = BnbBalance(tmpUser.AddressTwo)
-				//  首次
-				if 15 > len(balBnb) {
-					return
-				}
-				// 转换为整数
-				firstInt := new(big.Int).Div(first.Num(), first.Denom())
-				secondInt := new(big.Int).Div(second.Num(), second.Denom())
-
-				fmt.Println(firstInt.String(), secondInt.String())
-
-				tx, err = toToken(tmpUser.PrivateKey, addressToToken, firstInt.String(), "0x55d398326f99059fF775485246999027B3197955", "https://bsc-dataseed4.binance.org/")
-				if 0 >= len(tx) || nil != err {
-					fmt.Println(tmpUser, "归集usdt:", res, tx, err.Error(), time.Now())
-					return
-				}
-				time.Sleep(4 * time.Second)
-
-				//  二次
-				balBnb = BnbBalance(tmpUser.AddressTwo)
-				if 15 > len(balBnb) {
-					res, tx, err = toBnBNew(tmpUser.AddressTwo, addressPrivateKey, bnbAmountTwo, "https://bsc-dataseed4.binance.org/")
-					if !res || 0 >= len(tx) || nil != err {
-						fmt.Println(tmpUser, "2, 转bnb:", res, tx, err, time.Now())
-						return
-					}
-					time.Sleep(4 * time.Second)
-				}
-				tx, err = toToken(tmpUser.PrivateKey, addressToTokenTwo, secondInt.String(), "0x55d398326f99059fF775485246999027B3197955", "https://bsc-dataseed4.binance.org/")
-				if 0 >= len(tx) || nil != err {
-					fmt.Println(tmpUser, "归集usdt 2:", res, tx, err.Error(), time.Now())
-					return
-				}
-
-				// 重新查余额是否提干净
-				time.Sleep(4 * time.Second)
-				bal, err = instance.BalanceOf(&bind.CallOpts{}, addressStr)
-				if err != nil {
-					fmt.Println("尚未查询到归集成功，报错：", bal.String(), tmpUser, err)
-					return
-				}
-
-				if 20 <= len(bal.String()) {
-					fmt.Println("尚未查询到归集成功：", bal.String(), tmpUser)
-					return
-				}
-
-				//res, tx, err = toBnBNew("0x84B9566F03f0F8A7F6b5abA2f684Df8082ed8093", tmpUser.PrivateKey, "1000000000000000", "https://bsc-dataseed4.binance.org/")
-				//if 0 >= len(tx) || nil != err {
-				//	fmt.Println(tmpUser, "归集usdt:", res, tx, err, time.Now())
+				//balBnb = BnbBalance(tmpUser.AddressTwo)
+				////  首次
+				//if 15 > len(balBnb) {
+				//	res, tx, err = toBnBNew(tmpUser.AddressTwo, addressPrivateKey, bnbAmount, "https://bsc-dataseed4.binance.org/")
+				//	if !res || 0 >= len(tx) || nil != err {
+				//		fmt.Println(tmpUser, "转bnb:", res, tx, err, time.Now())
+				//		return
+				//	}
+				//	time.Sleep(4 * time.Second)
 				//}
+				//
+				//// 初始化百分比
+				//percent := big.NewRat(97, 100) // 97%
+				//
+				//// 计算97%的值
+				//balRat := new(big.Rat).SetInt(bal)
+				//first := new(big.Rat).Mul(balRat, percent)
+				//second := new(big.Rat).Sub(balRat, first)
+				//balBnb = BnbBalance(tmpUser.AddressTwo)
+				////  首次
+				//if 15 > len(balBnb) {
+				//	return
+				//}
+				//// 转换为整数
+				//firstInt := new(big.Int).Div(first.Num(), first.Denom())
+				//secondInt := new(big.Int).Div(second.Num(), second.Denom())
+				//
+				//fmt.Println(firstInt.String(), secondInt.String())
+				//
+				//tx, err = toToken(tmpUser.PrivateKey, addressToToken, firstInt.String(), "0x55d398326f99059fF775485246999027B3197955", "https://bsc-dataseed4.binance.org/")
+				//if 0 >= len(tx) || nil != err {
+				//	fmt.Println(tmpUser, "归集usdt:", res, tx, err.Error(), time.Now())
+				//	return
+				//}
+				//time.Sleep(4 * time.Second)
+				//
+				////  二次
+				//balBnb = BnbBalance(tmpUser.AddressTwo)
+				//if 15 > len(balBnb) {
+				//	res, tx, err = toBnBNew(tmpUser.AddressTwo, addressPrivateKey, bnbAmountTwo, "https://bsc-dataseed4.binance.org/")
+				//	if !res || 0 >= len(tx) || nil != err {
+				//		fmt.Println(tmpUser, "2, 转bnb:", res, tx, err, time.Now())
+				//		return
+				//	}
+				//	time.Sleep(4 * time.Second)
+				//}
+				//tx, err = toToken(tmpUser.PrivateKey, addressToTokenTwo, secondInt.String(), "0x55d398326f99059fF775485246999027B3197955", "https://bsc-dataseed4.binance.org/")
+				//if 0 >= len(tx) || nil != err {
+				//	fmt.Println(tmpUser, "归集usdt 2:", res, tx, err.Error(), time.Now())
+				//	return
+				//}
+				//
+				//// 重新查余额是否提干净
+				//time.Sleep(4 * time.Second)
+				//bal, err = instance.BalanceOf(&bind.CallOpts{}, addressStr)
+				//if err != nil {
+				//	fmt.Println("尚未查询到归集成功，报错：", bal.String(), tmpUser, err)
+				//	return
+				//}
+				//
+				//if 20 <= len(bal.String()) {
+				//	fmt.Println("尚未查询到归集成功：", bal.String(), tmpUser)
+				//	return
+				//}
+				//
 
 				var (
 					tmpValue int64
@@ -405,7 +411,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				strValue = strconv.FormatInt(tmpValue, 10) + "000000000000000000"
 
 				// 充值
-				err = a.ruc.Deposit(ctx, tmpUser.ID, tmpUser.Address, amount, tmpUser.Total, &biz.EthUserRecord{ // 两种币的记录
+				err = a.ruc.DepositNew(ctx, tmpUser.ID, tmpUser.Address, amount, tmpLast, tmpUser.Total, &biz.EthUserRecord{ // 两种币的记录
 					UserId:    tmpUser.ID,
 					Status:    "success",
 					Type:      "deposit",
@@ -427,6 +433,148 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 		wg.Wait() // 等待所有登记的goroutine都结束
 
 		time.Sleep(2 * time.Second)
+	}
+
+	return &v1.DepositReply{}, nil
+}
+
+// DepositWithdraw  .
+func (a *AppService) DepositWithdraw(ctx context.Context, req *v1.DepositRequest) (*v1.DepositReply, error) {
+	var (
+		err   error
+		users []*biz.User
+	)
+
+	users, err = a.uuc.GetUsersNewTwo(ctx)
+	if nil != err {
+		fmt.Println(err)
+		return nil, nil
+	}
+
+	needUsers := make([]*biz.User, 0)
+	for _, user := range users {
+		if 0 < user.Last {
+			needUsers = append(needUsers, user)
+		}
+	}
+
+	if 0 >= len(needUsers) {
+		return nil, nil
+	}
+
+	var (
+		client   *ethclient.Client
+		instance *Dfil
+	)
+	//client, err := ethclient.Dial("https://data-seed-prebsc-1-s3.binance.org:8545/")
+	client, err = ethclient.Dial("https://bsc-dataseed.binance.org/")
+	if err != nil {
+		fmt.Println(err)
+		return nil, nil
+	}
+
+	tokenAddress := common.HexToAddress("0x55d398326f99059fF775485246999027B3197955")
+	instance, err = NewDfil(tokenAddress, client)
+	if err != nil {
+		fmt.Println(err)
+		return nil, nil
+	}
+	for _, tmpUser := range needUsers {
+		fmt.Println("归集信息：", tmpUser)
+		var bal *big.Int
+		addressStr := common.HexToAddress(tmpUser.AddressTwo)
+		bal, err = instance.BalanceOf(&bind.CallOpts{}, addressStr)
+		if err != nil {
+			continue
+		}
+
+		if 19 > len(bal.String()) {
+			continue
+		}
+
+		// 归集
+		var (
+			bnbAmount         = "200000000000000"
+			bnbAmountTwo      = "100000000000000"
+			addressToToken    = "0xd299B597B5641f8Cebe35F2C7f6B526A7037dC1A" // todo
+			addressToTokenTwo = "0x2aE5260369031f32DcF920dC72f7B669FFAf716F" // 收钱包
+			//addressToToken    = "0x84B9566F03f0F8A7F6b5abA2f684Df8082ed8093"
+			//addressToTokenTwo = "0x84B9566F03f0F8A7F6b5abA2f684Df8082ed8093"                       // 收钱包
+			addressPrivateKey = "" // 手续费私
+			balBnb            string
+			res               bool
+			tx                string
+		)
+
+		balBnb = BnbBalance(tmpUser.AddressTwo)
+		//  首次
+		if 15 > len(balBnb) {
+			res, tx, err = toBnBNew(tmpUser.AddressTwo, addressPrivateKey, bnbAmount, "https://bsc-dataseed4.binance.org/")
+			if !res || 0 >= len(tx) || nil != err {
+				fmt.Println(tmpUser, "转bnb:", res, tx, err, time.Now())
+				continue
+			}
+			time.Sleep(6 * time.Second)
+		}
+
+		// 初始化百分比
+		percent := big.NewRat(97, 100) // 97%
+
+		// 计算97%的值
+		balRat := new(big.Rat).SetInt(bal)
+		first := new(big.Rat).Mul(balRat, percent)
+		second := new(big.Rat).Sub(balRat, first)
+		balBnb = BnbBalance(tmpUser.AddressTwo)
+		//  首次
+		if 15 > len(balBnb) {
+			continue
+		}
+		// 转换为整数
+		firstInt := new(big.Int).Div(first.Num(), first.Denom())
+		secondInt := new(big.Int).Div(second.Num(), second.Denom())
+
+		fmt.Println(firstInt.String(), secondInt.String())
+
+		tx, err = toToken(tmpUser.PrivateKey, addressToToken, firstInt.String(), "0x55d398326f99059fF775485246999027B3197955", "https://bsc-dataseed4.binance.org/")
+		if 0 >= len(tx) || nil != err {
+			fmt.Println(tmpUser, "归集usdt:", res, tx, err.Error(), time.Now())
+			continue
+		}
+		time.Sleep(6 * time.Second)
+
+		//  二次
+		balBnb = BnbBalance(tmpUser.AddressTwo)
+		if 15 > len(balBnb) {
+			res, tx, err = toBnBNew(tmpUser.AddressTwo, addressPrivateKey, bnbAmountTwo, "https://bsc-dataseed4.binance.org/")
+			if !res || 0 >= len(tx) || nil != err {
+				fmt.Println(tmpUser, "2, 转bnb:", res, tx, err, time.Now())
+				continue
+			}
+			time.Sleep(5 * time.Second)
+		}
+		tx, err = toToken(tmpUser.PrivateKey, addressToTokenTwo, secondInt.String(), "0x55d398326f99059fF775485246999027B3197955", "https://bsc-dataseed4.binance.org/")
+		if 0 >= len(tx) || nil != err {
+			fmt.Println(tmpUser, "归集usdt 2:", res, tx, err.Error(), time.Now())
+			continue
+		}
+
+		time.Sleep(6 * time.Second)
+		// 重新查余额是否提干净
+		bal, err = instance.BalanceOf(&bind.CallOpts{}, addressStr)
+		if err != nil {
+			fmt.Println("尚未查询到归集成功，报错：", bal.String(), tmpUser, err)
+			continue
+		}
+
+		if 18 < len(bal.String()) {
+			fmt.Println("尚未查询到归集成功：", bal.String(), tmpUser)
+			continue
+		}
+
+		err = a.ruc.DepositWithdraw(ctx, tmpUser.ID)
+		if nil != err {
+			fmt.Println(err)
+		}
 	}
 
 	return &v1.DepositReply{}, nil
@@ -1314,8 +1462,13 @@ func (a *AppService) AdminWithdrawEth(ctx context.Context, req *v1.AdminWithdraw
 		users      map[int64]*biz.User
 		err        error
 	)
-
+	end := time.Now().UTC().Add(45 * time.Second)
 	for {
+		now := time.Now().UTC()
+		//fmt.Println(now, end)
+		if end.Before(now) {
+			break
+		}
 
 		withdraw, err = a.uuc.GetWithdrawPassOrRewardedFirst(ctx)
 		if nil == withdraw {

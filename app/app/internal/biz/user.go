@@ -345,6 +345,8 @@ type UserInfoRepo interface {
 	UpdateUserPassword(ctx context.Context, userId int64, password string) (*User, error)
 	UpdateUser(ctx context.Context, userId int64, amount uint64, originTotal uint64, strUpdate string) error
 	UpdateUserNewTwo(ctx context.Context, userId int64, amount uint64, originTotal uint64, strUpdate string, uudt int64, kkdt int64) error
+	UpdateUserNewTwoNew(ctx context.Context, userId int64, amount uint64, originTotal uint64, strUpdate string, last int64, uudt int64, kkdt int64) error
+	UpdateUserLast(ctx context.Context, userId int64) error
 	UpdateUserNew(ctx context.Context, userId int64, total uint64) error
 	UpdateUserInfo(ctx context.Context, u *UserInfo) (*UserInfo, error)
 	UpdateUserInfo2(ctx context.Context, u *UserInfo) (*UserInfo, error)

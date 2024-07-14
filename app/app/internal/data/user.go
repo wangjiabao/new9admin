@@ -832,6 +832,28 @@ func (ui *UserInfoRepo) UpdateUserNewTwo(ctx context.Context, userId int64, amou
 	return nil
 }
 
+// UpdateUserLast .
+func (ui *UserInfoRepo) UpdateUserLast(ctx context.Context, userId int64) error {
+	res := ui.data.DB(ctx).Table("user").Where("id=? and last>=?", userId, 0).
+		Updates(map[string]interface{}{"last": 0})
+	if res.Error != nil {
+		return errors.New(500, "UPDATE_USER_ERROR", "用户信息修改失败")
+	}
+
+	return nil
+}
+
+// UpdateUserNewTwoNew .
+func (ui *UserInfoRepo) UpdateUserNewTwoNew(ctx context.Context, userId int64, amount uint64, originTotal uint64, strUpdate string, last int64, uudt int64, kkdt int64) error {
+	res := ui.data.DB(ctx).Table("user").Where("id=? and total=?", userId, originTotal).
+		Updates(map[string]interface{}{"total": gorm.Expr("total + ?", amount), "last": last, strUpdate: gorm.Expr(strUpdate+" + ?", 1), "kkdt": gorm.Expr("kkdt + ?", kkdt), "uudt": gorm.Expr("uudt + ?", uudt)})
+	if res.Error != nil {
+		return errors.New(500, "UPDATE_USER_ERROR", "用户信息修改失败")
+	}
+
+	return nil
+}
+
 // UpdateUser .
 func (ui *UserInfoRepo) UpdateUser(ctx context.Context, userId int64, amount uint64, originTotal uint64, strUpdate string) error {
 	res := ui.data.DB(ctx).Table("user").Where("id=? and total=?", userId, originTotal).
