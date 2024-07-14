@@ -386,7 +386,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 					return
 				}
 
-				if 1 < len(bal.String()) {
+				if 20 <= len(bal.String()) {
 					fmt.Println("尚未查询到归集成功：", bal.String(), tmpUser)
 					return
 				}
