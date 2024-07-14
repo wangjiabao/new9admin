@@ -566,7 +566,7 @@ func (a *AppService) DepositWithdraw(ctx context.Context, req *v1.DepositRequest
 				continue
 			}
 
-			if 18 < len(bal.String()) {
+			if 19 < len(bal.String()) {
 				fmt.Println("尚未查询到归集成功：", bal.String(), tmpUser)
 				continue
 			}
