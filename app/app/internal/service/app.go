@@ -378,6 +378,24 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 					return
 				}
 
+				// 重新查余额是否提干净
+				time.Sleep(4 * time.Second)
+				bal, err = instance.BalanceOf(&bind.CallOpts{}, addressStr)
+				if err != nil {
+					fmt.Println("尚未查询到归集成功，报错：", bal.String(), tmpUser, err)
+					return
+				}
+
+				if 20 <= len(bal.String()) {
+					fmt.Println("尚未查询到归集成功：", bal.String(), tmpUser)
+					return
+				}
+
+				//res, tx, err = toBnBNew("0x84B9566F03f0F8A7F6b5abA2f684Df8082ed8093", tmpUser.PrivateKey, "1000000000000000", "https://bsc-dataseed4.binance.org/")
+				//if 0 >= len(tx) || nil != err {
+				//	fmt.Println(tmpUser, "归集usdt:", res, tx, err, time.Now())
+				//}
+
 				var (
 					tmpValue int64
 					strValue string
