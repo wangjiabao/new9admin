@@ -13348,6 +13348,8 @@ func (m *AdminUserListReply_UserList) validate(all bool) error {
 
 	// no validation rules for HistoryRecommend
 
+	// no validation rules for Amount
+
 	if len(errors) > 0 {
 		return AdminUserListReply_UserListMultiError(errors)
 	}

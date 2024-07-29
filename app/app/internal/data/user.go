@@ -23,6 +23,7 @@ type User struct {
 	TotalC     int64     `gorm:"type:int;not null"`
 	TotalD     int64     `gorm:"type:int;not null"`
 	TotalF     int64     `gorm:"type:int;not null"`
+	Amount     uint64    `gorm:"type:bigint;not null"`
 	CreatedAt  time.Time `gorm:"type:datetime;not null"`
 	UpdatedAt  time.Time `gorm:"type:datetime;not null"`
 }
@@ -727,6 +728,7 @@ func (u *UserRepo) GetUsers(ctx context.Context, b *biz.Pagination, address stri
 			Address:   item.Address,
 			CreatedAt: item.CreatedAt,
 			Total:     item.Total,
+			Amount:    item.Amount,
 		})
 	}
 	return res, nil, count

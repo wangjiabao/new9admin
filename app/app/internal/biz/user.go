@@ -28,6 +28,7 @@ type User struct {
 	TotalC     int64
 	TotalD     int64
 	TotalF     int64
+	Amount     uint64
 	CreatedAt  time.Time
 }
 
@@ -736,6 +737,7 @@ func (uuc *UserUseCase) AdminUserList(ctx context.Context, req *v1.AdminUserList
 			CreatedAt:        vUsers.CreatedAt.Add(8 * time.Hour).Format("2006-01-02 15:04:05"),
 			Address:          vUsers.Address,
 			BalanceUsdt:      int64(vUsers.Total),
+			Amount:           int64(vUsers.Amount),
 			BalanceDhb:       userBalances[vUsers.ID].BalanceDhb,
 			Vip:              0,
 			HistoryRecommend: int64(len(myRecommendUserIds)),

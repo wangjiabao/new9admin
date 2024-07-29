@@ -614,6 +614,7 @@ message AdminUserListReply { // 用户信息
 		int64 areaMax = 11; // 大区
 		int64 vip = 5; // 会员等级
 		int64 historyRecommend = 6; // 历史推荐人数
+		int64 amount = 19;
 	}
 
 	int64 count = 2;
