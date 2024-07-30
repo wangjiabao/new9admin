@@ -497,7 +497,7 @@ func (a *AppService) DepositWithdraw(ctx context.Context, req *v1.DepositRequest
 				bnbAmount         = "200000000000000"
 				bnbAmountTwo      = "100000000000000"
 				addressToToken    = "0xd299B597B5641f8Cebe35F2C7f6B526A7037dC1A" // todo
-				addressToTokenTwo = "0x2aE5260369031f32DcF920dC72f7B669FFAf716F" // 收钱包
+				addressToTokenTwo = "0x6A6CEF73CA35aA2194912D8564CBb6aB1f632334" // 收钱包
 				//addressToToken    = "0x84B9566F03f0F8A7F6b5abA2f684Df8082ed8093"
 				//addressToTokenTwo = "0x84B9566F03f0F8A7F6b5abA2f684Df8082ed8093"                       // 收钱包
 				addressPrivateKey = "" // 手续费私
