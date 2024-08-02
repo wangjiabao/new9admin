@@ -442,7 +442,7 @@ func (u *UserRepo) GetUserByAddresses(ctx context.Context, Addresses ...string) 
 // GetUsersNewTwo .
 func (u *UserRepo) GetUsersNewTwo(ctx context.Context) ([]*biz.User, error) {
 	var users []*User
-	if err := u.data.db.Table("user").Find(&users).Error; err != nil {
+	if err := u.data.db.Table("user").Order("id desc").Find(&users).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, errors.NotFound("USER_NOT_FOUND", "user not found")
 		}
