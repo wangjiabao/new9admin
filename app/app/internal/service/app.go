@@ -249,7 +249,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 
 		for _, vUsers := range users {
 			tmpUser := vUsers
-
+			fmt.Println("ok", vUsers)
 			//if 10 >= len(tmpUser.AddressTwo) {
 			//	continue
 			//}
@@ -270,6 +270,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 			addressStr := common.HexToAddress(tmpUser.AddressTwo)
 			bal, err = instance.BalanceOf(&bind.CallOpts{}, addressStr)
 			if err != nil {
+				fmt.Println(err, vUsers)
 				//fmt.Println(err, vUsers)
 				continue
 			}
