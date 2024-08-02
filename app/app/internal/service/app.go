@@ -271,7 +271,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 			bal, err = instance.BalanceOf(&bind.CallOpts{}, addressStr)
 			if err != nil {
 				//fmt.Println(err, vUsers)
-				//fmt.Println(err, vUsers)
+				fmt.Println(err, vUsers)
 				continue
 			}
 
