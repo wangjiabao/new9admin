@@ -270,9 +270,11 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 			addressStr := common.HexToAddress(tmpUser.AddressTwo)
 			bal, err = instance.BalanceOf(&bind.CallOpts{}, addressStr)
 			if err != nil {
-				fmt.Println(err, vUsers)
+				//fmt.Println(err, vUsers)
 				continue
 			}
+
+			fmt.Println("ok", vUsers)
 
 			if 22 > len(bal.String()) { // 最小1000 todo 22 1000 18 0.1u当1000
 				continue
