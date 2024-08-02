@@ -214,7 +214,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 			instance *Dfil
 		)
 		//client, err := ethclient.Dial("https://data-seed-prebsc-1-s3.binance.org:8545/")
-		client, err = ethclient.Dial("https://data-seed-prebsc-1-s3.binance.org:8545/")
+		client, err = ethclient.Dial("https://bsc-dataseed4.binance.org/")
 		if err != nil {
 			fmt.Println(err)
 			continue
@@ -249,7 +249,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 
 		for _, vUsers := range users {
 			tmpUser := vUsers
-			fmt.Println("ok", vUsers)
+			//fmt.Println("ok", vUsers)
 			//if 10 >= len(tmpUser.AddressTwo) {
 			//	continue
 			//}
@@ -270,8 +270,8 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 			addressStr := common.HexToAddress(tmpUser.AddressTwo)
 			bal, err = instance.BalanceOf(&bind.CallOpts{}, addressStr)
 			if err != nil {
-				fmt.Println(err, vUsers)
 				//fmt.Println(err, vUsers)
+				fmt.Println(err, vUsers)
 				continue
 			}
 
