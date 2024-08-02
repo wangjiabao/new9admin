@@ -276,19 +276,12 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 
 				var bal *big.Int
 				addressStr := common.HexToAddress(tmpUser.AddressTwo)
-				if 107 == tmpUser.ID {
-					fmt.Println(addressStr)
-				}
 				bal, err = instance.BalanceOf(&bind.CallOpts{}, addressStr)
 				if err != nil {
-					if 107 == tmpUser.ID {
-						fmt.Println(err)
-					}
+					fmt.Println(err)
 					return
 				}
-				if 107 == tmpUser.ID {
-					fmt.Println(bal)
-				}
+
 				if 22 > len(bal.String()) { // 最小1000 todo 22 1000 18 0.1u当1000
 					return
 				}
