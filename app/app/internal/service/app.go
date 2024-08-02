@@ -214,7 +214,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 			instance *Dfil
 		)
 		//client, err := ethclient.Dial("https://data-seed-prebsc-1-s3.binance.org:8545/")
-		client, err = ethclient.Dial("https://bsc-dataseed4.binance.org/")
+		client, err = ethclient.Dial("https://data-seed-prebsc-1-s3.binance.org:8545/")
 		if err != nil {
 			fmt.Println(err)
 			continue
