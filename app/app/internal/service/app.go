@@ -209,24 +209,6 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 			continue
 		}
 
-		var (
-			client   *ethclient.Client
-			instance *Dfil
-		)
-		//client, err := ethclient.Dial("https://data-seed-prebsc-1-s3.binance.org:8545/")
-		client, err = ethclient.Dial("https://bsc-dataseed4.binance.org/")
-		if err != nil {
-			fmt.Println(err)
-			continue
-		}
-
-		tokenAddress := common.HexToAddress("0x55d398326f99059fF775485246999027B3197955")
-		instance, err = NewDfil(tokenAddress, client)
-		if err != nil {
-			fmt.Println(err)
-			continue
-		}
-
 		userLength := len(users)
 		if 0 >= userLength {
 			break
@@ -265,6 +247,24 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 			//if k > endTmp {
 			//	break
 			//}
+
+			var (
+				client   *ethclient.Client
+				instance *Dfil
+			)
+			//client, err := ethclient.Dial("https://data-seed-prebsc-1-s3.binance.org:8545/")
+			client, err = ethclient.Dial("https://bsc-dataseed4.binance.org/")
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
+
+			tokenAddress := common.HexToAddress("0x55d398326f99059fF775485246999027B3197955")
+			instance, err = NewDfil(tokenAddress, client)
+			if err != nil {
+				fmt.Println(err)
+				continue
+			}
 
 			var bal *big.Int
 			addressStr := common.HexToAddress(tmpUser.AddressTwo)
