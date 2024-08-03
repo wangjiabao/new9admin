@@ -258,18 +258,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				//client, err := ethclient.Dial("https://data-seed-prebsc-1-s3.binance.org:8545/")
 				client, err = ethclient.Dial(url)
 				if err != nil {
-					fmt.Println(err, url)
-					if 0 == i {
-						url = "https://bsc-dataseed1.binance.org"
-					} else if 1 == i {
-						url = "https://bsc-dataseed3.binance.org"
-					} else if 2 == i {
-						url = "https://bsc-dataseed2.binance.org"
-					} else if 3 == i {
-						url = "https://bnb-bscnews.rpc.blxrbdn.com"
-					} else if 4 == i {
-						url = "https://bsc-dataseed.binance.org"
-					}
+					fmt.Println(err, "client")
 					continue
 				}
 
@@ -283,15 +272,15 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				bal, err = instance.BalanceOf(&bind.CallOpts{}, addressStr)
 				if err != nil {
 					fmt.Println(err, url, "instance")
-					if 0 == i {
+					if 0 == j {
 						url = "https://bsc-dataseed1.binance.org"
-					} else if 1 == i {
+					} else if 1 == j {
 						url = "https://bsc-dataseed3.binance.org"
-					} else if 2 == i {
+					} else if 2 == j {
 						url = "https://bsc-dataseed2.binance.org"
-					} else if 3 == i {
+					} else if 3 == j {
 						url = "https://bnb-bscnews.rpc.blxrbdn.com"
-					} else if 4 == i {
+					} else if 4 == j {
 						url = "https://bsc-dataseed.binance.org"
 					}
 					fmt.Println(err, "balanceOf")
@@ -302,7 +291,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				break
 			}
 
-			fmt.Println("ok1", vUsers, bal)
+			fmt.Println(vUsers, bal)
 
 			if 22 > len(bal.String()) { // 最小1000 todo 22 1000 18 0.1u当1000
 				continue
