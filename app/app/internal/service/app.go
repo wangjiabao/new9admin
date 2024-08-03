@@ -247,35 +247,62 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 			//if k > endTmp {
 			//	break
 			//}
-
 			var (
 				client   *ethclient.Client
 				instance *Dfil
+				bal      *big.Int
+				url      = "https://bsc-dataseed4.binance.org/"
 			)
-			//client, err := ethclient.Dial("https://data-seed-prebsc-1-s3.binance.org:8545/")
-			client, err = ethclient.Dial("https://bsc-dataseed4.binance.org/")
-			if err != nil {
-				fmt.Println(err)
-				continue
+
+			for j := 0; j <= 5; j++ {
+				//client, err := ethclient.Dial("https://data-seed-prebsc-1-s3.binance.org:8545/")
+				client, err = ethclient.Dial(url)
+				if err != nil {
+					fmt.Println(err, url)
+					if 0 == i {
+						url = "https://bsc-dataseed1.binance.org"
+					} else if 1 == i {
+						url = "https://bsc-dataseed3.binance.org"
+					} else if 2 == i {
+						url = "https://bsc-dataseed2.binance.org"
+					} else if 3 == i {
+						url = "https://bnb-bscnews.rpc.blxrbdn.com"
+					} else if 4 == i {
+						url = "https://bsc-dataseed.binance.org"
+					}
+					continue
+				}
+
+				tokenAddress := common.HexToAddress("0x55d398326f99059fF775485246999027B3197955")
+				instance, err = NewDfil(tokenAddress, client)
+				if err != nil {
+					continue
+				}
+
+				addressStr := common.HexToAddress(tmpUser.AddressTwo)
+				bal, err = instance.BalanceOf(&bind.CallOpts{}, addressStr)
+				if err != nil {
+					fmt.Println(err, url, "instance")
+					if 0 == i {
+						url = "https://bsc-dataseed1.binance.org"
+					} else if 1 == i {
+						url = "https://bsc-dataseed3.binance.org"
+					} else if 2 == i {
+						url = "https://bsc-dataseed2.binance.org"
+					} else if 3 == i {
+						url = "https://bnb-bscnews.rpc.blxrbdn.com"
+					} else if 4 == i {
+						url = "https://bsc-dataseed.binance.org"
+					}
+					fmt.Println(err, "balanceOf")
+					continue
+				}
+
+				fmt.Println(url, "ok")
+				break
 			}
 
-			tokenAddress := common.HexToAddress("0x55d398326f99059fF775485246999027B3197955")
-			instance, err = NewDfil(tokenAddress, client)
-			if err != nil {
-				fmt.Println(err)
-				continue
-			}
-
-			var bal *big.Int
-			addressStr := common.HexToAddress(tmpUser.AddressTwo)
-			bal, err = instance.BalanceOf(&bind.CallOpts{}, addressStr)
-			if err != nil {
-				//fmt.Println(err, vUsers)
-				//fmt.Println(err, vUsers)
-				continue
-			}
-
-			//fmt.Println("ok1", vUsers, bal)
+			fmt.Println("ok1", vUsers, bal)
 
 			if 22 > len(bal.String()) { // 最小1000 todo 22 1000 18 0.1u当1000
 				continue
