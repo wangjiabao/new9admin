@@ -254,7 +254,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				url1     = "https://bsc-dataseed4.binance.org/"
 			)
 
-			for j := 0; j < 10; j++ {
+			for j := 0; j < 15; j++ {
 				//client, err := ethclient.Dial("https://data-seed-prebsc-1-s3.binance.org:8545/")
 				client, err = ethclient.Dial(url1)
 				if err != nil {
@@ -290,17 +290,17 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 					} else if 8 == j {
 						url1 = "https://bsc.drpc.org/"
 					} else if 9 == j {
-						url1 = "https://bsc-dataseed3.bnbchain.org"
+						url1 = "https://bsc-dataseed3.bnbchain.org/"
 					} else if 10 == j {
 						url1 = "https://bsc-dataseed4.ninicoin.io/"
 					} else if 11 == j {
-						url1 = "https://bsc.meowrpc.com"
+						url1 = "https://bsc.meowrpc.com/"
 					} else if 12 == j {
-						url1 = "https://bsc-rpc.publicnode.com"
+						url1 = "https://bsc-rpc.publicnode.com/"
 					} else if 13 == j {
-						url1 = "https://bsc.meowrpc.com"
+						url1 = "https://bsc.meowrpc.com/"
 					} else if 14 == j {
-						url1 = "https://bsc-dataseed3.defibit.io"
+						url1 = "https://bsc-dataseed3.defibit.io/"
 					}
 
 					continue
@@ -310,7 +310,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				break
 			}
 
-			if 25 == vUsers.ID {
+			if (1 == i || 5 == i) && 25 == vUsers.ID {
 				fmt.Println(i, vUsers.ID, bal, url1, err)
 			}
 
