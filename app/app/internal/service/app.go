@@ -251,7 +251,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				client   *ethclient.Client
 				instance *Dfil
 				bal      *big.Int
-				url1     = "https://bsc-dataseed4.binance.org/"
+				url1     = "https://bscrpc.com/"
 			)
 
 			for j := 0; j < 10; j++ {
@@ -272,25 +272,25 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				bal, err = instance.BalanceOf(&bind.CallOpts{}, addressStr)
 				if err != nil {
 					if 0 == j {
-						url1 = "https://bscrpc.com"
+						url1 = "https://binance.llamarpc.com/"
 					} else if 1 == j {
-						url1 = "https://binance.llamarpc.com"
+						url1 = "https://bsc-dataseed4.binance.org/"
 					} else if 2 == j {
-						url1 = "https://bsc-pokt.nodies.app"
+						url1 = "https://bsc-pokt.nodies.app/"
 					} else if 3 == j {
-						url1 = "https://data-seed-prebsc-1-s3.binance.org:8545"
+						url1 = "https://data-seed-prebsc-1-s3.binance.org:8545/"
 					} else if 4 == j {
-						url1 = "https://bsc-dataseed.binance.org"
+						url1 = "https://bsc-dataseed.binance.org/"
 					} else if 5 == j {
-						url1 = "https://bsc-pokt.nodies.app"
+						url1 = "https://bsc-pokt.nodies.app/"
 					} else if 6 == j {
-						url1 = "https://bsc-dataseed.bnbchain.org"
+						url1 = "https://bsc-dataseed.bnbchain.org/"
 					} else if 7 == j {
-						url1 = "https://bsc-dataseed3.bnbchain.org"
+						url1 = "https://bsc-dataseed3.bnbchain.org/"
 					} else if 8 == j {
-						url1 = "https://bsc.drpc.org"
+						url1 = "https://bsc.drpc.org/"
 					} else if 9 == j {
-						url1 = "https://bsc-dataseed4.ninicoin.io"
+						url1 = "https://bsc-dataseed4.ninicoin.io/"
 					}
 					continue
 				}
