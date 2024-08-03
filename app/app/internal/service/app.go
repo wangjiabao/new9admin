@@ -272,11 +272,11 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				bal, err = instance.BalanceOf(&bind.CallOpts{}, addressStr)
 				if err != nil {
 					if 0 == j {
-						url1 = "https://bsc-dataseed1.binance.org"
+						url1 = "https://bscrpc.com"
 					} else if 1 == j {
 						url1 = "https://binance.llamarpc.com"
 					} else if 2 == j {
-						url1 = "https://bsc-dataseed2.binance.org"
+						url1 = "https://bsc-pokt.nodies.app"
 					} else if 3 == j {
 						url1 = "https://data-seed-prebsc-1-s3.binance.org:8545"
 					} else if 4 == j {
@@ -299,7 +299,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				break
 			}
 
-			if 1 == vUsers.ID || 26 == vUsers.ID || 25 == vUsers.ID {
+			if 25 == vUsers.ID {
 				fmt.Println(i, vUsers.ID, bal, url1)
 			}
 
