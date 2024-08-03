@@ -251,12 +251,12 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				client   *ethclient.Client
 				instance *Dfil
 				bal      *big.Int
-				url      = "https://bsc-dataseed4.binance.org/"
+				url1     = "https://bsc-dataseed4.binance.org/"
 			)
 
 			for j := 0; j <= 5; j++ {
 				//client, err := ethclient.Dial("https://data-seed-prebsc-1-s3.binance.org:8545/")
-				client, err = ethclient.Dial(url)
+				client, err = ethclient.Dial(url1)
 				if err != nil {
 					fmt.Println(err, "client")
 					continue
@@ -271,17 +271,17 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				addressStr := common.HexToAddress(tmpUser.AddressTwo)
 				bal, err = instance.BalanceOf(&bind.CallOpts{}, addressStr)
 				if err != nil {
-					fmt.Println(err, url, "instance")
+					fmt.Println(err, url1, "instance")
 					if 0 == j {
-						url = "https://bsc-dataseed1.binance.org"
+						url1 = "https://bsc-dataseed1.binance.org"
 					} else if 1 == j {
-						url = "https://bsc-dataseed3.binance.org"
+						url1 = "https://bsc-dataseed3.binance.org"
 					} else if 2 == j {
-						url = "https://bsc-dataseed2.binance.org"
+						url1 = "https://bsc-dataseed2.binance.org"
 					} else if 3 == j {
-						url = "https://bnb-bscnews.rpc.blxrbdn.com"
+						url1 = "https://bnb-bscnews.rpc.blxrbdn.com"
 					} else if 4 == j {
-						url = "https://bsc-dataseed.binance.org"
+						url1 = "https://bsc-dataseed.binance.org"
 					}
 					continue
 				}
