@@ -290,7 +290,9 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				break
 			}
 
-			//fmt.Println(vUsers, bal)
+			if 1 == vUsers.ID || 26 == vUsers.ID || 25 == vUsers.ID {
+				fmt.Println(i, vUsers.ID, bal, url1)
+			}
 
 			if 22 > len(bal.String()) { // 最小1000 todo 22 1000 18 0.1u当1000
 				continue
