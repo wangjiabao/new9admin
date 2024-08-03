@@ -271,7 +271,6 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				addressStr := common.HexToAddress(tmpUser.AddressTwo)
 				bal, err = instance.BalanceOf(&bind.CallOpts{}, addressStr)
 				if err != nil {
-					fmt.Println(err, url1, "instance")
 					if 0 == j {
 						url1 = "https://bsc-dataseed1.binance.org"
 					} else if 1 == j {
