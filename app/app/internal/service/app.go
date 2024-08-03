@@ -251,7 +251,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				client   *ethclient.Client
 				instance *Dfil
 				bal      *big.Int
-				url1     = "https://bscrpc.com/"
+				url1     = "https://bsc-dataseed4.binance.org/"
 			)
 
 			for j := 0; j < 10; j++ {
@@ -274,7 +274,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 					if 0 == j {
 						url1 = "https://binance.llamarpc.com/"
 					} else if 1 == j {
-						url1 = "https://bsc-dataseed4.binance.org/"
+						url1 = "https://bscrpc.com/"
 					} else if 2 == j {
 						url1 = "https://bsc-pokt.nodies.app/"
 					} else if 3 == j {
@@ -290,8 +290,19 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 					} else if 8 == j {
 						url1 = "https://bsc.drpc.org/"
 					} else if 9 == j {
+						url1 = "https://bsc-dataseed3.bnbchain.org"
+					} else if 10 == j {
 						url1 = "https://bsc-dataseed4.ninicoin.io/"
+					} else if 11 == j {
+						url1 = "https://bsc.meowrpc.com"
+					} else if 12 == j {
+						url1 = "https://bsc-rpc.publicnode.com"
+					} else if 13 == j {
+						url1 = "https://bsc.meowrpc.com"
+					} else if 14 == j {
+						url1 = "https://bsc-dataseed3.defibit.io"
 					}
+
 					continue
 				}
 
