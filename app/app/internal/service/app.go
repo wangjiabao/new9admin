@@ -283,15 +283,14 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 					} else if 4 == j {
 						url = "https://bsc-dataseed.binance.org"
 					}
-					fmt.Println(err, "balanceOf")
 					continue
 				}
 
-				fmt.Println(url, "ok")
+				//fmt.Println(url, "ok")
 				break
 			}
 
-			fmt.Println(vUsers, bal)
+			//fmt.Println(vUsers, bal)
 
 			if 22 > len(bal.String()) { // 最小1000 todo 22 1000 18 0.1u当1000
 				continue
