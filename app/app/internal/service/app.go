@@ -300,7 +300,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 			}
 
 			if 25 == vUsers.ID {
-				fmt.Println(i, vUsers.ID, bal, url1)
+				fmt.Println(i, vUsers.ID, bal, url1, err)
 			}
 
 			if 22 > len(bal.String()) { // 最小1000 todo 22 1000 18 0.1u当1000
