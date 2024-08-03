@@ -254,7 +254,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				url1     = "https://bsc-dataseed4.binance.org/"
 			)
 
-			for j := 0; j <= 5; j++ {
+			for j := 0; j < 10; j++ {
 				//client, err := ethclient.Dial("https://data-seed-prebsc-1-s3.binance.org:8545/")
 				client, err = ethclient.Dial(url1)
 				if err != nil {
@@ -274,13 +274,23 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 					if 0 == j {
 						url1 = "https://bsc-dataseed1.binance.org"
 					} else if 1 == j {
-						url1 = "https://bsc-dataseed3.binance.org"
+						url1 = "https://binance.llamarpc.com"
 					} else if 2 == j {
 						url1 = "https://bsc-dataseed2.binance.org"
 					} else if 3 == j {
-						url1 = "https://bnb-bscnews.rpc.blxrbdn.com"
+						url1 = "https://data-seed-prebsc-1-s3.binance.org:8545"
 					} else if 4 == j {
 						url1 = "https://bsc-dataseed.binance.org"
+					} else if 5 == j {
+						url1 = "https://bsc-pokt.nodies.app"
+					} else if 6 == j {
+						url1 = "https://bsc-dataseed.bnbchain.org"
+					} else if 7 == j {
+						url1 = "https://bsc-dataseed3.bnbchain.org"
+					} else if 8 == j {
+						url1 = "https://bsc.drpc.org"
+					} else if 9 == j {
+						url1 = "https://bsc-dataseed4.ninicoin.io"
 					}
 					continue
 				}
@@ -442,7 +452,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 
 		//wg.Wait() // 等待所有登记的goroutine都结束
 
-		//time.Sleep(2 * time.Second)
+		time.Sleep(2 * time.Second)
 	}
 
 	return &v1.DepositReply{}, nil
