@@ -549,7 +549,7 @@ func (a *AppService) DepositWithdraw(ctx context.Context, req *v1.DepositRequest
 			}
 
 			// 初始化百分比
-			percent := big.NewRat(97, 100) // 97%
+			percent := big.NewRat(98, 100) // 97%
 
 			// 计算97%的值
 			balRat := new(big.Rat).SetInt(bal)
