@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-http v2.7.1
 // - protoc             v3.21.7
-// source: app/app/api/app.proto
+// source: api/app.proto
 
 package api
 
@@ -35,6 +35,7 @@ const OperationAppAdminDailyLocationReward = "/api.App/AdminDailyLocationReward"
 const OperationAppAdminDailyLocationRewardNew = "/api.App/AdminDailyLocationRewardNew"
 const OperationAppAdminDailyRecommendReward = "/api.App/AdminDailyRecommendReward"
 const OperationAppAdminFee = "/api.App/AdminFee"
+const OperationAppAdminKkdtUpdate = "/api.App/AdminKkdtUpdate"
 const OperationAppAdminList = "/api.App/AdminList"
 const OperationAppAdminLocationAllList = "/api.App/AdminLocationAllList"
 const OperationAppAdminLocationInsert = "/api.App/AdminLocationInsert"
@@ -98,6 +99,7 @@ type AppHTTPServer interface {
 	AdminDailyLocationRewardNew(context.Context, *AdminDailyLocationRewardNewRequest) (*AdminDailyLocationRewardNewReply, error)
 	AdminDailyRecommendReward(context.Context, *AdminDailyRecommendRewardRequest) (*AdminDailyRecommendRewardReply, error)
 	AdminFee(context.Context, *AdminFeeRequest) (*AdminFeeReply, error)
+	AdminKkdtUpdate(context.Context, *AdminKkdtUpdateRequest) (*AdminKkdtUpdateReply, error)
 	AdminList(context.Context, *AdminListRequest) (*AdminListReply, error)
 	AdminLocationAllList(context.Context, *AdminLocationAllListRequest) (*AdminLocationAllListReply, error)
 	AdminLocationInsert(context.Context, *AdminLocationInsertRequest) (*AdminLocationInsertReply, error)
@@ -187,6 +189,7 @@ func RegisterAppHTTPServer(s *http.Server, srv AppHTTPServer) {
 	r.POST("/api/admin_dhb/password_update", _App_AdminUserPasswordUpdate0_HTTP_Handler(srv))
 	r.POST("/api/admin_dhb/admin_update_location_new_max", _App_AdminUpdateLocationNewMax0_HTTP_Handler(srv))
 	r.POST("/api/admin_dhb/vip_update", _App_AdminVipUpdate0_HTTP_Handler(srv))
+	r.POST("/api/admin_dhb/kkdt_update", _App_AdminKkdtUpdate0_HTTP_Handler(srv))
 	r.POST("/api/admin_dhb/undo_update", _App_AdminUndoUpdate0_HTTP_Handler(srv))
 	r.POST("/api/admin_dhb/level_update", _App_AdminAreaLevelUpdate0_HTTP_Handler(srv))
 	r.POST("/api/admin_dhb/location_insert", _App_AdminLocationInsert0_HTTP_Handler(srv))
@@ -988,6 +991,28 @@ func _App_AdminVipUpdate0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context)
 	}
 }
 
+func _App_AdminKkdtUpdate0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in AdminKkdtUpdateRequest
+		if err := ctx.Bind(&in.SendBody); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAppAdminKkdtUpdate)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.AdminKkdtUpdate(ctx, req.(*AdminKkdtUpdateRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*AdminKkdtUpdateReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 func _App_AdminUndoUpdate0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in AdminUndoUpdateRequest
@@ -1431,6 +1456,7 @@ type AppHTTPClient interface {
 	AdminDailyLocationRewardNew(ctx context.Context, req *AdminDailyLocationRewardNewRequest, opts ...http.CallOption) (rsp *AdminDailyLocationRewardNewReply, err error)
 	AdminDailyRecommendReward(ctx context.Context, req *AdminDailyRecommendRewardRequest, opts ...http.CallOption) (rsp *AdminDailyRecommendRewardReply, err error)
 	AdminFee(ctx context.Context, req *AdminFeeRequest, opts ...http.CallOption) (rsp *AdminFeeReply, err error)
+	AdminKkdtUpdate(ctx context.Context, req *AdminKkdtUpdateRequest, opts ...http.CallOption) (rsp *AdminKkdtUpdateReply, err error)
 	AdminList(ctx context.Context, req *AdminListRequest, opts ...http.CallOption) (rsp *AdminListReply, err error)
 	AdminLocationAllList(ctx context.Context, req *AdminLocationAllListRequest, opts ...http.CallOption) (rsp *AdminLocationAllListReply, err error)
 	AdminLocationInsert(ctx context.Context, req *AdminLocationInsertRequest, opts ...http.CallOption) (rsp *AdminLocationInsertReply, err error)
@@ -1688,6 +1714,19 @@ func (c *AppHTTPClientImpl) AdminFee(ctx context.Context, in *AdminFeeRequest, o
 	opts = append(opts, http.Operation(OperationAppAdminFee))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "GET", path, nil, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AppHTTPClientImpl) AdminKkdtUpdate(ctx context.Context, in *AdminKkdtUpdateRequest, opts ...http.CallOption) (*AdminKkdtUpdateReply, error) {
+	var out AdminKkdtUpdateReply
+	pattern := "/api/admin_dhb/kkdt_update"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationAppAdminKkdtUpdate))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in.SendBody, &out, opts...)
 	if err != nil {
 		return nil, err
 	}

@@ -29,6 +29,7 @@ type User struct {
 	TotalD     int64
 	TotalF     int64
 	Amount     uint64
+	Kkdt       int64
 	CreatedAt  time.Time
 }
 
@@ -345,6 +346,7 @@ type UserInfoRepo interface {
 	GetUserInfoByUserId(ctx context.Context, userId int64) (*UserInfo, error)
 	UpdateUserPassword(ctx context.Context, userId int64, password string) (*User, error)
 	UpdateUser(ctx context.Context, userId int64, amount uint64, originTotal uint64, strUpdate string) error
+	UpdateUserKkdt(ctx context.Context, userId int64, amount uint64) error
 	UpdateUserNewTwo(ctx context.Context, userId int64, amount uint64, originTotal uint64, strUpdate string, uudt int64, kkdt int64) error
 	UpdateUserNewTwoNew(ctx context.Context, userId int64, amount uint64, originTotal uint64, strUpdate string, last int64, uudt int64, kkdt int64) error
 	UpdateUserNewTwoNewTwo(ctx context.Context, userId int64, amount uint64, last int64) error
@@ -741,6 +743,7 @@ func (uuc *UserUseCase) AdminUserList(ctx context.Context, req *v1.AdminUserList
 			BalanceDhb:       userBalances[vUsers.ID].BalanceDhb,
 			Vip:              0,
 			HistoryRecommend: int64(len(myRecommendUserIds)),
+			Kkdt:             vUsers.Kkdt,
 		})
 	}
 
@@ -1584,6 +1587,27 @@ func (uuc *UserUseCase) AdminVipUpdate(ctx context.Context, req *v1.AdminVipUpda
 		return nil
 	}); nil != err {
 		fmt.Println(err, "错误投资3", req.SendBody.UserId, int64(total), int64(user.Total))
+		return nil, err
+	}
+
+	return nil, nil
+}
+
+func (uuc *UserUseCase) AdminKkdtUpdate(ctx context.Context, req *v1.AdminKkdtUpdateRequest) (*v1.AdminKkdtUpdateReply, error) {
+	var (
+		err error
+	)
+
+	// 推荐人
+	if err = uuc.tx.ExecTx(ctx, func(ctx context.Context) error { // 事务
+		err = uuc.uiRepo.UpdateUserKkdt(ctx, req.SendBody.UserId, uint64(req.SendBody.Amount))
+		if nil != err {
+			return err
+		}
+
+		return nil
+	}); nil != err {
+		fmt.Println(err, "错误投资3", req.SendBody.UserId, req.SendBody.Amount)
 		return nil, err
 	}
 

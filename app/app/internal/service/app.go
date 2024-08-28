@@ -1423,6 +1423,10 @@ func (a *AppService) AdminVipUpdate(ctx context.Context, req *v1.AdminVipUpdateR
 	return a.uuc.AdminVipUpdate(ctx, req)
 }
 
+func (a *AppService) AdminKkdtUpdate(ctx context.Context, req *v1.AdminKkdtUpdateRequest) (*v1.AdminKkdtUpdateReply, error) {
+	return a.uuc.AdminKkdtUpdate(ctx, req)
+}
+
 func (a *AppService) VipCheck(ctx context.Context, req *v1.VipCheckRequest) (*v1.VipCheckReply, error) {
 	return a.uuc.VipCheck(ctx, req)
 }

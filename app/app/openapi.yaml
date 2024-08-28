@@ -304,6 +304,23 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Status'
     /api/admin_dhb/create_account:
+        get:
+            tags:
+                - App
+            operationId: App_TestCreateAccount
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/TestCreateAccountReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
         post:
             tags:
                 - App
@@ -334,6 +351,10 @@ paths:
             operationId: App_AdminDailyAreaReward
             parameters:
                 - name: date
+                  in: query
+                  schema:
+                    type: string
+                - name: day
                   in: query
                   schema:
                     type: string
@@ -373,6 +394,33 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+    /api/admin_dhb/daily_buy_reward:
+        get:
+            tags:
+                - App
+            operationId: App_AdminDailyBuyReward
+            parameters:
+                - name: date
+                  in: query
+                  schema:
+                    type: string
+                - name: day
+                  in: query
+                  schema:
+                    type: string
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminDailyLocationRewardReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /api/admin_dhb/daily_fee:
         get:
             tags:
@@ -404,6 +452,10 @@ paths:
             operationId: App_AdminDailyLocationReward
             parameters:
                 - name: date
+                  in: query
+                  schema:
+                    type: string
+                - name: day
                   in: query
                   schema:
                     type: string
@@ -551,6 +603,24 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+    /api/admin_dhb/deposit_withdraw:
+        get:
+            tags:
+                - App
+            operationId: App_DepositWithdraw
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/DepositReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /api/admin_dhb/fee:
         get:
             tags:
@@ -563,6 +633,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/AdminFeeReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
+    /api/admin_dhb/kkdt_update:
+        post:
+            tags:
+                - App
+            operationId: App_AdminKkdtUpdate
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AdminKkdtUpdateRequest_SendBody'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminKkdtUpdateReply'
                 default:
                     description: Default error response
                     content:
@@ -1329,11 +1423,23 @@ components:
                 totalIsps:
                     type: string
                 totalUsdt:
-                    type: string
+                    type: number
+                    format: double
                 todayWithdrawUsdt:
-                    type: string
+                    type: number
+                    format: double
                 totalWithdrawUsdt:
-                    type: string
+                    type: number
+                    format: double
+                totalFour:
+                    type: number
+                    format: double
+                totalFive:
+                    type: number
+                    format: double
+                total:
+                    type: number
+                    format: double
         AdminAreaLevelUpdateReply:
             type: object
             properties: {}
@@ -1423,6 +1529,16 @@ components:
         AdminFeeReply:
             type: object
             properties: {}
+        AdminKkdtUpdateReply:
+            type: object
+            properties: {}
+        AdminKkdtUpdateRequest_SendBody:
+            type: object
+            properties:
+                userId:
+                    type: string
+                amount:
+                    type: string
         AdminListReply:
             type: object
             properties:
@@ -1553,6 +1669,9 @@ components:
                     type: string
                 amount:
                     type: string
+                amountB:
+                    type: number
+                    format: double
                 address:
                     type: string
                 reason:
@@ -1621,7 +1740,8 @@ components:
                 balanceUsdt:
                     type: string
                 balanceDhb:
-                    type: string
+                    type: number
+                    format: double
                 out:
                     type: string
                 areaTotal:
@@ -1633,6 +1753,10 @@ components:
                 vip:
                     type: string
                 historyRecommend:
+                    type: string
+                amount:
+                    type: string
+                kkdt:
                     type: string
         AdminUserRecommendReply:
             type: object
@@ -1690,9 +1814,11 @@ components:
                 createdAt:
                     type: string
                 amount:
-                    type: string
+                    type: number
+                    format: double
                 relAmount:
-                    type: string
+                    type: number
+                    format: double
                 type:
                     type: string
                 status:
@@ -1883,6 +2009,9 @@ components:
                         $ref: '#/components/schemas/GoogleProtobufAny'
                     description: A list of messages that carry the error details.  There is a common set of message types for APIs to use.
             description: 'The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors).'
+        TestCreateAccountReply:
+            type: object
+            properties: {}
         UserAuthListReply:
             type: object
             properties:

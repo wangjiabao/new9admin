@@ -264,6 +264,13 @@ service App {
 		};
 	};
 
+	rpc AdminKkdtUpdate (AdminKkdtUpdateRequest) returns (AdminKkdtUpdateReply) {
+		option (google.api.http) = {
+			post: "/api/admin_dhb/kkdt_update"
+			body: "send_body"
+		};
+	};
+
 	rpc AdminUndoUpdate (AdminUndoUpdateRequest) returns (AdminUndoUpdateReply) {
 		option (google.api.http) = {
 			post: "/api/admin_dhb/undo_update"
@@ -615,6 +622,7 @@ message AdminUserListReply { // 用户信息
 		int64 vip = 5; // 会员等级
 		int64 historyRecommend = 6; // 历史推荐人数
 		int64 amount = 19;
+		int64 kkdt = 20;
 	}
 
 	int64 count = 2;
@@ -912,6 +920,19 @@ message AdminVipUpdateRequest {
 }
 
 message AdminVipUpdateReply {
+
+}
+
+message AdminKkdtUpdateRequest {
+	message SendBody{
+		int64 user_id = 1;
+		int64 amount = 2;
+	}
+
+	SendBody send_body = 1;
+}
+
+message AdminKkdtUpdateReply {
 
 }
 

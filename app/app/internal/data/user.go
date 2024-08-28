@@ -23,6 +23,7 @@ type User struct {
 	TotalC     int64     `gorm:"type:int;not null"`
 	TotalD     int64     `gorm:"type:int;not null"`
 	TotalF     int64     `gorm:"type:int;not null"`
+	Kkdt       int64     `gorm:"type:int;not null"`
 	Amount     uint64    `gorm:"type:bigint;not null"`
 	CreatedAt  time.Time `gorm:"type:datetime;not null"`
 	UpdatedAt  time.Time `gorm:"type:datetime;not null"`
@@ -729,6 +730,7 @@ func (u *UserRepo) GetUsers(ctx context.Context, b *biz.Pagination, address stri
 			CreatedAt: item.CreatedAt,
 			Total:     item.Total,
 			Amount:    item.Amount,
+			Kkdt:      item.Kkdt,
 		})
 	}
 	return res, nil, count
@@ -871,6 +873,17 @@ func (ui *UserInfoRepo) UpdateUserNewTwoNewTwo(ctx context.Context, userId int64
 func (ui *UserInfoRepo) UpdateUser(ctx context.Context, userId int64, amount uint64, originTotal uint64, strUpdate string) error {
 	res := ui.data.DB(ctx).Table("user").Where("id=? and total=?", userId, originTotal).
 		Updates(map[string]interface{}{"total": gorm.Expr("total + ?", amount), strUpdate: gorm.Expr(strUpdate+" + ?", 1)})
+	if res.Error != nil {
+		return errors.New(500, "UPDATE_USER_ERROR", "用户信息修改失败")
+	}
+
+	return nil
+}
+
+// UpdateUserkkdt .
+func (ui *UserInfoRepo) UpdateUserKkdt(ctx context.Context, userId int64, amount uint64) error {
+	res := ui.data.DB(ctx).Table("user").Where("id=?", userId).
+		Updates(map[string]interface{}{"kkdt": amount})
 	if res.Error != nil {
 		return errors.New(500, "UPDATE_USER_ERROR", "用户信息修改失败")
 	}
