@@ -1550,6 +1550,15 @@ func (uuc *UserUseCase) AdminVipUpdate(ctx context.Context, req *v1.AdminVipUpda
 	} else if 1000000 == req.SendBody.Vip {
 		total = 1000000
 		strUpdate = "total_g"
+	} else if 500 == req.SendBody.Vip {
+		total = 500
+		strUpdate = "total_h"
+	} else if 300 == req.SendBody.Vip {
+		total = 300
+		strUpdate = "total_i"
+	} else if 100 == req.SendBody.Vip {
+		total = 100
+		strUpdate = "total_j"
 	} else {
 		return nil, nil
 	}
