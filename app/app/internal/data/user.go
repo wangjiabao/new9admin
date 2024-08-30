@@ -23,6 +23,9 @@ type User struct {
 	TotalC     int64     `gorm:"type:int;not null"`
 	TotalD     int64     `gorm:"type:int;not null"`
 	TotalF     int64     `gorm:"type:int;not null"`
+	TotalH     int64     `gorm:"type:int;not null"`
+	TotalI     int64     `gorm:"type:int;not null"`
+	TotalJ     int64     `gorm:"type:int;not null"`
 	Kkdt       int64     `gorm:"type:int;not null"`
 	Amount     uint64    `gorm:"type:bigint;not null"`
 	CreatedAt  time.Time `gorm:"type:datetime;not null"`
@@ -464,6 +467,9 @@ func (u *UserRepo) GetUsersNewTwo(ctx context.Context) ([]*biz.User, error) {
 			TotalC:     item.TotalC,
 			TotalD:     item.TotalD,
 			TotalF:     item.TotalF,
+			TotalH:     item.TotalH,
+			TotalI:     item.TotalI,
+			TotalJ:     item.TotalJ,
 			Total:      item.Total,
 		})
 	}
@@ -495,6 +501,9 @@ func (u *UserRepo) GetUsersNew(ctx context.Context) ([]*biz.User, error) {
 			TotalC:     item.TotalC,
 			TotalD:     item.TotalD,
 			TotalF:     item.TotalF,
+			TotalH:     item.TotalH,
+			TotalI:     item.TotalI,
+			TotalJ:     item.TotalJ,
 			Total:      item.Total,
 		})
 	}
