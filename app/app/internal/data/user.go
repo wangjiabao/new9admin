@@ -23,6 +23,7 @@ type User struct {
 	TotalC     int64     `gorm:"type:int;not null"`
 	TotalD     int64     `gorm:"type:int;not null"`
 	TotalF     int64     `gorm:"type:int;not null"`
+	TotalG     int64     `gorm:"type:int;not null"`
 	TotalH     int64     `gorm:"type:int;not null"`
 	TotalI     int64     `gorm:"type:int;not null"`
 	TotalJ     int64     `gorm:"type:int;not null"`
@@ -501,6 +502,7 @@ func (u *UserRepo) GetUsersNew(ctx context.Context) ([]*biz.User, error) {
 			TotalC:     item.TotalC,
 			TotalD:     item.TotalD,
 			TotalF:     item.TotalF,
+			TotalG:     item.TotalG,
 			TotalH:     item.TotalH,
 			TotalI:     item.TotalI,
 			TotalJ:     item.TotalJ,

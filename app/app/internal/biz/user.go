@@ -28,6 +28,7 @@ type User struct {
 	TotalC     int64
 	TotalD     int64
 	TotalF     int64
+	TotalG     int64
 	TotalH     int64
 	TotalI     int64
 	TotalJ     int64
@@ -2253,96 +2254,56 @@ func (uuc *UserUseCase) AdminAll(ctx context.Context, req *v1.AdminAllRequest) (
 					fourUsers = append(fourUsers, vUsers)
 				}
 			}
+		}
 
-			for number > 0 {
-				if 1000000 <= number {
-					number -= 1000000
-					amounts += six
-				} else if 30000 <= number {
-					number -= 30000
-					amounts += five
-				} else if 15000 <= number {
-					number -= 15000
-					amounts += four
-				} else if 5000 <= number {
-					number -= 5000
-					amounts += three
-					amountSecond += threeTwo
-				} else if 3000 <= number {
-					number -= 3000
-					amounts += two
-					amountSecond += twoTwo
-				} else if 1000 <= number {
-					number -= 1000
-					amounts += one
-					amountSecond += oneTwo
-				} else if 500 <= number {
-					number -= 500
-					if 0 < nine {
-						amounts += nine
-					}
-					if 0 < nineTwo {
-						amountSecond += nineTwo
-					}
-				} else if 300 <= number {
-					number -= 300
-					if 0 < eight {
-						amounts += eight
-					}
-					if 0 < eightTwo {
-						amountSecond += eightTwo
-					}
-				} else if 100 <= number {
-					number -= 100
-					if 0 < seven {
-						amounts += seven
-					}
-					if 0 < sevenTwo {
-						amountSecond += sevenTwo
-					}
-				} else {
-					break
-				}
+		for i := 0; i < int(vUsers.TotalD); i++ {
+			amounts += four
+		}
+		for i := 0; i < int(vUsers.TotalF); i++ {
+			amounts += five
+		}
+		for i := 0; i < int(vUsers.TotalG); i++ {
+			amounts += six
+		}
+
+		// 普通
+		for i := 0; i < int(vUsers.TotalA); i++ {
+			amounts += one
+			amountSecond += oneTwo
+		}
+		for i := 0; i < int(vUsers.TotalB); i++ {
+			amounts += two
+			amountSecond += twoTwo
+		}
+		for i := 0; i < int(vUsers.TotalC); i++ {
+			amounts += three
+			amountSecond += threeTwo
+		}
+		for i := 0; i < int(vUsers.TotalH); i++ {
+			if 0 < nine {
+				amounts += nine
 			}
-		} else {
-			// 普通
-			for i := 0; i < int(vUsers.TotalA); i++ {
-				amounts += one
-				amountSecond += oneTwo
-			}
-			for i := 0; i < int(vUsers.TotalB); i++ {
-				amounts += two
-				amountSecond += twoTwo
-			}
-			for i := 0; i < int(vUsers.TotalC); i++ {
-				amounts += three
-				amountSecond += threeTwo
-			}
-			for i := 0; i < int(vUsers.TotalH); i++ {
-				if 0 < nine {
-					amounts += nine
-				}
-				if 0 < nineTwo {
-					amountSecond += nineTwo
-				}
-			}
-			for i := 0; i < int(vUsers.TotalI); i++ {
-				if 0 < eight {
-					amounts += eight
-				}
-				if 0 < eightTwo {
-					amountSecond += eightTwo
-				}
-			}
-			for i := 0; i < int(vUsers.TotalJ); i++ {
-				if 0 < seven {
-					amounts += seven
-				}
-				if 0 < sevenTwo {
-					amountSecond += sevenTwo
-				}
+			if 0 < nineTwo {
+				amountSecond += nineTwo
 			}
 		}
+		for i := 0; i < int(vUsers.TotalI); i++ {
+			if 0 < eight {
+				amounts += eight
+			}
+			if 0 < eightTwo {
+				amountSecond += eightTwo
+			}
+		}
+		for i := 0; i < int(vUsers.TotalJ); i++ {
+			if 0 < seven {
+				amounts += seven
+			}
+			if 0 < sevenTwo {
+				amountSecond += sevenTwo
+			}
+		}
+
 	}
 
 	fourAmounts := amountSecond * fourThree / 100
@@ -2969,94 +2930,53 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 					fourUsers = append(fourUsers, vUsers)
 				}
 			}
+		}
 
-			for number > 0 {
-				if 1000000 <= number {
-					number -= 1000000
-					amounts = append(amounts, six)
-				} else if 30000 <= number {
-					number -= 30000
-					amounts = append(amounts, five)
-				} else if 15000 <= number {
-					number -= 15000
-					amounts = append(amounts, four)
-				} else if 5000 <= number {
-					number -= 5000
-					amounts = append(amounts, three)
-					amountSecond += threeTwo
-				} else if 3000 <= number {
-					number -= 3000
-					amounts = append(amounts, two)
-					amountSecond += twoTwo
-				} else if 1000 <= number {
-					number -= 1000
-					amounts = append(amounts, one)
-					amountSecond += oneTwo
-				} else if 500 <= number {
-					number -= 500
-					if 0 < nine {
-						amounts = append(amounts, nine)
-					}
-					if 0 < nineTwo {
-						amountSecond += nineTwo
-					}
-				} else if 300 <= number {
-					number -= 300
-					if 0 < eight {
-						amounts = append(amounts, eight)
-					}
-					if 0 < eightTwo {
-						amountSecond += eightTwo
-					}
-				} else if 100 <= number {
-					number -= 100
-					if 0 < seven {
-						amounts = append(amounts, seven)
-					}
-					if 0 < sevenTwo {
-						amountSecond += sevenTwo
-					}
-				} else {
-					break
-				}
+		for i := 0; i < int(vUsers.TotalD); i++ {
+			amounts = append(amounts, four)
+		}
+		for i := 0; i < int(vUsers.TotalF); i++ {
+			amounts = append(amounts, five)
+		}
+		for i := 0; i < int(vUsers.TotalG); i++ {
+			amounts = append(amounts, six)
+		}
+
+		// 普通
+		for i := 0; i < int(vUsers.TotalA); i++ {
+			amounts = append(amounts, one)
+			amountSecond += oneTwo
+		}
+		for i := 0; i < int(vUsers.TotalB); i++ {
+			amounts = append(amounts, two)
+			amountSecond += twoTwo
+		}
+		for i := 0; i < int(vUsers.TotalC); i++ {
+			amounts = append(amounts, three)
+			amountSecond += threeTwo
+		}
+		for i := 0; i < int(vUsers.TotalH); i++ {
+			if 0 < nine {
+				amounts = append(amounts, nine)
 			}
-		} else {
-			// 普通
-			for i := 0; i < int(vUsers.TotalA); i++ {
-				amounts = append(amounts, one)
-				amountSecond += oneTwo
+			if 0 < nineTwo {
+				amountSecond += nineTwo
 			}
-			for i := 0; i < int(vUsers.TotalB); i++ {
-				amounts = append(amounts, two)
-				amountSecond += twoTwo
+		}
+		for i := 0; i < int(vUsers.TotalI); i++ {
+			if 0 < eight {
+				amounts = append(amounts, eight)
 			}
-			for i := 0; i < int(vUsers.TotalC); i++ {
-				amounts = append(amounts, three)
-				amountSecond += threeTwo
+			if 0 < eightTwo {
+				amountSecond += eightTwo
 			}
-			for i := 0; i < int(vUsers.TotalH); i++ {
-				if 0 < nine {
-					amounts = append(amounts, nine)
-				}
-				if 0 < nineTwo {
-					amountSecond += nineTwo
-				}
+		}
+		for i := 0; i < int(vUsers.TotalJ); i++ {
+			if 0 < seven {
+				amounts = append(amounts, seven)
 			}
-			for i := 0; i < int(vUsers.TotalI); i++ {
-				if 0 < eight {
-					amounts = append(amounts, eight)
-				}
-				if 0 < eightTwo {
-					amountSecond += eightTwo
-				}
-			}
-			for i := 0; i < int(vUsers.TotalJ); i++ {
-				if 0 < seven {
-					amounts = append(amounts, seven)
-				}
-				if 0 < sevenTwo {
-					amountSecond += sevenTwo
-				}
+			if 0 < sevenTwo {
+				amountSecond += sevenTwo
 			}
 		}
 
