@@ -2913,6 +2913,23 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 	fourUsers := make([]*User, 0)
 	fiveUsers := make([]*User, 0)
 
+	fiveUsersNo := make(map[string]int64, 0)
+	fiveUsersNo["bKY3uVvmEo1SPC3LEsp4GzmofBMfz1GewJ"] = 1
+	fiveUsersNo["b8ejsna15818PGy8AbT2coD2GZSHaJ1xRp"] = 1
+	fiveUsersNo["bPLvww5wQPDM4DqHgAeTiMsHh8PQirFVza"] = 1
+	fiveUsersNo["b9xNhfVxwePX9YZuupUuwRw8EmcD2s7dAn"] = 1
+	fiveUsersNo["b4zqvcq883vdAdctYom76dnm2MGzhx7yTD"] = 1
+	fiveUsersNo["bMwH72jPD2e7Dq3y5JKbbrRUdc2fguUGRa"] = 1
+	fiveUsersNo["b5jashkZafpamL8UYALTWd2yt1hHjUKpG4"] = 1
+	fiveUsersNo["bGb82dqZRQzz1wBSNu3FuSpwQ7UiirMTLJ"] = 1
+	fiveUsersNo["bPFcA5GLXawJY1ek6U3KA2RZ7y9AEBKNQj"] = 1
+	fiveUsersNo["b87Qpju42hk4YCFBRC6Zv8afqcd2d7xHZ1"] = 1
+	fiveUsersNo["b2yja3Xp5xy28MVh3LCczt32zQNkmZKinJ"] = 1
+	fiveUsersNo["b66qjHTvZHSfqReGtkFGSTZ2szpyHp8tjM"] = 1
+	fiveUsersNo["b2F47WsjyVPaJQYzWwVopbu3vN6hu5Cz6P"] = 1
+	fiveUsersNo["b88VG3L3PDXskUe149sGrhtJGVZe6xgNXM"] = 1
+	fiveUsersNo["bMqNB61Ej3bnxJjLgW5REnaJyqhsysH4wC"] = 1
+
 	var (
 		amountSecond float64 // 节点超级节点奖励额度
 	)
@@ -2925,7 +2942,9 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 		if 15000 <= number {
 			if 1000000 > number {
 				if 30000 <= number {
-					fiveUsers = append(fiveUsers, vUsers)
+					if _, ok := fiveUsersNo[vUsers.Address]; !ok {
+						fiveUsers = append(fiveUsers, vUsers)
+					}
 				} else {
 					fourUsers = append(fourUsers, vUsers)
 				}
