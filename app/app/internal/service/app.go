@@ -10,7 +10,6 @@ import (
 	"encoding/json"
 	"fmt"
 	sdk "github.com/BioforestChain/go-bfmeta-wallet-sdk"
-	"github.com/BioforestChain/go-bfmeta-wallet-sdk/entity/req/address"
 	"github.com/BioforestChain/go-bfmeta-wallet-sdk/entity/req/broadcastTra"
 	"github.com/BioforestChain/go-bfmeta-wallet-sdk/entity/req/createTransferAsset"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -25,7 +24,6 @@ import (
 	"io"
 	"io/ioutil"
 	"math/big"
-	"math/rand"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -2026,68 +2024,11 @@ func (a *AppService) TestCreateAccount(ctx context.Context, req *v1.TestCreateAc
 	return nil, nil
 }
 
-const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
-
-func RandStringBytes(n int) string {
-	b := make([]byte, n)
-	for i := range b {
-		b[i] = letterBytes[rand.Intn(len(letterBytes))]
-	}
-	return string(b)
-}
-
-func createAccount() (string, string, string, string, error) {
-	sdkClient := sdk.NewBCFWalletSDK()
-	var bCFSignUtil = sdkClient.NewBCFSignUtil("b")
-	defer sdkClient.Close()
-
-	length := 7 // 可以根据需要调整单词长度
-	randomWord := RandStringBytes(length)
-
-	str := "time hh my need secret new" + " " + randomWord + " " + randomWord + " " + randomWord
-
-	bCFSignUtil_CreateKeypair, _ := bCFSignUtil.CreateKeypair(str)
-	address, _ := bCFSignUtil.GetAddressFromSecret(str)
-
-	return str, address, bCFSignUtil_CreateKeypair.SecretKey, bCFSignUtil_CreateKeypair.PublicKey, nil
-}
-
-func biwBalanceBiw(account string) (string, error) {
-	sdkClient := sdk.NewBCFWalletSDK()
-	wallet := sdkClient.NewBCFWallet("35.213.66.234", 30003, "https://tracker.biw-meta.info/browser")
-	p := address.Params{
-		account,
-		"JWWWB",
-		"BIW",
-	}
-	balance := wallet.GetAddressBalance(p)
-	defer sdkClient.Close()
-
-	return balance.Result.Amount, nil
-}
-
-func usdtBalanceBiw(account string) (string, error) {
-	sdkClient := sdk.NewBCFWalletSDK()
-	wallet := sdkClient.NewBCFWallet("35.213.66.234", 30003, "https://tracker.biw-meta.info/browser")
-	p := address.Params{
-		account,
-		"JWWWB",
-		"USDT",
-	}
-	balance := wallet.GetAddressBalance(p)
-	defer sdkClient.Close()
-
-	return balance.Result.Amount, nil
-}
+var sdkClient = sdk.NewBCFWalletSDK()
+var bCFSignUtil = sdkClient.NewBCFSignUtil("b")
+var wallet = sdkClient.NewBCFWallet("35.213.66.234", 30003, "https://tracker.biw-meta.info/browser")
 
 func sendTransactionBiw(ctx context.Context, secret string, toAddr string, toAmount string) (bool, error) {
-	sdkClient := sdk.NewBCFWalletSDK()
-	bCFSignUtil := sdkClient.NewBCFSignUtil("b")
-	wallet := sdkClient.NewBCFWallet("35.213.66.234", 30003, "https://tracker.biw-meta.info/browser")
 	bCFSignUtilCreateKeypair, _ := bCFSignUtil.CreateKeypair(secret)
 
 	reqCreateTransferAsset := createTransferAsset.TransferAssetTransactionParams{
