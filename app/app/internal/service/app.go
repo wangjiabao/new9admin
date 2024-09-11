@@ -312,7 +312,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 				fmt.Println(i, vUsers.ID, bal, url1, err)
 			}
 
-			if 22 > len(bal.String()) { // 最小1000 todo 22 1000 18 0.1u当1000
+			if 21 > len(bal.String()) { // 最小1000 todo 22 1000 18 0.1u当1000
 				continue
 			}
 
@@ -337,7 +337,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 			//	amount = num - tmpUser.Last
 			//}
 
-			if 1000 > num { // 最少1000
+			if 100 > num { // 最少1000
 				continue
 			}
 
@@ -346,7 +346,7 @@ func (a *AppService) Deposit(ctx context.Context, req *v1.DepositRequest) (*v1.D
 			if amount <= tmpUser.Last {
 				continue // 记录过
 			}
-			if 1000 > amount-tmpUser.Last {
+			if 100 > amount-tmpUser.Last {
 				continue // 不足1000
 			}
 

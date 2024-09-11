@@ -23,6 +23,10 @@ type User struct {
 	TotalC     int64     `gorm:"type:int;not null"`
 	TotalD     int64     `gorm:"type:int;not null"`
 	TotalF     int64     `gorm:"type:int;not null"`
+	TotalG     int64     `gorm:"type:int;not null"`
+	TotalH     int64     `gorm:"type:int;not null"`
+	TotalI     int64     `gorm:"type:int;not null"`
+	TotalJ     int64     `gorm:"type:int;not null"`
 	Kkdt       int64     `gorm:"type:int;not null"`
 	Amount     uint64    `gorm:"type:bigint;not null"`
 	CreatedAt  time.Time `gorm:"type:datetime;not null"`
@@ -464,6 +468,9 @@ func (u *UserRepo) GetUsersNewTwo(ctx context.Context) ([]*biz.User, error) {
 			TotalC:     item.TotalC,
 			TotalD:     item.TotalD,
 			TotalF:     item.TotalF,
+			TotalH:     item.TotalH,
+			TotalI:     item.TotalI,
+			TotalJ:     item.TotalJ,
 			Total:      item.Total,
 		})
 	}
@@ -474,7 +481,7 @@ func (u *UserRepo) GetUsersNewTwo(ctx context.Context) ([]*biz.User, error) {
 // GetUsersNew .
 func (u *UserRepo) GetUsersNew(ctx context.Context) ([]*biz.User, error) {
 	var users []*User
-	if err := u.data.db.Table("user").Where("total>=?", 1000).Find(&users).Error; err != nil {
+	if err := u.data.db.Table("user").Where("total>=?", 100).Find(&users).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, errors.NotFound("USER_NOT_FOUND", "user not found")
 		}
@@ -495,6 +502,10 @@ func (u *UserRepo) GetUsersNew(ctx context.Context) ([]*biz.User, error) {
 			TotalC:     item.TotalC,
 			TotalD:     item.TotalD,
 			TotalF:     item.TotalF,
+			TotalG:     item.TotalG,
+			TotalH:     item.TotalH,
+			TotalI:     item.TotalI,
+			TotalJ:     item.TotalJ,
 			Total:      item.Total,
 		})
 	}

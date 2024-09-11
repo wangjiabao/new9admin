@@ -28,6 +28,10 @@ type User struct {
 	TotalC     int64
 	TotalD     int64
 	TotalF     int64
+	TotalG     int64
+	TotalH     int64
+	TotalI     int64
+	TotalJ     int64
 	Amount     uint64
 	Kkdt       int64
 	CreatedAt  time.Time
@@ -2114,12 +2118,18 @@ func (uuc *UserUseCase) AdminAll(ctx context.Context, req *v1.AdminAllRequest) (
 		threeTwo  float64
 		fiveThree float64
 		fourThree float64
+		eight     float64
+		nine      float64
+		seven     float64
+		eightTwo  float64
+		sevenTwo  float64
+		nineTwo   float64
 		err       error
 	)
 
 	configs, err = uuc.configRepo.GetConfigByKeys(ctx,
 		"one", "two", "three", "four", "five", "six",
-		"one_two", "two_two", "three_two", "four_two", "five_two", "four_three", "five_three", "today",
+		"one_two", "two_two", "three_two", "four_two", "five_two", "four_three", "five_three", "today", "seven", "eight", "nine", "seven_two", "eight_two", "nine_two",
 	)
 	if nil != err {
 		fmt.Println("分红,配置", err)
@@ -2183,6 +2193,36 @@ func (uuc *UserUseCase) AdminAll(ctx context.Context, req *v1.AdminAllRequest) (
 				if nil != err {
 					return nil, err
 				}
+			} else if "seven" == vConfig.KeyName {
+				seven, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "eight" == vConfig.KeyName {
+				eight, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "nine" == vConfig.KeyName {
+				nine, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "eight_two" == vConfig.KeyName {
+				eightTwo, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "seven_two" == vConfig.KeyName {
+				sevenTwo, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "nine_two" == vConfig.KeyName {
+				nineTwo, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
 			}
 		}
 	}
@@ -2214,48 +2254,56 @@ func (uuc *UserUseCase) AdminAll(ctx context.Context, req *v1.AdminAllRequest) (
 					fourUsers = append(fourUsers, vUsers)
 				}
 			}
+		}
 
-			for number > 0 {
-				if 1000000 <= number {
-					number -= 1000000
-					amounts += six
-				} else if 30000 <= number {
-					number -= 30000
-					amounts += five
-				} else if 15000 <= number {
-					number -= 15000
-					amounts += four
-				} else if 5000 <= number {
-					number -= 5000
-					amounts += three
-					amountSecond += threeTwo
-				} else if 3000 <= number {
-					number -= 3000
-					amounts += two
-					amountSecond += twoTwo
-				} else if 1000 <= number {
-					number -= 1000
-					amounts += one
-					amountSecond += oneTwo
-				} else {
-					break
-				}
+		for i := 0; i < int(vUsers.TotalD); i++ {
+			amounts += four
+		}
+		for i := 0; i < int(vUsers.TotalF); i++ {
+			amounts += five
+		}
+		for i := 0; i < int(vUsers.TotalG); i++ {
+			amounts += six
+		}
+
+		// 普通
+		for i := 0; i < int(vUsers.TotalA); i++ {
+			amounts += one
+			amountSecond += oneTwo
+		}
+		for i := 0; i < int(vUsers.TotalB); i++ {
+			amounts += two
+			amountSecond += twoTwo
+		}
+		for i := 0; i < int(vUsers.TotalC); i++ {
+			amounts += three
+			amountSecond += threeTwo
+		}
+		for i := 0; i < int(vUsers.TotalH); i++ {
+			if 0 < nine {
+				amounts += nine
 			}
-		} else {
-			// 普通
-			for i := 0; i < int(vUsers.TotalA); i++ {
-				amounts += one
-				amountSecond += oneTwo
-			}
-			for i := 0; i < int(vUsers.TotalB); i++ {
-				amounts += two
-				amountSecond += twoTwo
-			}
-			for i := 0; i < int(vUsers.TotalC); i++ {
-				amounts += three
-				amountSecond += threeTwo
+			if 0 < nineTwo {
+				amountSecond += nineTwo
 			}
 		}
+		for i := 0; i < int(vUsers.TotalI); i++ {
+			if 0 < eight {
+				amounts += eight
+			}
+			if 0 < eightTwo {
+				amountSecond += eightTwo
+			}
+		}
+		for i := 0; i < int(vUsers.TotalJ); i++ {
+			if 0 < seven {
+				amounts += seven
+			}
+			if 0 < sevenTwo {
+				amountSecond += sevenTwo
+			}
+		}
+
 	}
 
 	fourAmounts := amountSecond * fourThree / 100
@@ -2733,8 +2781,14 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 		four      float64
 		five      float64
 		six       float64
+		eight     float64
+		nine      float64
+		seven     float64
 		oneTwo    float64
 		twoTwo    float64
+		eightTwo  float64
+		sevenTwo  float64
+		nineTwo   float64
 		threeTwo  float64
 		fiveThree float64
 		fourThree float64
@@ -2744,7 +2798,7 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 
 	configs, err = uuc.configRepo.GetConfigByKeys(ctx,
 		"one", "two", "three", "four", "five", "six",
-		"one_two", "two_two", "three_two", "four_two", "five_two", "four_three", "five_three", "today",
+		"one_two", "two_two", "three_two", "four_two", "five_two", "four_three", "five_three", "today", "seven", "eight", "nine", "seven_two", "eight_two", "nine_two",
 	)
 	if nil != err {
 		fmt.Println("分红,配置", err)
@@ -2783,6 +2837,21 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 				if nil != err {
 					return nil, err
 				}
+			} else if "seven" == vConfig.KeyName {
+				seven, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "eight" == vConfig.KeyName {
+				eight, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "nine" == vConfig.KeyName {
+				nine, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
 			} else if "one_two" == vConfig.KeyName {
 				oneTwo, err = strconv.ParseFloat(vConfig.Value, 10)
 				if nil != err {
@@ -2795,6 +2864,21 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 				}
 			} else if "three_two" == vConfig.KeyName {
 				threeTwo, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "eight_two" == vConfig.KeyName {
+				eightTwo, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "seven_two" == vConfig.KeyName {
+				sevenTwo, err = strconv.ParseFloat(vConfig.Value, 10)
+				if nil != err {
+					return nil, err
+				}
+			} else if "nine_two" == vConfig.KeyName {
+				nineTwo, err = strconv.ParseFloat(vConfig.Value, 10)
 				if nil != err {
 					return nil, err
 				}
@@ -2829,6 +2913,23 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 	fourUsers := make([]*User, 0)
 	fiveUsers := make([]*User, 0)
 
+	fiveUsersNo := make(map[string]int64, 0)
+	fiveUsersNo["bKY3uVvmEo1SPC3LEsp4GzmofBMfz1GewJ"] = 1
+	fiveUsersNo["b8ejsna15818PGy8AbT2coD2GZSHaJ1xRp"] = 1
+	fiveUsersNo["bPLvww5wQPDM4DqHgAeTiMsHh8PQirFVza"] = 1
+	fiveUsersNo["b9xNhfVxwePX9YZuupUuwRw8EmcD2s7dAn"] = 1
+	fiveUsersNo["b4zqvcq883vdAdctYom76dnm2MGzhx7yTD"] = 1
+	fiveUsersNo["bMwH72jPD2e7Dq3y5JKbbrRUdc2fguUGRa"] = 1
+	fiveUsersNo["b5jashkZafpamL8UYALTWd2yt1hHjUKpG4"] = 1
+	fiveUsersNo["bGb82dqZRQzz1wBSNu3FuSpwQ7UiirMTLJ"] = 1
+	fiveUsersNo["bPFcA5GLXawJY1ek6U3KA2RZ7y9AEBKNQj"] = 1
+	fiveUsersNo["b87Qpju42hk4YCFBRC6Zv8afqcd2d7xHZ1"] = 1
+	fiveUsersNo["b2yja3Xp5xy28MVh3LCczt32zQNkmZKinJ"] = 1
+	fiveUsersNo["b66qjHTvZHSfqReGtkFGSTZ2szpyHp8tjM"] = 1
+	fiveUsersNo["b2F47WsjyVPaJQYzWwVopbu3vN6hu5Cz6P"] = 1
+	fiveUsersNo["b88VG3L3PDXskUe149sGrhtJGVZe6xgNXM"] = 1
+	fiveUsersNo["bMqNB61Ej3bnxJjLgW5REnaJyqhsysH4wC"] = 1
+
 	var (
 		amountSecond float64 // 节点超级节点奖励额度
 	)
@@ -2841,51 +2942,60 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 		if 15000 <= number {
 			if 1000000 > number {
 				if 30000 <= number {
-					fiveUsers = append(fiveUsers, vUsers)
+					if _, ok := fiveUsersNo[vUsers.Address]; !ok {
+						fiveUsers = append(fiveUsers, vUsers)
+					}
 				} else {
 					fourUsers = append(fourUsers, vUsers)
 				}
 			}
+		}
 
-			for number > 0 {
-				if 1000000 <= number {
-					number -= 1000000
-					amounts = append(amounts, six)
-				} else if 30000 <= number {
-					number -= 30000
-					amounts = append(amounts, five)
-				} else if 15000 <= number {
-					number -= 15000
-					amounts = append(amounts, four)
-				} else if 5000 <= number {
-					number -= 5000
-					amounts = append(amounts, three)
-					amountSecond += threeTwo
-				} else if 3000 <= number {
-					number -= 3000
-					amounts = append(amounts, two)
-					amountSecond += twoTwo
-				} else if 1000 <= number {
-					number -= 1000
-					amounts = append(amounts, one)
-					amountSecond += oneTwo
-				} else {
-					break
-				}
+		for i := 0; i < int(vUsers.TotalD); i++ {
+			amounts = append(amounts, four)
+		}
+		for i := 0; i < int(vUsers.TotalF); i++ {
+			amounts = append(amounts, five)
+		}
+		for i := 0; i < int(vUsers.TotalG); i++ {
+			amounts = append(amounts, six)
+		}
+
+		// 普通
+		for i := 0; i < int(vUsers.TotalA); i++ {
+			amounts = append(amounts, one)
+			amountSecond += oneTwo
+		}
+		for i := 0; i < int(vUsers.TotalB); i++ {
+			amounts = append(amounts, two)
+			amountSecond += twoTwo
+		}
+		for i := 0; i < int(vUsers.TotalC); i++ {
+			amounts = append(amounts, three)
+			amountSecond += threeTwo
+		}
+		for i := 0; i < int(vUsers.TotalH); i++ {
+			if 0 < nine {
+				amounts = append(amounts, nine)
 			}
-		} else {
-			// 普通
-			for i := 0; i < int(vUsers.TotalA); i++ {
-				amounts = append(amounts, one)
-				amountSecond += oneTwo
+			if 0 < nineTwo {
+				amountSecond += nineTwo
 			}
-			for i := 0; i < int(vUsers.TotalB); i++ {
-				amounts = append(amounts, two)
-				amountSecond += twoTwo
+		}
+		for i := 0; i < int(vUsers.TotalI); i++ {
+			if 0 < eight {
+				amounts = append(amounts, eight)
 			}
-			for i := 0; i < int(vUsers.TotalC); i++ {
-				amounts = append(amounts, three)
-				amountSecond += threeTwo
+			if 0 < eightTwo {
+				amountSecond += eightTwo
+			}
+		}
+		for i := 0; i < int(vUsers.TotalJ); i++ {
+			if 0 < seven {
+				amounts = append(amounts, seven)
+			}
+			if 0 < sevenTwo {
+				amountSecond += sevenTwo
 			}
 		}
 
