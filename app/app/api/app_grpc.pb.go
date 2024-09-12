@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.3.0
 // - protoc             v3.21.7
-// source: api/app.proto
+// source: app/app/api/app.proto
 
 package api
 
@@ -59,6 +59,7 @@ const (
 	App_AdminUserPasswordUpdate_FullMethodName              = "/api.App/AdminUserPasswordUpdate"
 	App_AdminUpdateLocationNewMax_FullMethodName            = "/api.App/AdminUpdateLocationNewMax"
 	App_AdminVipUpdate_FullMethodName                       = "/api.App/AdminVipUpdate"
+	App_AdminVipDelete_FullMethodName                       = "/api.App/AdminVipDelete"
 	App_AdminKkdtUpdate_FullMethodName                      = "/api.App/AdminKkdtUpdate"
 	App_AdminUndoUpdate_FullMethodName                      = "/api.App/AdminUndoUpdate"
 	App_AdminAreaLevelUpdate_FullMethodName                 = "/api.App/AdminAreaLevelUpdate"
@@ -127,6 +128,7 @@ type AppClient interface {
 	AdminUserPasswordUpdate(ctx context.Context, in *AdminPasswordUpdateRequest, opts ...grpc.CallOption) (*AdminPasswordUpdateReply, error)
 	AdminUpdateLocationNewMax(ctx context.Context, in *AdminUpdateLocationNewMaxRequest, opts ...grpc.CallOption) (*AdminUpdateLocationNewMaxReply, error)
 	AdminVipUpdate(ctx context.Context, in *AdminVipUpdateRequest, opts ...grpc.CallOption) (*AdminVipUpdateReply, error)
+	AdminVipDelete(ctx context.Context, in *AdminVipDeleteRequest, opts ...grpc.CallOption) (*AdminVipDeleteReply, error)
 	AdminKkdtUpdate(ctx context.Context, in *AdminKkdtUpdateRequest, opts ...grpc.CallOption) (*AdminKkdtUpdateReply, error)
 	AdminUndoUpdate(ctx context.Context, in *AdminUndoUpdateRequest, opts ...grpc.CallOption) (*AdminUndoUpdateReply, error)
 	AdminAreaLevelUpdate(ctx context.Context, in *AdminAreaLevelUpdateRequest, opts ...grpc.CallOption) (*AdminAreaLevelUpdateReply, error)
@@ -519,6 +521,15 @@ func (c *appClient) AdminVipUpdate(ctx context.Context, in *AdminVipUpdateReques
 	return out, nil
 }
 
+func (c *appClient) AdminVipDelete(ctx context.Context, in *AdminVipDeleteRequest, opts ...grpc.CallOption) (*AdminVipDeleteReply, error) {
+	out := new(AdminVipDeleteReply)
+	err := c.cc.Invoke(ctx, App_AdminVipDelete_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *appClient) AdminKkdtUpdate(ctx context.Context, in *AdminKkdtUpdateRequest, opts ...grpc.CallOption) (*AdminKkdtUpdateReply, error) {
 	out := new(AdminKkdtUpdateReply)
 	err := c.cc.Invoke(ctx, App_AdminKkdtUpdate_FullMethodName, in, out, opts...)
@@ -761,6 +772,7 @@ type AppServer interface {
 	AdminUserPasswordUpdate(context.Context, *AdminPasswordUpdateRequest) (*AdminPasswordUpdateReply, error)
 	AdminUpdateLocationNewMax(context.Context, *AdminUpdateLocationNewMaxRequest) (*AdminUpdateLocationNewMaxReply, error)
 	AdminVipUpdate(context.Context, *AdminVipUpdateRequest) (*AdminVipUpdateReply, error)
+	AdminVipDelete(context.Context, *AdminVipDeleteRequest) (*AdminVipDeleteReply, error)
 	AdminKkdtUpdate(context.Context, *AdminKkdtUpdateRequest) (*AdminKkdtUpdateReply, error)
 	AdminUndoUpdate(context.Context, *AdminUndoUpdateRequest) (*AdminUndoUpdateReply, error)
 	AdminAreaLevelUpdate(context.Context, *AdminAreaLevelUpdateRequest) (*AdminAreaLevelUpdateReply, error)
@@ -909,6 +921,9 @@ func (UnimplementedAppServer) AdminUpdateLocationNewMax(context.Context, *AdminU
 }
 func (UnimplementedAppServer) AdminVipUpdate(context.Context, *AdminVipUpdateRequest) (*AdminVipUpdateReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AdminVipUpdate not implemented")
+}
+func (UnimplementedAppServer) AdminVipDelete(context.Context, *AdminVipDeleteRequest) (*AdminVipDeleteReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AdminVipDelete not implemented")
 }
 func (UnimplementedAppServer) AdminKkdtUpdate(context.Context, *AdminKkdtUpdateRequest) (*AdminKkdtUpdateReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AdminKkdtUpdate not implemented")
@@ -1709,6 +1724,24 @@ func _App_AdminVipUpdate_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _App_AdminVipDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AdminVipDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AppServer).AdminVipDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: App_AdminVipDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AppServer).AdminVipDelete(ctx, req.(*AdminVipDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _App_AdminKkdtUpdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AdminKkdtUpdateRequest)
 	if err := dec(in); err != nil {
@@ -2273,6 +2306,10 @@ var App_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _App_AdminVipUpdate_Handler,
 		},
 		{
+			MethodName: "AdminVipDelete",
+			Handler:    _App_AdminVipDelete_Handler,
+		},
+		{
 			MethodName: "AdminKkdtUpdate",
 			Handler:    _App_AdminKkdtUpdate_Handler,
 		},
@@ -2362,5 +2399,5 @@ var App_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "api/app.proto",
+	Metadata: "app/app/api/app.proto",
 }

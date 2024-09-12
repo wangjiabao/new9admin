@@ -1421,6 +1421,10 @@ func (a *AppService) AdminVipUpdate(ctx context.Context, req *v1.AdminVipUpdateR
 	return a.uuc.AdminVipUpdate(ctx, req)
 }
 
+func (a *AppService) AdminVipDelete(ctx context.Context, req *v1.AdminVipDeleteRequest) (*v1.AdminVipDeleteReply, error) {
+	return a.uuc.AdminVipDelete(ctx, req)
+}
+
 func (a *AppService) AdminKkdtUpdate(ctx context.Context, req *v1.AdminKkdtUpdateRequest) (*v1.AdminKkdtUpdateReply, error) {
 	return a.uuc.AdminKkdtUpdate(ctx, req)
 }

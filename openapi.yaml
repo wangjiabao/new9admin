@@ -639,6 +639,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+    /api/admin_dhb/kkdt_update:
+        post:
+            tags:
+                - App
+            operationId: App_AdminKkdtUpdate
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AdminKkdtUpdateRequest_SendBody'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminKkdtUpdateReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /api/admin_dhb/level_update:
         post:
             tags:
@@ -1113,6 +1137,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+    /api/admin_dhb/vip_delete:
+        post:
+            tags:
+                - App
+            operationId: App_AdminVipDelete
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AdminVipDeleteRequest_SendBody'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminVipDeleteReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /api/admin_dhb/vip_update:
         post:
             tags:
@@ -1505,6 +1553,16 @@ components:
         AdminFeeReply:
             type: object
             properties: {}
+        AdminKkdtUpdateReply:
+            type: object
+            properties: {}
+        AdminKkdtUpdateRequest_SendBody:
+            type: object
+            properties:
+                userId:
+                    type: string
+                amount:
+                    type: string
         AdminListReply:
             type: object
             properties:
@@ -1631,6 +1689,8 @@ components:
         AdminRewardListReply_List:
             type: object
             properties:
+                id:
+                    type: string
                 createdAt:
                     type: string
                 amount:
@@ -1722,6 +1782,8 @@ components:
                     type: string
                 amount:
                     type: string
+                kkdt:
+                    type: string
         AdminUserRecommendReply:
             type: object
             properties:
@@ -1745,6 +1807,18 @@ components:
                 relAmount:
                     type: string
                 recommendAllAmount:
+                    type: string
+        AdminVipDeleteReply:
+            type: object
+            properties: {}
+        AdminVipDeleteRequest_SendBody:
+            type: object
+            properties:
+                id:
+                    type: string
+                amount:
+                    type: string
+                kkdt:
                     type: string
         AdminVipUpdateReply:
             type: object
