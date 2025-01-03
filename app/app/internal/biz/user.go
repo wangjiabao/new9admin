@@ -2927,10 +2927,10 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 	fiveUsersNo["b5jashkZafpamL8UYALTWd2yt1hHjUKpG4"] = 1
 	fiveUsersNo["bGb82dqZRQzz1wBSNu3FuSpwQ7UiirMTLJ"] = 1
 	fiveUsersNo["bPFcA5GLXawJY1ek6U3KA2RZ7y9AEBKNQj"] = 1
-	fiveUsersNo["b87Qpju42hk4YCFBRC6Zv8afqcd2d7xHZ1"] = 1
-	fiveUsersNo["b2yja3Xp5xy28MVh3LCczt32zQNkmZKinJ"] = 1
-	fiveUsersNo["b66qjHTvZHSfqReGtkFGSTZ2szpyHp8tjM"] = 1
-	fiveUsersNo["b2F47WsjyVPaJQYzWwVopbu3vN6hu5Cz6P"] = 1
+	//fiveUsersNo["b87Qpju42hk4YCFBRC6Zv8afqcd2d7xHZ1"] = 1
+	//fiveUsersNo["b2yja3Xp5xy28MVh3LCczt32zQNkmZKinJ"] = 1
+	//fiveUsersNo["b66qjHTvZHSfqReGtkFGSTZ2szpyHp8tjM"] = 1
+	//fiveUsersNo["b2F47WsjyVPaJQYzWwVopbu3vN6hu5Cz6P"] = 1
 	fiveUsersNo["b88VG3L3PDXskUe149sGrhtJGVZe6xgNXM"] = 1
 	fiveUsersNo["bMqNB61Ej3bnxJjLgW5REnaJyqhsysH4wC"] = 1
 
