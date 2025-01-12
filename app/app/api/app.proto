@@ -264,6 +264,13 @@ service App {
 		};
 	};
 
+	rpc AdminVipDelete (AdminVipDeleteRequest) returns (AdminVipDeleteReply) {
+		option (google.api.http) = {
+			post: "/api/admin_dhb/vip_delete"
+			body: "send_body"
+		};
+	};
+
 	rpc AdminKkdtUpdate (AdminKkdtUpdateRequest) returns (AdminKkdtUpdateReply) {
 		option (google.api.http) = {
 			post: "/api/admin_dhb/kkdt_update"
@@ -553,6 +560,7 @@ message AdminRewardListRequest {
 message AdminRewardListReply {
 	repeated List rewards = 1;
 	message List {
+		int64 id = 7;
 		string created_at = 1; // 时间
 		int64 amount = 2; // 数量
 		double amountB = 3; // 数量
@@ -909,6 +917,19 @@ message AdminUpdateLocationNewMaxReply {
 
 }
 
+message AdminVipDeleteRequest {
+	message SendBody{
+		int64 id = 1;
+		int64 amount = 2;
+		int64 kkdt = 3;
+	}
+
+	SendBody send_body = 1;
+}
+
+message AdminVipDeleteReply {
+
+}
 
 message AdminVipUpdateRequest {
 	message SendBody{

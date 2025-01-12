@@ -225,6 +225,7 @@ type UserBalanceRepo interface {
 	RecommendLocationRewardBiw(ctx context.Context, userId int64, rewardAmount int64, recommendNum int64, stop string, tmpMaxNew int64, feeRate int64) (int64, error)
 	PriceChange(ctx context.Context, userId int64, rewardAmount int64, up string) error
 	InRecordNew(ctx context.Context, userId int64, address string, amount int64, originTotal int64) error
+	DeleteInRecordNew(ctx context.Context, id int64) error
 	FirstRewardBiw(ctx context.Context, userId int64, amount float64) error
 	SecondRewardBiw(ctx context.Context, userId int64, amount float64, rewardType string) error
 	AreaRewardBiw(ctx context.Context, userId int64, rewardAmount int64, tmpCurrentReward int64, areaType int64, stop string, tmpMaxNew int64, feeRate int64) (int64, error)
@@ -254,6 +255,7 @@ type UserBalanceRepo interface {
 	GetUserBalance(ctx context.Context, userId int64) (*UserBalance, error)
 	GetUserRewardByUserId(ctx context.Context, userId int64) ([]*Reward, error)
 	GetUserRewards(ctx context.Context, b *Pagination, userId int64, reason string) ([]*Reward, error, int64)
+	GetUserRewardById(ctx context.Context, id int64) (*Reward, error)
 	GetUserRewardsLastMonthFee(ctx context.Context) ([]*Reward, error)
 	GetUserBalanceByUserIds(ctx context.Context, userIds ...int64) (map[int64]*UserBalanceNew, error)
 	GetUserBalanceLockByUserIds(ctx context.Context, userIds ...int64) (map[int64]*UserBalance, error)
@@ -350,6 +352,7 @@ type UserInfoRepo interface {
 	GetUserInfoByUserId(ctx context.Context, userId int64) (*UserInfo, error)
 	UpdateUserPassword(ctx context.Context, userId int64, password string) (*User, error)
 	UpdateUser(ctx context.Context, userId int64, amount uint64, originTotal uint64, strUpdate string) error
+	UpdateUserDelete(ctx context.Context, userId int64, amount uint64, kkdt uint64, amountReturn uint64, strUpdate string) error
 	UpdateUserKkdt(ctx context.Context, userId int64, amount uint64) error
 	UpdateUserNewTwo(ctx context.Context, userId int64, amount uint64, originTotal uint64, strUpdate string, uudt int64, kkdt int64) error
 	UpdateUserNewTwoNew(ctx context.Context, userId int64, amount uint64, originTotal uint64, strUpdate string, last int64, uudt int64, kkdt int64) error
@@ -515,6 +518,7 @@ func (uuc *UserUseCase) AdminRewardList(ctx context.Context, req *v1.AdminReward
 		}
 
 		res.Rewards = append(res.Rewards, &v1.AdminRewardListReply_List{
+			Id:        vUserReward.ID,
 			CreatedAt: vUserReward.CreatedAt.Add(8 * time.Hour).Format("2006-01-02 15:04:05"),
 			Amount:    vUserReward.Amount,
 			AmountB:   vUserReward.AmountB,
@@ -2913,22 +2917,22 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 	fourUsers := make([]*User, 0)
 	fiveUsers := make([]*User, 0)
 
-	fiveUsersNo := make(map[string]int64, 0)
-	fiveUsersNo["bKY3uVvmEo1SPC3LEsp4GzmofBMfz1GewJ"] = 1
-	fiveUsersNo["b8ejsna15818PGy8AbT2coD2GZSHaJ1xRp"] = 1
-	fiveUsersNo["bPLvww5wQPDM4DqHgAeTiMsHh8PQirFVza"] = 1
-	fiveUsersNo["b9xNhfVxwePX9YZuupUuwRw8EmcD2s7dAn"] = 1
-	fiveUsersNo["b4zqvcq883vdAdctYom76dnm2MGzhx7yTD"] = 1
-	fiveUsersNo["bMwH72jPD2e7Dq3y5JKbbrRUdc2fguUGRa"] = 1
-	fiveUsersNo["b5jashkZafpamL8UYALTWd2yt1hHjUKpG4"] = 1
-	fiveUsersNo["bGb82dqZRQzz1wBSNu3FuSpwQ7UiirMTLJ"] = 1
-	fiveUsersNo["bPFcA5GLXawJY1ek6U3KA2RZ7y9AEBKNQj"] = 1
-	fiveUsersNo["b87Qpju42hk4YCFBRC6Zv8afqcd2d7xHZ1"] = 1
-	fiveUsersNo["b2yja3Xp5xy28MVh3LCczt32zQNkmZKinJ"] = 1
-	fiveUsersNo["b66qjHTvZHSfqReGtkFGSTZ2szpyHp8tjM"] = 1
-	fiveUsersNo["b2F47WsjyVPaJQYzWwVopbu3vN6hu5Cz6P"] = 1
-	fiveUsersNo["b88VG3L3PDXskUe149sGrhtJGVZe6xgNXM"] = 1
-	fiveUsersNo["bMqNB61Ej3bnxJjLgW5REnaJyqhsysH4wC"] = 1
+	//fiveUsersNo := make(map[string]int64, 0)
+	//fiveUsersNo["bKY3uVvmEo1SPC3LEsp4GzmofBMfz1GewJ"] = 1
+	//fiveUsersNo["b8ejsna15818PGy8AbT2coD2GZSHaJ1xRp"] = 1
+	//fiveUsersNo["bPLvww5wQPDM4DqHgAeTiMsHh8PQirFVza"] = 1
+	//fiveUsersNo["b9xNhfVxwePX9YZuupUuwRw8EmcD2s7dAn"] = 1
+	//fiveUsersNo["b4zqvcq883vdAdctYom76dnm2MGzhx7yTD"] = 1
+	//fiveUsersNo["bMwH72jPD2e7Dq3y5JKbbrRUdc2fguUGRa"] = 1
+	//fiveUsersNo["b5jashkZafpamL8UYALTWd2yt1hHjUKpG4"] = 1
+	//fiveUsersNo["bGb82dqZRQzz1wBSNu3FuSpwQ7UiirMTLJ"] = 1
+	//fiveUsersNo["bPFcA5GLXawJY1ek6U3KA2RZ7y9AEBKNQj"] = 1
+	//fiveUsersNo["b87Qpju42hk4YCFBRC6Zv8afqcd2d7xHZ1"] = 1
+	//fiveUsersNo["b2yja3Xp5xy28MVh3LCczt32zQNkmZKinJ"] = 1
+	//fiveUsersNo["b66qjHTvZHSfqReGtkFGSTZ2szpyHp8tjM"] = 1
+	//fiveUsersNo["b2F47WsjyVPaJQYzWwVopbu3vN6hu5Cz6P"] = 1
+	//fiveUsersNo["b88VG3L3PDXskUe149sGrhtJGVZe6xgNXM"] = 1
+	//fiveUsersNo["bMqNB61Ej3bnxJjLgW5REnaJyqhsysH4wC"] = 1
 
 	var (
 		amountSecond float64 // 节点超级节点奖励额度
@@ -2942,9 +2946,7 @@ func (uuc *UserUseCase) AdminDailyBuyReward(ctx context.Context, req *v1.AdminDa
 		if 15000 <= number {
 			if 1000000 > number {
 				if 30000 <= number {
-					if _, ok := fiveUsersNo[vUsers.Address]; !ok {
-						fiveUsers = append(fiveUsers, vUsers)
-					}
+					fiveUsers = append(fiveUsers, vUsers)
 				} else {
 					fourUsers = append(fourUsers, vUsers)
 				}
@@ -4965,4 +4967,79 @@ func (uuc *UserUseCase) CheckAdminUserArea(ctx context.Context, req *v1.CheckAdm
 
 func (uuc *UserUseCase) CheckAndInsertLocationsRecommendUser(ctx context.Context, req *v1.CheckAndInsertLocationsRecommendUserRequest) (*v1.CheckAndInsertLocationsRecommendUserReply, error) {
 	return &v1.CheckAndInsertLocationsRecommendUserReply{}, nil
+}
+
+func (uuc *UserUseCase) AdminVipDelete(ctx context.Context, req *v1.AdminVipDeleteRequest) (*v1.AdminVipDeleteReply, error) {
+	var (
+		userReward *Reward
+		user       *User
+		err        error
+		kkdt       uint64
+		amount     uint64
+		strUpdate  string
+	)
+
+	userReward, err = uuc.ubRepo.GetUserRewardById(ctx, req.SendBody.Id)
+	if nil != err || nil == userReward {
+		return nil, err
+	}
+
+	user, err = uuc.repo.GetUserById(ctx, userReward.UserId)
+	if nil != err || nil == user {
+		return nil, err
+	}
+
+	if 1000 == userReward.Amount {
+		strUpdate = "total_a"
+	} else if 3000 == userReward.Amount {
+		strUpdate = "total_b"
+	} else if 5000 == userReward.Amount {
+		strUpdate = "total_c"
+	} else if 15000 == userReward.Amount {
+		strUpdate = "total_d"
+	} else if 30000 == userReward.Amount {
+		strUpdate = "total_f"
+	} else if 1000000 == userReward.Amount {
+		strUpdate = "total_g"
+	} else if 500 == userReward.Amount {
+		strUpdate = "total_h"
+	} else if 300 == userReward.Amount {
+		strUpdate = "total_i"
+	} else if 100 == userReward.Amount {
+		strUpdate = "total_j"
+	} else {
+		return nil, nil
+	}
+
+	if 0 < req.SendBody.Amount {
+		amount = uint64(req.SendBody.Amount)
+	}
+
+	if 0 < req.SendBody.Kkdt {
+		kkdt = uint64(req.SendBody.Kkdt)
+		if int64(kkdt) > user.Kkdt {
+			kkdt = uint64(user.Kkdt)
+		}
+	}
+
+	// 推荐人
+	if err = uuc.tx.ExecTx(ctx, func(ctx context.Context) error { // 事务
+		err = uuc.uiRepo.UpdateUserDelete(ctx, userReward.UserId, uint64(userReward.Amount), kkdt, amount, strUpdate)
+		if nil != err {
+			return err
+		}
+
+		// 充值记录
+		err = uuc.ubRepo.DeleteInRecordNew(ctx, req.SendBody.Id)
+		if nil != err {
+			return err
+		}
+
+		return nil
+	}); nil != err {
+		fmt.Println(err, "错误删除", req.SendBody.Id)
+		return nil, err
+	}
+
+	return nil, nil
 }
