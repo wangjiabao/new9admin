@@ -1808,6 +1808,8 @@ components:
                     type: string
                 kkdt:
                     type: string
+                lock:
+                    type: string
         AdminUserRecommendReply:
             type: object
             properties:

@@ -2,8 +2,6 @@ module dhb
 
 go 1.22
 
-toolchain go1.22.3
-
 require (
 	github.com/BioforestChain/go-bfmeta-wallet-sdk v0.0.0-20240925085425-f4d12c87a418
 	github.com/envoyproxy/protoc-gen-validate v0.1.0

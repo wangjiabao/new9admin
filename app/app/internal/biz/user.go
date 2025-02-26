@@ -34,6 +34,7 @@ type User struct {
 	TotalJ     int64
 	Amount     uint64
 	Kkdt       int64
+	Lock       int64
 	CreatedAt  time.Time
 }
 
@@ -753,6 +754,7 @@ func (uuc *UserUseCase) AdminUserList(ctx context.Context, req *v1.AdminUserList
 			Vip:              0,
 			HistoryRecommend: int64(len(myRecommendUserIds)),
 			Kkdt:             vUsers.Kkdt,
+			Lock:             vUsers.Lock,
 		})
 	}
 
