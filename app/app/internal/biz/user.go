@@ -352,6 +352,7 @@ type UserInfoRepo interface {
 	GetUserInfoByUserId(ctx context.Context, userId int64) (*UserInfo, error)
 	UpdateUserPassword(ctx context.Context, userId int64, password string) (*User, error)
 	UpdateUser(ctx context.Context, userId int64, amount uint64, originTotal uint64, strUpdate string) error
+	UpdateUserLock(ctx context.Context, userId int64, lock int64) error
 	UpdateUserDelete(ctx context.Context, userId int64, amount uint64, kkdt uint64, amountReturn uint64, strUpdate string) error
 	UpdateUserKkdt(ctx context.Context, userId int64, amount uint64) error
 	UpdateUserNewTwo(ctx context.Context, userId int64, amount uint64, originTotal uint64, strUpdate string, uudt int64, kkdt int64) error
@@ -1533,6 +1534,26 @@ func (uuc *UserUseCase) AdminPasswordUpdate(ctx context.Context, req *v1.AdminPa
 
 	_, _ = uuc.uiRepo.UpdateUserPassword(ctx, req.SendBody.UserId, req.SendBody.Password)
 	return &v1.AdminPasswordUpdateReply{}, nil
+}
+
+func (uuc *UserUseCase) AdminVipLock(ctx context.Context, req *v1.AdminVipLockRequest) (*v1.AdminVipLockReply, error) {
+	var (
+		err error
+	)
+
+	// 推荐人
+	if err = uuc.tx.ExecTx(ctx, func(ctx context.Context) error { // 事务
+		err = uuc.uiRepo.UpdateUserLock(ctx, req.SendBody.UserId, req.SendBody.Lock)
+		if nil != err {
+			return err
+		}
+
+		return nil
+	}); nil != err {
+		return nil, err
+	}
+
+	return nil, nil
 }
 
 func (uuc *UserUseCase) AdminVipUpdate(ctx context.Context, req *v1.AdminVipUpdateRequest) (*v1.AdminVipUpdateReply, error) {

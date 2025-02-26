@@ -1417,6 +1417,10 @@ func (a *AppService) AdminUserPasswordUpdate(ctx context.Context, req *v1.AdminP
 	return a.uuc.AdminPasswordUpdate(ctx, req)
 }
 
+func (a *AppService) AdminVipLock(ctx context.Context, req *v1.AdminVipLockRequest) (*v1.AdminVipLockReply, error) {
+	return a.uuc.AdminVipLock(ctx, req)
+}
+
 func (a *AppService) AdminVipUpdate(ctx context.Context, req *v1.AdminVipUpdateRequest) (*v1.AdminVipUpdateReply, error) {
 	return a.uuc.AdminVipUpdate(ctx, req)
 }

@@ -53,6 +53,7 @@ const OperationAppAdminUserList = "/api.App/AdminUserList"
 const OperationAppAdminUserPasswordUpdate = "/api.App/AdminUserPasswordUpdate"
 const OperationAppAdminUserRecommend = "/api.App/AdminUserRecommend"
 const OperationAppAdminVipDelete = "/api.App/AdminVipDelete"
+const OperationAppAdminVipLock = "/api.App/AdminVipLock"
 const OperationAppAdminVipUpdate = "/api.App/AdminVipUpdate"
 const OperationAppAdminWithdraw = "/api.App/AdminWithdraw"
 const OperationAppAdminWithdrawEth = "/api.App/AdminWithdrawEth"
@@ -118,6 +119,7 @@ type AppHTTPServer interface {
 	AdminUserPasswordUpdate(context.Context, *AdminPasswordUpdateRequest) (*AdminPasswordUpdateReply, error)
 	AdminUserRecommend(context.Context, *AdminUserRecommendRequest) (*AdminUserRecommendReply, error)
 	AdminVipDelete(context.Context, *AdminVipDeleteRequest) (*AdminVipDeleteReply, error)
+	AdminVipLock(context.Context, *AdminVipLockRequest) (*AdminVipLockReply, error)
 	AdminVipUpdate(context.Context, *AdminVipUpdateRequest) (*AdminVipUpdateReply, error)
 	AdminWithdraw(context.Context, *AdminWithdrawRequest) (*AdminWithdrawReply, error)
 	AdminWithdrawEth(context.Context, *AdminWithdrawEthRequest) (*AdminWithdrawEthReply, error)
@@ -191,6 +193,7 @@ func RegisterAppHTTPServer(s *http.Server, srv AppHTTPServer) {
 	r.POST("/api/admin_dhb/password_update", _App_AdminUserPasswordUpdate0_HTTP_Handler(srv))
 	r.POST("/api/admin_dhb/admin_update_location_new_max", _App_AdminUpdateLocationNewMax0_HTTP_Handler(srv))
 	r.POST("/api/admin_dhb/vip_update", _App_AdminVipUpdate0_HTTP_Handler(srv))
+	r.POST("/api/admin_dhb/vip_lock", _App_AdminVipLock0_HTTP_Handler(srv))
 	r.POST("/api/admin_dhb/vip_delete", _App_AdminVipDelete0_HTTP_Handler(srv))
 	r.POST("/api/admin_dhb/kkdt_update", _App_AdminKkdtUpdate0_HTTP_Handler(srv))
 	r.POST("/api/admin_dhb/undo_update", _App_AdminUndoUpdate0_HTTP_Handler(srv))
@@ -994,6 +997,28 @@ func _App_AdminVipUpdate0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context)
 	}
 }
 
+func _App_AdminVipLock0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
+	return func(ctx http.Context) error {
+		var in AdminVipLockRequest
+		if err := ctx.Bind(&in.SendBody); err != nil {
+			return err
+		}
+		if err := ctx.BindQuery(&in); err != nil {
+			return err
+		}
+		http.SetOperation(ctx, OperationAppAdminVipLock)
+		h := ctx.Middleware(func(ctx context.Context, req interface{}) (interface{}, error) {
+			return srv.AdminVipLock(ctx, req.(*AdminVipLockRequest))
+		})
+		out, err := h(ctx, &in)
+		if err != nil {
+			return err
+		}
+		reply := out.(*AdminVipLockReply)
+		return ctx.Result(200, reply)
+	}
+}
+
 func _App_AdminVipDelete0_HTTP_Handler(srv AppHTTPServer) func(ctx http.Context) error {
 	return func(ctx http.Context) error {
 		var in AdminVipDeleteRequest
@@ -1499,6 +1524,7 @@ type AppHTTPClient interface {
 	AdminUserPasswordUpdate(ctx context.Context, req *AdminPasswordUpdateRequest, opts ...http.CallOption) (rsp *AdminPasswordUpdateReply, err error)
 	AdminUserRecommend(ctx context.Context, req *AdminUserRecommendRequest, opts ...http.CallOption) (rsp *AdminUserRecommendReply, err error)
 	AdminVipDelete(ctx context.Context, req *AdminVipDeleteRequest, opts ...http.CallOption) (rsp *AdminVipDeleteReply, err error)
+	AdminVipLock(ctx context.Context, req *AdminVipLockRequest, opts ...http.CallOption) (rsp *AdminVipLockReply, err error)
 	AdminVipUpdate(ctx context.Context, req *AdminVipUpdateRequest, opts ...http.CallOption) (rsp *AdminVipUpdateReply, err error)
 	AdminWithdraw(ctx context.Context, req *AdminWithdrawRequest, opts ...http.CallOption) (rsp *AdminWithdrawReply, err error)
 	AdminWithdrawEth(ctx context.Context, req *AdminWithdrawEthRequest, opts ...http.CallOption) (rsp *AdminWithdrawEthReply, err error)
@@ -1972,6 +1998,19 @@ func (c *AppHTTPClientImpl) AdminVipDelete(ctx context.Context, in *AdminVipDele
 	pattern := "/api/admin_dhb/vip_delete"
 	path := binding.EncodeURL(pattern, in, false)
 	opts = append(opts, http.Operation(OperationAppAdminVipDelete))
+	opts = append(opts, http.PathTemplate(pattern))
+	err := c.cc.Invoke(ctx, "POST", path, in.SendBody, &out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &out, err
+}
+
+func (c *AppHTTPClientImpl) AdminVipLock(ctx context.Context, in *AdminVipLockRequest, opts ...http.CallOption) (*AdminVipLockReply, error) {
+	var out AdminVipLockReply
+	pattern := "/api/admin_dhb/vip_lock"
+	path := binding.EncodeURL(pattern, in, false)
+	opts = append(opts, http.Operation(OperationAppAdminVipLock))
 	opts = append(opts, http.PathTemplate(pattern))
 	err := c.cc.Invoke(ctx, "POST", path, in.SendBody, &out, opts...)
 	if err != nil {

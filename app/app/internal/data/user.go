@@ -892,6 +892,17 @@ func (ui *UserInfoRepo) UpdateUser(ctx context.Context, userId int64, amount uin
 	return nil
 }
 
+// UpdateUserLock .
+func (ui *UserInfoRepo) UpdateUserLock(ctx context.Context, userId int64, lock int64) error {
+	res := ui.data.DB(ctx).Table("user").Where("id=?", userId).
+		Updates(map[string]interface{}{"lock": lock})
+	if res.Error != nil {
+		return errors.New(500, "UPDATE_USER_ERROR", "用户信息修改失败")
+	}
+
+	return nil
+}
+
 // UpdateUserDelete .
 func (ui *UserInfoRepo) UpdateUserDelete(ctx context.Context, userId int64, amount uint64, kkdt uint64, amountReturn uint64, strUpdate string) error {
 	res := ui.data.DB(ctx).Table("user").Where("id=?", userId).

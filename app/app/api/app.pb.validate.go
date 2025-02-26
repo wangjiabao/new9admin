@@ -9209,6 +9209,239 @@ var _ interface {
 	ErrorName() string
 } = AdminVipUpdateReplyValidationError{}
 
+// Validate checks the field values on AdminVipLockRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *AdminVipLockRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AdminVipLockRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// AdminVipLockRequestMultiError, or nil if none found.
+func (m *AdminVipLockRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AdminVipLockRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetSendBody()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, AdminVipLockRequestValidationError{
+					field:  "SendBody",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, AdminVipLockRequestValidationError{
+					field:  "SendBody",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetSendBody()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return AdminVipLockRequestValidationError{
+				field:  "SendBody",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return AdminVipLockRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// AdminVipLockRequestMultiError is an error wrapping multiple validation
+// errors returned by AdminVipLockRequest.ValidateAll() if the designated
+// constraints aren't met.
+type AdminVipLockRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AdminVipLockRequestMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AdminVipLockRequestMultiError) AllErrors() []error { return m }
+
+// AdminVipLockRequestValidationError is the validation error returned by
+// AdminVipLockRequest.Validate if the designated constraints aren't met.
+type AdminVipLockRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AdminVipLockRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AdminVipLockRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AdminVipLockRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AdminVipLockRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AdminVipLockRequestValidationError) ErrorName() string {
+	return "AdminVipLockRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e AdminVipLockRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAdminVipLockRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AdminVipLockRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AdminVipLockRequestValidationError{}
+
+// Validate checks the field values on AdminVipLockReply with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *AdminVipLockReply) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AdminVipLockReply with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// AdminVipLockReplyMultiError, or nil if none found.
+func (m *AdminVipLockReply) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AdminVipLockReply) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return AdminVipLockReplyMultiError(errors)
+	}
+
+	return nil
+}
+
+// AdminVipLockReplyMultiError is an error wrapping multiple validation errors
+// returned by AdminVipLockReply.ValidateAll() if the designated constraints
+// aren't met.
+type AdminVipLockReplyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AdminVipLockReplyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AdminVipLockReplyMultiError) AllErrors() []error { return m }
+
+// AdminVipLockReplyValidationError is the validation error returned by
+// AdminVipLockReply.Validate if the designated constraints aren't met.
+type AdminVipLockReplyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AdminVipLockReplyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AdminVipLockReplyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AdminVipLockReplyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AdminVipLockReplyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AdminVipLockReplyValidationError) ErrorName() string {
+	return "AdminVipLockReplyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e AdminVipLockReplyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAdminVipLockReply.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AdminVipLockReplyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AdminVipLockReplyValidationError{}
+
 // Validate checks the field values on AdminKkdtUpdateRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
@@ -15778,6 +16011,113 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = AdminVipUpdateRequest_SendBodyValidationError{}
+
+// Validate checks the field values on AdminVipLockRequest_SendBody with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *AdminVipLockRequest_SendBody) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AdminVipLockRequest_SendBody with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// AdminVipLockRequest_SendBodyMultiError, or nil if none found.
+func (m *AdminVipLockRequest_SendBody) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AdminVipLockRequest_SendBody) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for UserId
+
+	// no validation rules for Lock
+
+	if len(errors) > 0 {
+		return AdminVipLockRequest_SendBodyMultiError(errors)
+	}
+
+	return nil
+}
+
+// AdminVipLockRequest_SendBodyMultiError is an error wrapping multiple
+// validation errors returned by AdminVipLockRequest_SendBody.ValidateAll() if
+// the designated constraints aren't met.
+type AdminVipLockRequest_SendBodyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AdminVipLockRequest_SendBodyMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AdminVipLockRequest_SendBodyMultiError) AllErrors() []error { return m }
+
+// AdminVipLockRequest_SendBodyValidationError is the validation error returned
+// by AdminVipLockRequest_SendBody.Validate if the designated constraints
+// aren't met.
+type AdminVipLockRequest_SendBodyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AdminVipLockRequest_SendBodyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AdminVipLockRequest_SendBodyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AdminVipLockRequest_SendBodyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AdminVipLockRequest_SendBodyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AdminVipLockRequest_SendBodyValidationError) ErrorName() string {
+	return "AdminVipLockRequest_SendBodyValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e AdminVipLockRequest_SendBodyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAdminVipLockRequest_SendBody.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AdminVipLockRequest_SendBodyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AdminVipLockRequest_SendBodyValidationError{}
 
 // Validate checks the field values on AdminKkdtUpdateRequest_SendBody with the
 // rules defined in the proto definition for this message. If any rules are

@@ -264,6 +264,13 @@ service App {
 		};
 	};
 
+	rpc AdminVipLock (AdminVipLockRequest) returns (AdminVipLockReply) {
+		option (google.api.http) = {
+			post: "/api/admin_dhb/vip_lock"
+			body: "send_body"
+		};
+	};
+
 	rpc AdminVipDelete (AdminVipDeleteRequest) returns (AdminVipDeleteReply) {
 		option (google.api.http) = {
 			post: "/api/admin_dhb/vip_delete"
@@ -941,6 +948,19 @@ message AdminVipUpdateRequest {
 }
 
 message AdminVipUpdateReply {
+
+}
+
+message AdminVipLockRequest {
+	message SendBody{
+		int64 user_id = 1;
+		int64 lock = 2;
+	}
+
+	SendBody send_body = 1;
+}
+
+message AdminVipLockReply {
 
 }
 

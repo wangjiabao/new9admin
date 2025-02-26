@@ -1161,6 +1161,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Status'
+    /api/admin_dhb/vip_lock:
+        post:
+            tags:
+                - App
+            operationId: App_AdminVipLock
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/AdminVipLockRequest_SendBody'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/AdminVipLockReply'
+                default:
+                    description: Default error response
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Status'
     /api/admin_dhb/vip_update:
         post:
             tags:
@@ -1819,6 +1843,16 @@ components:
                 amount:
                     type: string
                 kkdt:
+                    type: string
+        AdminVipLockReply:
+            type: object
+            properties: {}
+        AdminVipLockRequest_SendBody:
+            type: object
+            properties:
+                userId:
+                    type: string
+                lock:
                     type: string
         AdminVipUpdateReply:
             type: object
