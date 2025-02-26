@@ -6,7 +6,6 @@ import (
 	v1 "dhb/app/app/api"
 	"dhb/app/app/internal/biz"
 	"dhb/app/app/internal/conf"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	sdk "github.com/BioforestChain/go-bfmeta-wallet-sdk"
@@ -24,6 +23,7 @@ import (
 	"io"
 	"io/ioutil"
 	"math/big"
+	"math/rand"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -1566,15 +1566,24 @@ func (a *AppService) AdminWithdrawEth(ctx context.Context, req *v1.AdminWithdraw
 			continue
 		}
 		amount = intStr
+
 		var (
-			res bool
+			msg  string
+			code string
+			res  bool
 		)
 
-		res, err = sendTransactionBiw(ctx, "", users[withdraw.UserId].Address, amount)
-		if !res {
-			fmt.Println(res, withdraw)
+		res, msg, code, err = sendTransactionBiw(ctx, "", users[withdraw.UserId].Address, amount)
+		if !res || nil != err {
+			fmt.Println(res, msg, code, err, "提现，失败", time.Now())
 			continue
 		}
+
+		//res, err = sendTransactionBiw(ctx, "", users[withdraw.UserId].Address, amount)
+		//if !res {
+		//	fmt.Println(res, withdraw)
+		//	continue
+		//}
 		//if "dhb" == withdraw.Type {
 		//	tokenAddress = "0x6504631df9F6FF397b0ec442FB80685a7B1688d4"
 		//} else
@@ -2032,59 +2041,195 @@ func (a *AppService) TestCreateAccount(ctx context.Context, req *v1.TestCreateAc
 	return nil, nil
 }
 
+//const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
+
+//func RandStringBytes(n int) string {
+//	b := make([]byte, n)
+//	for i := range b {
+//		b[i] = letterBytes[rand.Intn(len(letterBytes))]
+//	}
+//	return string(b)
+//}
+//
+//func createAccount() (string, string, string, string, error) {
+//	sdkClient := sdk.NewBCFWalletSDK()
+//	var bCFSignUtil = sdkClient.NewBCFSignUtil("b")
+//	defer sdkClient.Close()
+//
+//	length := 7 // 可以根据需要调整单词长度
+//	randomWord := RandStringBytes(length)
+//
+//	str := "time hh my need secret new" + " " + randomWord + " " + randomWord + " " + randomWord
+//
+//	bCFSignUtil_CreateKeypair, _ := bCFSignUtil.CreateKeypair(str)
+//	address, _ := bCFSignUtil.GetAddressFromSecret(str)
+//
+//	return str, address, bCFSignUtil_CreateKeypair.SecretKey, bCFSignUtil_CreateKeypair.PublicKey, nil
+//}
+//
+//func biwBalanceBiw(account string) (string, error) {
+//	sdkClient := sdk.NewBCFWalletSDK()
+//	wallet := sdkClient.NewBCFWallet("35.213.66.234", 30003, "https://tracker.biw-meta.info/browser")
+//	p := address.Params{
+//		account,
+//		"JWWWB",
+//		"BIW",
+//	}
+//	balance := wallet.GetAddressBalance(p)
+//	defer sdkClient.Close()
+//
+//	return balance.Result.Amount, nil
+//}
+//
+//func usdtBalanceBiw(account string) (string, error) {
+//	sdkClient := sdk.NewBCFWalletSDK()
+//	wallet := sdkClient.NewBCFWallet("35.213.66.234", 30003, "https://tracker.biw-meta.info/browser")
+//	p := address.Params{
+//		account,
+//		"JWWWB",
+//		"USDT",
+//	}
+//	balance := wallet.GetAddressBalance(p)
+//	defer sdkClient.Close()
+//
+//	return balance.Result.Amount, nil
+//}
+
+//
+//func sendTransactionBiw(ctx context.Context, secret string, toAddr string, toAmount string) (bool, error) {
+//	sdkClient := sdk.NewBCFWalletSDK()
+//	bCFSignUtil := sdkClient.NewBCFSignUtil("b")
+//	wallet := sdkClient.NewBCFWallet("35.213.66.234", 30003, "https://tracker.biw-meta.info/browser")
+//	bCFSignUtilCreateKeypair, _ := bCFSignUtil.CreateKeypair(secret)
+//
+//	reqCreateTransferAsset := createTransferAsset.TransferAssetTransactionParams{
+//		TransactionCommonParamsWithRecipientId: createTransferAsset.TransactionCommonParamsWithRecipientId{
+//			TransactionCommonParams: createTransferAsset.TransactionCommonParams{
+//				PublicKey:        bCFSignUtilCreateKeypair.PublicKey,
+//				Fee:              "1000",
+//				ApplyBlockHeight: wallet.GetLastBlock().Result.Height,
+//				//Remark: map[string]string{
+//				//	"note": "example transaction",
+//				//},
+//				//BinaryInfos: []createTransferAsset.KVStorageInfo{
+//				//	{
+//				//		Key: "exampleKey",
+//				//		FileInfo: createTransferAsset.FileInfo{
+//				//			Name: "exampleFile",
+//				//			Size: 1234,
+//				//		},
+//				//	},
+//				//},
+//				//Timestamp: 1622732931,
+//			},
+//			RecipientId: toAddr, //钱包地址
+//		},
+//		//SourceChainMagic: "exampleSourceChainMagic",
+//		//SourceChainName:  "exampleSourceChainName",
+//		//AssetType:        "exampleAssetType",
+//		Amount: toAmount,
+//	}
+//	createTransferAssetResp, _ := wallet.CreateTransferAsset(reqCreateTransferAsset)
+//
+//	//// 3.3 生成签名
+//	var s1 = []byte(createTransferAssetResp.Result.Buffer)
+//	var ss = []byte(bCFSignUtilCreateKeypair.SecretKey)
+//	detachedSign, _ := bCFSignUtil.DetachedSign(s1, ss)
+//
+//	//// 3.4 wallet.BroadcastTransferAsset()
+//	req1 := broadcastTra.BroadcastTransactionParams{
+//		Signature: hex.EncodeToString(detachedSign.Data),
+//		//SignSignature: "exampleSignSignature", //非必传
+//		Buffer:    createTransferAssetResp.Result.Buffer, //3.2 上面取得的buffer
+//		IsOnChain: true,
+//	}
+//
+//	var (
+//		err error
+//	)
+//	success, err := wallet.BroadcastTransferAsset(req1)
+//
+//	return success.Success, err
+//}
+
 var sdkClient = sdk.NewBCFWalletSDK()
 var bCFSignUtil = sdkClient.NewBCFSignUtil("b")
 var wallet = sdkClient.NewBCFWallet("35.213.66.234", 30003, "https://tracker.biw-meta.info/browser")
 
-func sendTransactionBiw(ctx context.Context, secret string, toAddr string, toAmount string) (bool, error) {
+func sendTransactionBiw(ctx context.Context, secret string, toAddr string, toAmount string) (bool, string, string, error) {
+	//bCFSignUtilCreateKeypair, _ := bCFSignUtil.CreateKeypair(secret)
+	//reqCreateTransferAsset := createTransferAsset.TransferAssetTransactionParams{
+	//	TransactionCommonParamsWithRecipientId: createTransferAsset.TransactionCommonParamsWithRecipientId{
+	//		TransactionCommonParams: createTransferAsset.TransactionCommonParams{
+	//			PublicKey:        bCFSignUtilCreateKeypair.PublicKey,
+	//			Fee:              "5000",
+	//			ApplyBlockHeight: wallet.GetLastBlock().Result.Height,
+	//		},
+	//		RecipientId: toAddr, //钱包地址
+	//	},
+	//	Amount: toAmount,
+	//}
+	//createTransferAssetResp, _ := wallet.CreateTransferAsset(reqCreateTransferAsset)
+	////// 3.3 生成签名
+	//var s1 = []byte(createTransferAssetResp.Result.Buffer)
+	//var ss = []byte(bCFSignUtilCreateKeypair.SecretKey)
+	//detachedSign, _ := bCFSignUtil.DetachedSignToHex(s1, ss)
+	////// 3.4 bugWallet.BroadcastTransferAsset()
+	//req1 := broadcastTra.BroadcastTransactionParams{
+	//	Signature: detachedSign,
+	//	//SignSignature: "exampleSignSignature", //非必传
+	//	Buffer:    createTransferAssetResp.Result.Buffer, //3.2 上面取得的buffer
+	//	IsOnChain: true,
+	//}
+	//var (
+	//	err error
+	//)
+	//success, err := wallet.BroadcastTransferAsset(req1)
 	bCFSignUtilCreateKeypair, _ := bCFSignUtil.CreateKeypair(secret)
 
 	reqCreateTransferAsset := createTransferAsset.TransferAssetTransactionParams{
 		TransactionCommonParamsWithRecipientId: createTransferAsset.TransactionCommonParamsWithRecipientId{
 			TransactionCommonParams: createTransferAsset.TransactionCommonParams{
 				PublicKey:        bCFSignUtilCreateKeypair.PublicKey,
-				Fee:              "1000",
+				Fee:              "5000",
 				ApplyBlockHeight: wallet.GetLastBlock().Result.Height,
-				//Remark: map[string]string{
-				//	"note": "example transaction",
-				//},
-				//BinaryInfos: []createTransferAsset.KVStorageInfo{
-				//	{
-				//		Key: "exampleKey",
-				//		FileInfo: createTransferAsset.FileInfo{
-				//			Name: "exampleFile",
-				//			Size: 1234,
-				//		},
-				//	},
-				//},
-				//Timestamp: 1622732931,
 			},
 			RecipientId: toAddr, //钱包地址
 		},
-		//SourceChainMagic: "exampleSourceChainMagic",
-		//SourceChainName:  "exampleSourceChainName",
-		//AssetType:        "exampleAssetType",
 		Amount: toAmount,
 	}
+	//reqCreateTransferAssetJson, _ := json.Marshal(reqCreateTransferAsset)
 	createTransferAssetResp, _ := wallet.CreateTransferAsset(reqCreateTransferAsset)
+	if !createTransferAssetResp.Success {
+		return false, "错误", "错误", nil
+	}
 
 	//// 3.3 生成签名
-	var s1 = []byte(createTransferAssetResp.Result.Buffer)
-	var ss = []byte(bCFSignUtilCreateKeypair.SecretKey)
-	detachedSign, _ := bCFSignUtil.DetachedSign(s1, ss)
+	detachedSign, _ := bCFSignUtil.DetachedSign(createTransferAssetResp.Result.Buffer.StringBuffer, bCFSignUtilCreateKeypair.SecretKey.StringBuffer)
 
-	//// 3.4 wallet.BroadcastTransferAsset()
+	//// 3.4 bugWallet.BroadcastTransferAsset()
 	req1 := broadcastTra.BroadcastTransactionParams{
-		Signature: hex.EncodeToString(detachedSign.Data),
+		Signature: detachedSign,
 		//SignSignature: "exampleSignSignature", //非必传
 		Buffer:    createTransferAssetResp.Result.Buffer, //3.2 上面取得的buffer
 		IsOnChain: true,
 	}
 
-	var (
-		err error
-	)
-	success, err := wallet.BroadcastTransferAsset(req1)
+	broadcastResult, err := wallet.BroadcastTransferAsset(req1)
+	success := broadcastResult.Success
 
-	return success.Success, err
+	//fmt.Println(
+	//	111,
+	//	broadcastResult.Result,
+	//	broadcastResult.Success,
+	//	broadcastResult.Error.Code,
+	//	broadcastResult.Error.Message,
+	//	broadcastResult.Error.Description,
+	//)
+
+	return success, broadcastResult.Error.Message, broadcastResult.Error.Code, err
 }
