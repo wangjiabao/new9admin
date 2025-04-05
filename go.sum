@@ -2,6 +2,8 @@ cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMT
 cloud.google.com/go v0.34.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/BioforestChain/go-bfmeta-wallet-sdk v0.0.0-20240925085425-f4d12c87a418 h1:rEbXCX15TpN3WMNXcEiCrPCw+g89SqSYrjy6GtQ+/Oc=
 github.com/BioforestChain/go-bfmeta-wallet-sdk v0.0.0-20240925085425-f4d12c87a418/go.mod h1:/XfCwGdEifXzA4tXfJ8N98HoPiIfHhWeZJ3280PCj6Y=
+github.com/BioforestChain/go-bfmeta-wallet-sdk v0.0.0-20250211091606-256076e07ecc h1:w+i0iTfIXIKLRU8pFpMn56uTSiw4BqTF6IFuQ+PO344=
+github.com/BioforestChain/go-bfmeta-wallet-sdk v0.0.0-20250211091606-256076e07ecc/go.mod h1:/XfCwGdEifXzA4tXfJ8N98HoPiIfHhWeZJ3280PCj6Y=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/DataDog/zstd v1.4.5 h1:EndNeuB0l9syBZhut0wns3gV1hL8zX8LIu6ZiVHWLIQ=
 github.com/DataDog/zstd v1.4.5/go.mod h1:1jcaCB/ufaK+sKp1NBhlGmpz41jOoPQ35bpF36t7BBo=
